@@ -19,7 +19,7 @@
         }
 
         body {
-            background: #f4f6f8;
+            background: #4d7eae;
             color: #1e293b;
         }
 
@@ -364,6 +364,53 @@
 
 
 <div class="container">
+    <!-- OWNER LOGIN -->
+<div id="loginSection" style="
+    background:white;
+    padding:20px;
+    margin:20px;
+    border-radius:10px;
+">
+    <h2>Owner Login</h2>
+
+    <p style="margin:10px 0;">
+        Log in to upload, edit, or delete study files.
+    </p>
+
+    <input
+        id="ownerEmail"
+        type="email"
+        placeholder="Enter your email"
+        style="padding:10px; width:100%; max-width:350px; margin-bottom:10px;"
+    >
+
+    <br>
+
+    <input
+        id="ownerPassword"
+        type="password"
+        placeholder="Enter your password"
+        style="padding:10px; width:100%; max-width:350px; margin-bottom:10px;"
+    >
+
+    <br>
+
+    <button
+        onclick="ownerLogin()"
+        style="padding:10px 18px; background:#2563eb; color:white; border:0; border-radius:6px; cursor:pointer;"
+    >
+        Login
+    </button>
+
+    <button
+        onclick="ownerLogout()"
+        style="padding:10px 18px; background:#64748b; color:white; border:0; border-radius:6px; cursor:pointer;"
+    >
+        Logout
+    </button>
+
+    <p id="loginStatus" style="margin-top:10px;"></p>
+</div>
 
 
     <!-- SIDEBAR -->
@@ -541,14 +588,82 @@
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
 
 /* ===============================
    DATA
 ================================ */
+/* ===============================
+   OWNER LOGIN
+================================ */
 
-let folders =
+async function ownerLogin() {
+    const email = document.getElementById("ownerEmail").value.trim();
+    const password = document.getElementById("ownerPassword").value;
+
+    if (!email || !password) {
+        alert("Please enter your email and password.");
+        return;
+    }
+
+    const status = document.getElementById("loginStatus");
+    status.textContent = "Logging in...";
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        status.textContent = "Login failed: " + error.message;
+        return;
+    }
+
+    status.textContent = "Logged in successfully.";
+    updateOwnerInterface();
+}
+
+async function ownerLogout() {
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+        alert("Logout failed: " + error.message);
+        return;
+    }
+
+    document.getElementById("loginStatus").textContent = "You are logged out.";
+    updateOwnerInterface();
+}
+
+async function updateOwnerInterface() {
+    const { data } = await supabaseClient.auth.getSession();
+    const loggedIn = !!data.session;
+
+    document.getElementById("loginSection").style.display =
+        loggedIn ? "block" : "block";
+
+    document.getElementById("loginStatus").textContent =
+        loggedIn ? "You are logged in as the owner." : "Please log in to manage files.";
+
+    document.querySelectorAll(".new-folder, .new-note, .upload-pdf").forEach(button => {
+        button.style.display = loggedIn ? "" : "none";
+    });
+}
+
+supabaseClient.auth.onAuthStateChange(() => {
+    updateOwnerInterface();
+});
+
+let folders =// SUPABASE CONNECTION
+const SUPABASE_URL = "ozdcpgesiraqughaajog";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_DCZHIdzjXa7uBaLc7B1dBQ_AbZoGu4B";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
     JSON.parse(
         localStorage.getItem("folders")
     ) || [];
