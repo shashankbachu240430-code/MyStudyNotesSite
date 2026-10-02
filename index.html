@@ -1178,6 +1178,14 @@ async function displayPDFs() {
 ================================ */
 
 async function openPDF(id) {
+    // Open a new tab immediately, while the button click is still active.
+    const newTab = window.open("about:blank", "_blank");
+
+    if (!newTab) {
+        alert("Please allow pop-ups for this website, then tap Open again.");
+        return;
+    }
+
     try {
         const db = await openPDFDatabase();
 
@@ -1186,36 +1194,28 @@ async function openPDF(id) {
             const store = transaction.objectStore(PDF_STORE);
             const request = store.get(id);
 
-            request.onsuccess = function() {
-                resolve(request.result);
-            };
-
-            request.onerror = function() {
-                reject(request.error);
-            };
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
         });
 
         if (!pdf || !pdf.file) {
-            alert("PDF not found.");
+            newTab.close();
+            alert("PDF not found. Please upload it again.");
             return;
         }
 
-        const url = URL.createObjectURL(pdf.file);
+        // Create a URL for the saved PDF and open it in the new tab.
+        const pdfBlob = pdf.file instanceof Blob
+            ? pdf.file
+            : new Blob([pdf.file], { type: "application/pdf" });
 
-        const viewer = document.getElementById("pdfViewer");
-        const viewerContainer = document.getElementById("pdfViewerContainer");
-
-        viewer.src = url;
-        viewer.style.display = "block";
-        viewerContainer.style.display = "block";
-
-        viewerContainer.scrollIntoView({
-            behavior: "smooth"
-        });
+        const pdfURL = URL.createObjectURL(pdfBlob);
+        newTab.location.href = pdfURL;
 
     } catch (error) {
         console.error("PDF open error:", error);
-        alert("Unable to open this PDF.");
+        newTab.close();
+        alert("Unable to open this PDF. Please try uploading it again.");
     }
 }
 
