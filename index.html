@@ -1178,7 +1178,8 @@ async function displayPDFs() {
 ================================ */
 
 async function openPDF(id) {
-    // Open a new tab immediately, while the button click is still active.
+    // Open a blank tab immediately, while the button click is active.
+    // This helps prevent mobile browsers from blocking the new tab.
     const newTab = window.open("about:blank", "_blank");
 
     if (!newTab) {
@@ -1194,28 +1195,31 @@ async function openPDF(id) {
             const store = transaction.objectStore(PDF_STORE);
             const request = store.get(id);
 
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = () => reject(request.error);
+            request.onsuccess = function() {
+                resolve(request.result);
+            };
+
+            request.onerror = function() {
+                reject(request.error);
+            };
         });
 
         if (!pdf || !pdf.file) {
             newTab.close();
-            alert("PDF not found. Please upload it again.");
+            alert("PDF not found.");
             return;
         }
 
-        // Create a URL for the saved PDF and open it in the new tab.
-        const pdfBlob = pdf.file instanceof Blob
-            ? pdf.file
-            : new Blob([pdf.file], { type: "application/pdf" });
+        // Create a temporary URL for the saved PDF.
+        const url = URL.createObjectURL(pdf.file);
 
-        const pdfURL = URL.createObjectURL(pdfBlob);
-        newTab.location.href = pdfURL;
+        // Display the PDF directly in the new tab.
+        newTab.location.href = url;
 
     } catch (error) {
         console.error("PDF open error:", error);
         newTab.close();
-        alert("Unable to open this PDF. Please try uploading it again.");
+        alert("Unable to open this PDF. Please try again.");
     }
 }
 /* ===============================
