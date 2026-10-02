@@ -589,6 +589,18 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    // your existing JavaScript code
+// ...
+
+document.addEventListener("DOMContentLoaded", async function () {
+
+    await displayFolders();
+
+    updateOwnerInterface();
+
+});
+
+</script>
 <script>
 
 /* ===============================
@@ -707,84 +719,95 @@ function saveData() {
    CREATE FOLDER
 ================================ */
 
-function createFolder() {
+async function createFolder() {
 
-    const name =
-        prompt("Enter folder name:");
+    const name = prompt("Enter folder name:");
 
     if (!name) {
-
         return;
-
     }
 
+    const { data, error } = await supabaseClient
+        .from("folders")
+        .insert([
+            {
+                name: name
+            }
+        ])
+        .select()
+        .single();
 
-    folders.push({
+    if (error) {
+        console.error("Create folder error:", error);
+        alert("Could not create folder: " + error.message);
+        return;
+    }
 
-        id: Date.now(),
-
-        name: name
-
-    });
-
-
-    saveData();
+    folders.push(data);
 
     displayFolders();
-
 }
-
 
 /* ===============================
    DISPLAY FOLDERS
 ================================ */
 
-function displayFolders() {
+async function displayFolders() {
 
-    const container =
-        document.getElementById(
-            "folderList"
-        );
+    const folderList = document.getElementById("folderList");
 
+    if (!folderList) {
+        return;
+    }
 
-    container.innerHTML = "";
+    folderList.innerHTML = "Loading folders...";
 
+    const { data, error } = await supabaseClient
+        .from("folders")
+        .select("*")
+        .order("created_at", { ascending: true });
+
+    if (error) {
+        console.error("Load folders error:", error);
+        folderList.innerHTML = "Unable to load folders.";
+        return;
+    }
+
+    folders = data || [];
+
+    folderList.innerHTML = "";
+
+    if (folders.length === 0) {
+        folderList.innerHTML = "<p>No folders yet.</p>";
+        return;
+    }
 
     folders.forEach(folder => {
 
-        const div =
-            document.createElement("div");
+        const button = document.createElement("button");
 
+        button.textContent = "📁 " + folder.name;
 
-        div.className = "folder";
+        button.className = "folder-item";
 
+        button.onclick = function () {
 
-        if (
-            selectedFolder === folder.id
-        ) {
+            selectedFolder = folder.id;
 
-            div.classList.add("active");
+            const currentFolder =
+                document.getElementById("currentFolder");
 
-        }
+            if (currentFolder) {
+                currentFolder.textContent =
+                    "📁 " + folder.name;
+            }
 
-
-        div.textContent =
-            "📁 " + folder.name;
-
-
-        div.onclick = function() {
-
-            selectFolder(folder.id);
-
+            displayContent();
         };
 
-
-        container.appendChild(div);
-
+        folderList.appendChild(button);
     });
-
 }
-
 
 /* ===============================
    SELECT FOLDER
