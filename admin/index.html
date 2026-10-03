@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MyStudyNotesSite.com</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #4d7eae;
+            color: #1e293b;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 18px 25px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .tagline {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        /* LAYOUT */
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 260px;
+            background: white;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 15px;
+        }
+
+        .sidebar button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+
+            border: none;
+            border-radius: 8px;
+
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .new-folder {
+            background: #2563eb;
+            color: white;
+        }
+
+        .new-note {
+            background: #16a34a;
+            color: white;
+        }
+
+        .upload-pdf {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .sidebar button:hover {
+            opacity: 0.85;
+        }
+
+        /* FOLDERS */
+
+        .folder-list {
+            margin-top: 20px;
+        }
+
+        .folder {
+            padding: 12px;
+            margin-bottom: 7px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+            background: #f1f5f9;
+        }
+
+        .folder:hover {
+            background: #e2e8f0;
+        }
+
+        .folder.active {
+            background: #dbeafe;
+            font-weight: bold;
+        }
+
+        /* MAIN */
+
+        .main {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .current-folder {
+            font-size: 25px;
+            margin-bottom: 20px;
+        }
+
+        .search {
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            font-size: 15px;
+        }
+
+        /* EDITOR */
+
+        .editor {
+            display: none;
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .editor input,
+        .editor textarea {
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin-bottom: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+        }
+
+        .editor textarea {
+            height: 250px;
+            resize: vertical;
+        }
+
+        .save-btn {
+            background: #16a34a;
+            color: white;
+
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background: #64748b;
+            color: white;
+
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+        }
+
+        /* CONTENT */
+
+        .section-title {
+            margin: 25px 0 15px;
+        }
+
+        .items {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fill, minmax(260px, 1fr));
+
+            gap: 15px;
+        }
+
+        .card {
+
+            background: white;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 2px 7px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+
+            color: #555;
+
+            white-space: pre-wrap;
+
+            max-height: 120px;
+
+            overflow: hidden;
+
+            line-height: 1.5;
+        }
+
+        .buttons {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 15px;
+        }
+
+        .buttons button {
+
+            padding: 8px 12px;
+
+            border: none;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+        }
+
+        .open {
+
+            background: #2563eb;
+
+            color: white;
+        }
+
+        .edit {
+            background: #facc15;
+        }
+
+        .delete {
+
+            background: #ef4444;
+
+            color: white;
+        }
+
+        /* PDF VIEWER */
+
+        #pdfViewer {
+
+            width: 100%;
+
+            height: 650px;
+
+            border: none;
+
+            display: block;
+
+            margin-top: 20px;
+        }
+
+        /* ADMIN PORTAL */
+        .admin-portal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(15, 23, 42, 0.62);
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .admin-portal {
+            width: min(1100px, 100%);
+            margin: 0 auto;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 18px 60px rgba(0,0,0,.25);
+            overflow: hidden;
+        }
+
+        .admin-portal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 22px;
+            background: #172554;
+            color: white;
+        }
+
+        .admin-portal-body {
+            padding: 20px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .admin-user-row {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .admin-portal-button {
+            border: 0;
+            border-radius: 7px;
+            padding: 9px 14px;
+            cursor: pointer;
+            background: #7c3aed;
+            color: white;
+        }
+
+        .admin-close-button {
+            border: 0;
+            border-radius: 7px;
+            padding: 9px 14px;
+            cursor: pointer;
+            background: #ef4444;
+            color: white;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 15px;
+            }
+
+            .tagline {
+                display: none;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+
+                width: 100%;
+
+                border-right: none;
+
+                border-bottom: 1px solid #ddd;
+            }
+
+            .main {
+                padding: 15px;
+            }
+
+            .items {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+
+<script>
+/* Separate routes:
+   /                 = users/viewers
+   /admin            = administrator
+*/
+const ADMIN_ROUTE_PATH = "/admin";
+
+function isAdminRoute() {
+    const path = window.location.pathname.replace(/\/+$/, "") || "/";
+    return path === ADMIN_ROUTE_PATH;
+}
+</script>
+
+<style>
+body.admin-route #authModeButton {
+    display: none !important;
+}
+body.admin-route #authConfirmPassword {
+    display: none !important;
+}
+body.admin-route #adminPortalButton {
+    display: none !important;
+}
+</style>
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<header>
+
+    <div class="logo">
+        📚 MyStudyNotesSite.com
+    </div>
+
+    <div class="tagline">
+        Study • Write • Organize • Learn
+    </div>
+
+</header>
+
+
+<div class="container">
+    
+<!-- LOGIN / ACCOUNT -->
+<div id="authGate" style="
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:#4d7eae;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+">
+    <div style="
+        background:white;
+        width:100%;
+        max-width:430px;
+        padding:28px;
+        border-radius:14px;
+        box-shadow:0 8px 30px rgba(0,0,0,.18);
+    ">
+        <h2 id="authTitle" style="margin-bottom:10px;">🔐 Login</h2>
+        <p id="authMessage" style="margin:0 0 18px;color:#475569;">
+            Sign in to access My Study Notes.
+        </p>
+
+        <input
+            id="authEmail"
+            type="email"
+            autocomplete="email"
+            placeholder="Email"
+            style="padding:12px;width:100%;margin-bottom:10px;border:1px solid #cbd5e1;border-radius:7px;"
+        >
+
+        <input
+            id="authPassword"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Password"
+            style="padding:12px;width:100%;margin-bottom:10px;border:1px solid #cbd5e1;border-radius:7px;"
+        >
+
+        <input
+            id="authConfirmPassword"
+            type="password"
+            autocomplete="new-password"
+            placeholder="Confirm password"
+            style="display:none;padding:12px;width:100%;margin-bottom:10px;border:1px solid #cbd5e1;border-radius:7px;"
+        >
+
+        <button
+            id="authPrimaryButton"
+            onclick="handleAuthPrimary()"
+            style="width:100%;padding:12px 18px;background:#2563eb;color:white;border:0;border-radius:7px;cursor:pointer;font-size:15px;"
+        >
+            Login
+        </button>
+
+        <button
+            id="authModeButton"
+            onclick="toggleAuthMode()"
+            style="width:100%;padding:12px 18px;margin-top:10px;background:#e2e8f0;color:#1e293b;border:0;border-radius:7px;cursor:pointer;font-size:15px;"
+        >
+            Create Account
+        </button>
+
+        <p id="authStatus" style="margin-top:14px;min-height:20px;"></p>
+    </div>
+</div>
+
+<div id="accountBar" style="
+    background:white;
+    margin:20px 20px 0;
+    padding:12px 16px;
+    border-radius:10px;
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+">
+    <span id="accountInfo"></span>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button
+            id="adminPortalButton"
+            class="admin-portal-button"
+            onclick="openAdminPortal()"
+            style="display:none;"
+        >
+            👑 Admin Portal
+        </button>
+        <button
+            onclick="ownerLogout()"
+            style="padding:9px 16px;background:#64748b;color:white;border:0;border-radius:6px;cursor:pointer;"
+        >
+            Logout
+        </button>
+    </div>
+</div>
+
+
+    
+
+
+    
+<div id="adminPortal" class="admin-portal-backdrop">
+    <div class="admin-portal">
+        <div class="admin-portal-header">
+            <div>
+                <h2 style="margin:0;">👑 Admin Portal</h2>
+                <div style="margin-top:4px;color:#cbd5e1;font-size:14px;">
+                    User access, login activity, and account management
+                </div>
+            </div>
+            <button class="admin-close-button" onclick="closeAdminPortal()">✕ Close</button>
+        </div>
+        <div class="admin-portal-body">
+            <div id="userList">Loading users...</div>
+        </div>
+    </div>
+</div>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <h2>📁 My Folders</h2>
+
+
+        <button
+            class="new-folder"
+            onclick="createFolder()">
+
+            ➕ New Folder
+
+        </button>
+
+
+        <button
+            class="new-note"
+            onclick="openNoteEditor()">
+
+            📝 New Note
+
+        </button>
+
+
+        <button
+            class="upload-pdf"
+            onclick="choosePDF()">
+
+            📄 Upload PDF
+
+        </button>
+
+
+        <input
+            type="file"
+            id="pdfInput"
+            accept="application/pdf"
+            style="display:none"
+            onchange="uploadPDF(event)"
+        >
+
+
+        <div
+            id="folderList"
+            class="folder-list">
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <h2
+            id="currentFolder"
+            class="current-folder">
+
+            📁 Select a folder
+
+        </h2>
+
+
+        <!-- SEARCH -->
+
+        <input
+            id="search"
+            class="search"
+            type="text"
+            placeholder="🔍 Search notes..."
+            oninput="displayContent()"
+        >
+
+
+        <!-- NOTE EDITOR -->
+
+        <div
+            id="editor"
+            class="editor">
+
+
+            <input
+                id="noteTitle"
+                placeholder="Enter note title..."
+            >
+
+
+            <textarea
+                id="noteContent"
+                placeholder="Start typing your notes..."
+            ></textarea>
+
+
+            <button
+                class="save-btn"
+                onclick="saveNote()">
+
+                💾 Save Note
+
+            </button>
+
+
+            <button
+                class="cancel-btn"
+                onclick="closeEditor()">
+
+                Cancel
+
+            </button>
+
+        </div>
+
+
+        <!-- NOTES -->
+
+        <h2 class="section-title">
+
+            📝 My Notes
+
+        </h2>
+
+
+        <div
+            id="notesContainer"
+            class="items">
+
+        </div>
+
+
+        <!-- PDFS -->
+
+        <h2 class="section-title">
+
+            📄 My PDFs
+
+        </h2>
+
+
+        <div
+            id="pdfContainer"
+            class="items">
+
+        </div>
+
+
+        <!-- PDF VIEWER -->
+
+        <div id="pdfViewerContainer" style="display:none; margin-top:20px;">
+            <button
+                onclick="closePDFViewer()"
+                style="
+                    background:#ef4444;
+                    color:white;
+                    border:none;
+                    padding:10px 16px;
+                    border-radius:7px;
+                    cursor:pointer;
+                    font-size:15px;
+                    margin-bottom:10px;
+                ">
+                ✕ Close PDF
+            </button>
+
+            <iframe id="pdfViewer"></iframe>
+        </div>
+
+
+    </main>
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* =========================================================
+   MYSTUDYNOTESSITE - FINAL SHARED VERSION
+   Admin:
+     ec9ba898-f360-44fa-b941-db5497794d36
+   Viewers:
+     Can create their own account and view content only.
+   ========================================================= */
+
+const SUPABASE_URL = "https://ozdcpgesiraqughaajog.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_DCZHIdzjXa7uBaLc7B1dBQ_AbZoGu4B";
+
+const ADMIN_USER_ID =
+    "ec9ba898-f360-44fa-b941-db5497794d36";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+let currentUser = null;
+let currentProfile = null;
+let folders = [];
+let notes = [];
+let selectedFolder = null;
+let editingNoteId = null;
+let authMode = "login";
+
+
+/* =========================================================
+   AUTH UI
+   ========================================================= */
+
+function isAdmin() {
+    return !!currentUser && currentUser.id === ADMIN_USER_ID;
+}
+
+function isActiveUser() {
+    return !!currentUser &&
+        !!currentProfile &&
+        currentProfile.active !== false;
+}
+
+
+async function recordLogin() {
+    if (!currentUser || !currentProfile) return;
+
+    const { data, error } =
+        await supabaseClient.rpc("record_my_login");
+
+    if (error) {
+        console.warn("Login tracking failed:", error.message);
+        return;
+    }
+
+    if (data) {
+        currentProfile.last_login_at = data.last_login_at;
+        currentProfile.login_count = data.login_count;
+    }
+}
+
+function formatDate(value) {
+    if (!value) return "Never";
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? "Unknown" : d.toLocaleString();
+}
+
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+async function loadAdminUsers() {
+    if (!isAdmin()) return;
+
+    const container = document.getElementById("userList");
+    if (!container) return;
+
+    container.textContent = "Loading users...";
+
+    const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("id,email,active,must_change_password,created_at,last_login_at,login_count")
+        .order("created_at", { ascending: true });
+
+    if (error) {
+        container.innerHTML =
+            "<p style='color:#dc2626'>Unable to load users: " +
+            escapeHtml(error.message) + "</p>";
+        return;
+    }
+
+    if (!data || !data.length) {
+        container.innerHTML = "<p>No users have registered yet.</p>";
+        return;
+    }
+
+    container.innerHTML = "";
+
+    data.forEach(user => {
+        const row = document.createElement("div");
+        row.className = "admin-user-row";
+
+        const info = document.createElement("div");
+        info.innerHTML =
+            "<strong>" + escapeHtml(user.email || "(no email)") + "</strong>" +
+            "<div style='font-size:13px;color:#64748b;margin-top:4px'>" +
+            "Created: " + formatDate(user.created_at) +
+            " &nbsp;•&nbsp; Last login: " + formatDate(user.last_login_at) +
+            " &nbsp;•&nbsp; Logins: " + Number(user.login_count || 0) +
+            " &nbsp;•&nbsp; Status: " +
+            (user.active === false ? "Blocked" : "Active") +
+            "</div>";
+
+        const action = document.createElement("div");
+
+        if (user.id === ADMIN_USER_ID) {
+            action.innerHTML =
+                "<span style='color:#15803d;font-weight:600'>👑 Admin</span>";
+        } else {
+            const button = document.createElement("button");
+            button.textContent =
+                user.active === false ? "Restore Access" : "Remove Access";
+
+            button.style.cssText =
+                "padding:8px 12px;border:0;border-radius:6px;cursor:pointer;color:white;background:" +
+                (user.active === false ? "#16a34a" : "#dc2626");
+
+            button.onclick = () =>
+                changeUserAccess(user.id, user.email, user.active === false);
+
+            action.appendChild(button);
+        }
+
+        row.appendChild(info);
+        row.appendChild(action);
+        container.appendChild(row);
+    });
+}
+
+async function changeUserAccess(userId, email, makeActive) {
+    if (!isAdmin() || userId === ADMIN_USER_ID) return;
+
+    const action = makeActive ? "restore access to" : "remove access from";
+
+    if (!confirm("Are you sure you want to " + action + " " + email + "?")) {
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from("profiles")
+        .update({
+            active: makeActive,
+            access_removed_at: makeActive ? null : new Date().toISOString()
+        })
+        .eq("id", userId);
+
+    if (error) {
+        alert("Could not change access: " + error.message);
+        return;
+    }
+
+    await loadAdminUsers();
+}
+
+function setAuthMessage(message, isError = false) {
+    const el = document.getElementById("authStatus");
+    if (!el) return;
+    el.textContent = message || "";
+    el.style.color = isError ? "#dc2626" : "#15803d";
+}
+
+function toggleAuthMode() {
+    authMode = authMode === "login" ? "signup" : "login";
+
+    const title = document.getElementById("authTitle");
+    const message = document.getElementById("authMessage");
+    const confirm = document.getElementById("authConfirmPassword");
+    const primary = document.getElementById("authPrimaryButton");
+    const modeButton = document.getElementById("authModeButton");
+    const password = document.getElementById("authPassword");
+
+    if (authMode === "signup") {
+        title.textContent = "📝 Create Account";
+        message.textContent =
+            "Create your own account. New accounts are view-only.";
+        confirm.style.display = "block";
+        confirm.value = "";
+        password.autocomplete = "new-password";
+        primary.textContent = "Create Account";
+        modeButton.textContent = "Back to Login";
+        setAuthMessage("");
+    } else {
+        title.textContent = "🔐 Login";
+        message.textContent =
+            "Sign in to access My Study Notes.";
+        confirm.style.display = "none";
+        password.autocomplete = "current-password";
+        primary.textContent = "Login";
+        modeButton.textContent = "Create Account";
+        setAuthMessage("");
+    }
+}
+
+async function handleAuthPrimary() {
+    if (authMode === "signup") {
+        await createAccount();
+    } else {
+        await ownerLogin();
+    }
+}
+
+async function createAccount() {
+    if (isAdminRoute()) return;
+
+    const email =
+        document.getElementById("authEmail").value.trim();
+    const password =
+        document.getElementById("authPassword").value;
+    const confirmPassword =
+        document.getElementById("authConfirmPassword").value;
+
+    if (!email || !password || !confirmPassword) {
+        setAuthMessage(
+            "Please enter email, password, and confirm password.",
+            true
+        );
+        return;
+    }
+
+    if (password.length < 6) {
+        setAuthMessage(
+            "Password must contain at least 6 characters.",
+            true
+        );
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        setAuthMessage(
+            "Passwords do not match.",
+            true
+        );
+        return;
+    }
+
+    setAuthMessage("Creating your account...");
+
+    const { data, error } =
+        await supabaseClient.auth.signUp({
+            email,
+            password
+        });
+
+    if (error) {
+        console.error("Sign-up error:", error);
+        setAuthMessage(
+            "Account creation failed: " + error.message,
+            true
+        );
+        return;
+    }
+
+    if (!data.session) {
+        setAuthMessage(
+            "Account created. Check your email to confirm your account, then log in."
+        );
+        return;
+    }
+
+    currentUser = data.user;
+
+    // The Supabase database trigger creates the viewer profile automatically
+    // with active=true. We only read it here; viewers cannot self-activate.
+    await loadCurrentProfile();
+
+    if (!isActiveUser()) {
+        await supabaseClient.auth.signOut();
+        setAuthMessage(
+            "Your account is not active. Please contact the Admin.",
+            true
+        );
+        return;
+    }
+
+    await showApplication();
+}
+
+async function ownerLogin() {
+    const email = document.getElementById("authEmail").value.trim();
+    const password = document.getElementById("authPassword").value;
+
+    if (!email || !password) {
+        setAuthMessage("Please enter your email and password.", true);
+        return;
+    }
+
+    setAuthMessage("Logging in...");
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+        });
+
+    if (error) {
+        console.error("Login error:", error);
+        setAuthMessage("Invalid email or password.", true);
+        return;
+    }
+
+    currentUser = data.user;
+    await loadCurrentProfile();
+
+    if (!currentProfile) {
+        await supabaseClient.auth.signOut();
+        setAuthMessage("Your account could not be initialized. Please try again.", true);
+        return;
+    }
+
+    if (currentProfile.active === false) {
+        await supabaseClient.auth.signOut();
+        setAuthMessage(
+            "Your access has been removed by the Admin. Please contact the Admin.",
+            true
+        );
+        return;
+    }
+
+    /* /admin is exclusively for the Admin account. */
+    if (isAdminRoute() && !isAdmin()) {
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        currentProfile = null;
+        setAuthMessage("This account is not an Admin account.", true);
+        return;
+    }
+
+    /* If the Admin logs in from the normal shared link, send the Admin
+       to the dedicated Admin route instead of exposing Admin controls there. */
+    if (!isAdminRoute() && isAdmin()) {
+        window.location.href = "/MyStudyNotesSite/admin";
+        return;
+    }
+
+    await recordLogin();
+    await showApplication();
+}
+
+async function ownerLogout() {
+    await supabaseClient.auth.signOut();
+    currentUser = null;
+    currentProfile = null;
+    folders = [];
+    notes = [];
+    selectedFolder = null;
+    editingNoteId = null;
+
+    document.getElementById("accountBar").style.display = "none";
+    closeAdminPortal();
+    document.getElementById("authGate").style.display = "flex";
+    document.getElementById("authEmail").value = "";
+    document.getElementById("authPassword").value = "";
+    document.getElementById("authConfirmPassword").value = "";
+
+    authMode = "login";
+    toggleAuthMode();
+    setAuthMessage("");
+}
+
+async function loadCurrentProfile() {
+    if (!currentUser) {
+        currentProfile = null;
+        return;
+    }
+
+    const { data, error } =
+        await supabaseClient
+            .from("profiles")
+            .select("id,email,active,must_change_password,created_at,last_login_at,login_count")
+            .eq("id", currentUser.id)
+            .maybeSingle();
+
+    if (error) {
+        console.error("Profile load error:", error);
+        currentProfile = null;
+        return;
+    }
+
+    if (!data) {
+        const { data: created, error: createError } =
+            await supabaseClient
+                .from("profiles")
+                .insert([{
+                    id: currentUser.id,
+                    email: currentUser.email,
+                    active: true,
+                    must_change_password: false,
+                    login_count: 0
+                }])
+                .select("id,email,active,must_change_password,created_at,last_login_at,login_count")
+                .single();
+
+        if (createError) {
+            console.error("Profile creation error:", createError);
+            currentProfile = null;
+            return;
+        }
+
+        currentProfile = created;
+        return;
+    }
+
+    currentProfile = data;
+}
+
+async function showApplication() {
+    if (!currentUser || !currentProfile || !isActiveUser()) {
+        document.getElementById("authGate").style.display = "flex";
+        return;
+    }
+
+    document.getElementById("authGate").style.display = "none";
+
+    const accountBar =
+        document.getElementById("accountBar");
+
+    accountBar.style.display = "flex";
+
+    const adminPortalButton =
+        document.getElementById("adminPortalButton");
+
+    if (isAdmin()) {
+        adminPortalButton.style.display = "inline-block";
+        await loadAdminUsers();
+    } else {
+        adminPortalButton.style.display = "none";
+        closeAdminPortal();
+    }
+
+    document.getElementById("accountInfo").textContent =
+        isAdmin()
+            ? "👑 Admin: " + (currentUser.email || "")
+            : "👤 Viewer: " + (currentUser.email || "");
+
+    document.querySelectorAll(
+        ".new-folder, .new-note, .upload-pdf"
+    ).forEach(button => {
+        button.style.display = isAdmin() ? "" : "none";
+    });
+
+    const editor = document.getElementById("editor");
+    if (editor && !isAdmin()) {
+        editor.style.display = "none";
+    }
+
+    await displayFolders();
+
+    if (selectedFolder !== null) {
+        await displayContent();
+    } else {
+        document.getElementById("notesContainer").innerHTML = "";
+        document.getElementById("pdfContainer").innerHTML =
+            "<p>Select a folder to view its PDFs.</p>";
+    }
+}
+
+async function updateOwnerInterface() {
+    const { data } =
+        await supabaseClient.auth.getSession();
+
+    currentUser = data.session
+        ? data.session.user
+        : null;
+
+    if (!currentUser) {
+        currentProfile = null;
+        closeAdminPortal();
+        document.getElementById("authGate").style.display = "flex";
+        document.getElementById("accountBar").style.display = "none";
+        return;
+    }
+
+    await loadCurrentProfile();
+
+    if (!currentProfile) {
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        closeAdminPortal();
+        document.getElementById("authGate").style.display = "flex";
+        setAuthMessage(
+            "Your account profile could not be loaded. Please run the latest Supabase access SQL, then try logging in again.",
+            true
+        );
+        return;
+    }
+
+    if (currentProfile.active === false) {
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        currentProfile = null;
+        closeAdminPortal();
+        document.getElementById("authGate").style.display = "flex";
+        setAuthMessage(
+            "Your access has been removed by the Admin. Please contact the Admin.",
+            true
+        );
+        return;
+    }
+
+    await showApplication();
+}
+
+supabaseClient.auth.onAuthStateChange(
+    async (_event, session) => {
+        currentUser = session ? session.user : null;
+
+        if (currentUser) {
+            setTimeout(async () => {
+                await updateOwnerInterface();
+            }, 0);
+        }
+    }
+);
+
+
+function openAdminPortal() {
+    if (!isAdminRoute() || !isAdmin()) return;
+
+    if (!isAdmin()) return;
+
+    const portal = document.getElementById("adminPortal");
+    if (!portal) return;
+
+    portal.style.display = "block";
+    document.body.style.overflow = "hidden";
+    loadAdminUsers();
+}
+
+function closeAdminPortal() {
+    const portal = document.getElementById("adminPortal");
+    if (!portal) return;
+
+    portal.style.display = "none";
+    document.body.style.overflow = "";
+}
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeAdminPortal();
+    }
+});
+
+
+/* =========================================================
+   FOLDERS
+   ========================================================= */
+
+async function createFolder() {
+    if (!isAdmin()) {
+        alert("Only the Admin can create folders.");
+        return;
+    }
+
+    const name = prompt("Enter folder name:");
+    if (!name || !name.trim()) return;
+
+    const cleanName = name.trim();
+
+    const { data: existing, error: checkError } =
+        await supabaseClient
+            .from("folders")
+            .select("id")
+            .ilike("name", cleanName)
+            .limit(1);
+
+    if (checkError) {
+        alert("Could not check folder: " + checkError.message);
+        return;
+    }
+
+    if (existing && existing.length) {
+        alert("A folder with this name already exists.");
+        return;
+    }
+
+    const { error } =
+        await supabaseClient
+            .from("folders")
+            .insert([{ name: cleanName }]);
+
+    if (error) {
+        console.error("Create folder error:", error);
+        alert("Could not create folder: " + error.message);
+        return;
+    }
+
+    await displayFolders();
+}
+
+async function deleteFolder(folderId, folderName) {
+    if (!isAdmin()) {
+        alert("Only the Admin can delete folders.");
+        return;
+    }
+
+    if (!confirm(
+        'Delete folder "' + folderName +
+        '" and all of its notes and PDFs?'
+    )) {
+        return;
+    }
+
+    // Delete PDFs stored under this folder.
+    const { data: files, error: listError } =
+        await supabaseClient
+            .storage
+            .from("pdfs")
+            .list(String(folderId), {
+                limit: 1000
+            });
+
+    if (listError) {
+        alert("Could not inspect folder PDFs: " + listError.message);
+        return;
+    }
+
+    if (files && files.length) {
+        const paths = files
+            .filter(file => file.name)
+            .map(file => String(folderId) + "/" + file.name);
+
+        const { error: removeError } =
+            await supabaseClient
+                .storage
+                .from("pdfs")
+                .remove(paths);
+
+        if (removeError) {
+            alert("Could not delete folder PDFs: " + removeError.message);
+            return;
+        }
+    }
+
+    // Delete notes in this folder.
+    const { error: notesError } =
+        await supabaseClient
+            .from("notes")
+            .delete()
+            .eq("folder_id", folderId);
+
+    if (notesError) {
+        alert("Could not delete folder notes: " + notesError.message);
+        return;
+    }
+
+    const { error: folderError } =
+        await supabaseClient
+            .from("folders")
+            .delete()
+            .eq("id", folderId);
+
+    if (folderError) {
+        alert("Could not delete folder: " + folderError.message);
+        return;
+    }
+
+    selectedFolder = null;
+    document.getElementById("currentFolder").textContent =
+        "📁 Select a folder";
+
+    await displayFolders();
+    await displayContent();
+}
+
+async function displayFolders() {
+    const folderList =
+        document.getElementById("folderList");
+
+    folderList.innerHTML = "Loading folders...";
+
+    const { data, error } =
+        await supabaseClient
+            .from("folders")
+            .select("*")
+            .order("created_at", { ascending: true });
+
+    if (error) {
+        console.error("Load folders error:", error);
+        folderList.innerHTML =
+            "<p>Unable to load folders.</p>";
+        return;
+    }
+
+    folders = data || [];
+    folderList.innerHTML = "";
+
+    if (!folders.length) {
+        folderList.innerHTML =
+            "<p>No folders yet.</p>";
+        return;
+    }
+
+    folders.forEach(folder => {
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.style.display = "flex";
+        wrapper.style.gap = "5px";
+        wrapper.style.marginBottom = "7px";
+
+        const button =
+            document.createElement("button");
+
+        button.textContent =
+            "📁 " + folder.name;
+
+        button.className = "folder";
+
+        button.style.flex = "1";
+        button.style.border = "0";
+        button.style.textAlign = "left";
+
+        if (selectedFolder === folder.id) {
+            button.classList.add("active");
+        }
+
+        button.onclick = function() {
+            selectFolder(folder.id);
+        };
+
+        wrapper.appendChild(button);
+
+        if (isAdmin()) {
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.textContent = "🗑️";
+            deleteButton.title = "Delete folder";
+            deleteButton.style.width = "45px";
+            deleteButton.style.marginBottom = "0";
+            deleteButton.style.background = "#ef4444";
+            deleteButton.style.color = "white";
+
+            deleteButton.onclick = function() {
+                deleteFolder(folder.id, folder.name);
+            };
+
+            wrapper.appendChild(deleteButton);
+        }
+
+        folderList.appendChild(wrapper);
+    });
+}
+
+function selectFolder(id) {
+    selectedFolder = id;
+
+    const folder =
+        folders.find(f => f.id === id);
+
+    if (!folder) return;
+
+    document.getElementById("currentFolder").textContent =
+        "📁 " + folder.name;
+
+    displayFolders();
+    displayContent();
+}
+
+
+/* =========================================================
+   NOTES
+   ========================================================= */
+
+function openNoteEditor(noteId = null) {
+    if (!isAdmin()) {
+        alert("Only the Admin can create or edit notes.");
+        return;
+    }
+
+    if (selectedFolder === null) {
+        alert("Please select a folder first.");
+        return;
+    }
+
+    editingNoteId = noteId;
+
+    const editor =
+        document.getElementById("editor");
+
+    editor.style.display = "block";
+
+    if (noteId !== null) {
+        const note =
+            notes.find(n => n.id === noteId);
+
+        if (!note) {
+            editingNoteId = null;
+            return;
+        }
+
+        document.getElementById("noteTitle").value =
+            note.title || "";
+
+        document.getElementById("noteContent").value =
+            note.content || "";
+    } else {
+        document.getElementById("noteTitle").value = "";
+        document.getElementById("noteContent").value = "";
+    }
+}
+
+function closeEditor() {
+    document.getElementById("editor").style.display = "none";
+    editingNoteId = null;
+}
+
+async function saveNote() {
+    if (!isAdmin()) {
+        alert("Only the Admin can save notes.");
+        return;
+    }
+
+    if (selectedFolder === null) {
+        alert("Please select a folder first.");
+        return;
+    }
+
+    const title =
+        document.getElementById("noteTitle").value.trim();
+
+    const content =
+        document.getElementById("noteContent").value.trim();
+
+    if (!title || !content) {
+        alert("Please enter title and notes.");
+        return;
+    }
+
+    if (editingNoteId !== null) {
+        const { error } =
+            await supabaseClient
+                .from("notes")
+                .update({
+                    title,
+                    content
+                })
+                .eq("id", editingNoteId);
+
+        if (error) {
+            alert("Could not update note: " + error.message);
+            return;
+        }
+    } else {
+        // Prevent accidental duplicate note insertion.
+        const { data: duplicate, error: duplicateError } =
+            await supabaseClient
+                .from("notes")
+                .select("id")
+                .eq("folder_id", selectedFolder)
+                .eq("title", title)
+                .eq("content", content)
+                .limit(1);
+
+        if (duplicateError) {
+            alert("Could not check for duplicate note: " +
+                duplicateError.message);
+            return;
+        }
+
+        if (duplicate && duplicate.length) {
+            alert("An identical note already exists in this folder.");
+            return;
+        }
+
+        const { error } =
+            await supabaseClient
+                .from("notes")
+                .insert([{
+                    folder_id: selectedFolder,
+                    title,
+                    content
+                }]);
+
+        if (error) {
+            alert("Could not save note: " + error.message);
+            return;
+        }
+    }
+
+    closeEditor();
+    await displayNotes();
+}
+
+async function displayNotes() {
+    const container =
+        document.getElementById("notesContainer");
+
+    container.innerHTML = "";
+
+    if (selectedFolder === null) return;
+
+    const search =
+        document.getElementById("search").value
+            .trim()
+            .toLowerCase();
+
+    const { data, error } =
+        await supabaseClient
+            .from("notes")
+            .select("*")
+            .eq("folder_id", selectedFolder)
+            .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Load notes error:", error);
+        container.innerHTML =
+            "<p>Unable to load notes.</p>";
+        return;
+    }
+
+    notes = data || [];
+
+    const filtered =
+        notes.filter(note => {
+            const title =
+                String(note.title || "").toLowerCase();
+
+            const content =
+                String(note.content || "").toLowerCase();
+
+            return !search ||
+                title.includes(search) ||
+                content.includes(search);
+        });
+
+    if (!filtered.length) {
+        container.innerHTML =
+            "<p>No notes found in this folder.</p>";
+        return;
+    }
+
+    filtered.forEach(note => {
+        const card =
+            document.createElement("div");
+
+        card.className = "card";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            "📝 " + (note.title || "");
+
+        const content =
+            document.createElement("p");
+
+        content.textContent =
+            note.content || "";
+
+        const date =
+            document.createElement("small");
+
+        date.textContent =
+            note.created_at
+                ? new Date(note.created_at).toLocaleString()
+                : "";
+
+        card.appendChild(title);
+        card.appendChild(content);
+        card.appendChild(date);
+
+        if (isAdmin()) {
+            const buttons =
+                document.createElement("div");
+
+            buttons.className = "buttons";
+
+            const editButton =
+                document.createElement("button");
+
+            editButton.className = "edit";
+            editButton.textContent = "✏️ Edit";
+            editButton.onclick = function() {
+                openNoteEditor(note.id);
+            };
+
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.className = "delete";
+            deleteButton.textContent = "🗑️ Delete";
+
+            deleteButton.onclick = function() {
+                deleteNote(note.id);
+            };
+
+            buttons.appendChild(editButton);
+            buttons.appendChild(deleteButton);
+            card.appendChild(buttons);
+        }
+
+        container.appendChild(card);
+    });
+}
+
+async function deleteNote(noteId) {
+    if (!isAdmin()) {
+        alert("Only the Admin can delete notes.");
+        return;
+    }
+
+    if (!confirm("Are you sure you want to delete this note?")) {
+        return;
+    }
+
+    const { error } =
+        await supabaseClient
+            .from("notes")
+            .delete()
+            .eq("id", noteId);
+
+    if (error) {
+        alert("Could not delete note: " + error.message);
+        return;
+    }
+
+    await displayNotes();
+}
+
+
+/* =========================================================
+   PDFS
+   ========================================================= */
+
+function choosePDF() {
+    if (!isAdmin()) {
+        alert("Only the Admin can upload PDFs.");
+        return;
+    }
+
+    if (selectedFolder === null) {
+        alert("Please select a folder first.");
+        return;
+    }
+
+    document.getElementById("pdfInput").click();
+}
+
+function safeFileName(name) {
+    return name
+        .trim()
+        .replace(/[\\/:*?"<>|#%{}[\]^~`]/g, "_")
+        .replace(/\s+/g, " ");
+}
+
+async function uploadPDF(event) {
+    if (!isAdmin()) {
+        alert("Only the Admin can upload PDFs.");
+        event.target.value = "";
+        return;
+    }
+
+    const input = event.target;
+    const file = input.files[0];
+
+    if (!file) return;
+
+    if (selectedFolder === null) {
+        alert("Please select a folder first.");
+        input.value = "";
+        return;
+    }
+
+    if (file.type !== "application/pdf") {
+        alert("Please select a PDF file.");
+        input.value = "";
+        return;
+    }
+
+    const cleanName = safeFileName(file.name);
+
+    if (!cleanName) {
+        alert("Invalid PDF filename.");
+        input.value = "";
+        return;
+    }
+
+    const filePath =
+        String(selectedFolder) + "/" + cleanName;
+
+    try {
+        const { error } =
+            await supabaseClient
+                .storage
+                .from("pdfs")
+                .upload(
+                    filePath,
+                    file,
+                    {
+                        contentType: "application/pdf",
+                        upsert: true
+                    }
+                );
+
+        if (error) {
+            console.error("PDF upload error:", error);
+            alert("PDF upload failed: " + error.message);
+            input.value = "";
+            return;
+        }
+
+        input.value = "";
+
+        await displayPDFs();
+
+        alert(
+            "PDF uploaded successfully. If a PDF with the same name existed, it was replaced."
+        );
+    } catch (error) {
+        console.error("PDF upload error:", error);
+        alert("The PDF could not be uploaded.");
+        input.value = "";
+    }
+}
+
+async function displayPDFs() {
+    const container =
+        document.getElementById("pdfContainer");
+
+    container.innerHTML = "";
+
+    if (selectedFolder === null) {
+        return;
+    }
+
+    const { data, error } =
+        await supabaseClient
+            .storage
+            .from("pdfs")
+            .list(String(selectedFolder), {
+                limit: 1000,
+                sortBy: {
+                    column: "name",
+                    order: "asc"
+                }
+            });
+
+    if (error) {
+        console.error("PDF list error:", error);
+        container.innerHTML =
+            "<p>Unable to load PDFs.</p>";
+        return;
+    }
+
+    const pdfs = (data || []).filter(file =>
+        file.name &&
+        file.name.toLowerCase().endsWith(".pdf")
+    );
+
+    if (!pdfs.length) {
+        container.innerHTML =
+            "<p>No PDFs in this folder.</p>";
+        return;
+    }
+
+    pdfs.forEach(pdf => {
+        const path =
+            String(selectedFolder) + "/" + pdf.name;
+
+        const card =
+            document.createElement("div");
+
+        card.className = "card";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            "📄 " + pdf.name;
+
+        const buttons =
+            document.createElement("div");
+
+        buttons.className = "buttons";
+
+        const openButton =
+            document.createElement("button");
+
+        openButton.className = "open";
+        openButton.textContent = "👁️ Open";
+        openButton.onclick = function() {
+            openPDF(path);
+        };
+
+        buttons.appendChild(openButton);
+
+        if (isAdmin()) {
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.className = "delete";
+            deleteButton.textContent = "🗑️ Delete";
+
+            deleteButton.onclick = function() {
+                deletePDF(path);
+            };
+
+            buttons.appendChild(deleteButton);
+        }
+
+        card.appendChild(title);
+        card.appendChild(buttons);
+
+        container.appendChild(card);
+    });
+}
+
+async function openPDF(path) {
+    if (!isActiveUser()) {
+        alert("Please log in to open this PDF.");
+        return;
+    }
+
+    try {
+        // Short-lived signed URL. The PDF is requested inline.
+        const { data, error } =
+            await supabaseClient
+                .storage
+                .from("pdfs")
+                .createSignedUrl(path, 300);
+
+        if (error) {
+            console.error("PDF open error:", error);
+            alert("Unable to open PDF: " + error.message);
+            return;
+        }
+
+        const viewer =
+            document.getElementById("pdfViewer");
+
+        const viewerContainer =
+            document.getElementById("pdfViewerContainer");
+
+        viewer.src = data.signedUrl;
+        viewer.style.display = "block";
+        viewerContainer.style.display = "block";
+
+        viewer.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    } catch (error) {
+        console.error("PDF open error:", error);
+        alert("Unable to open this PDF.");
+    }
+}
+
+function closePDFViewer() {
+    const viewer =
+        document.getElementById("pdfViewer");
+
+    const viewerContainer =
+        document.getElementById("pdfViewerContainer");
+
+    viewer.src = "";
+    viewer.style.display = "none";
+    viewerContainer.style.display = "none";
+}
+
+async function deletePDF(path) {
+    if (!isAdmin()) {
+        alert("Only the Admin can delete PDFs.");
+        return;
+    }
+
+    if (!confirm("Delete this PDF?")) {
+        return;
+    }
+
+    const { error } =
+        await supabaseClient
+            .storage
+            .from("pdfs")
+            .remove([path]);
+
+    if (error) {
+        console.error("PDF delete error:", error);
+        alert("Unable to delete PDF: " + error.message);
+        return;
+    }
+
+    closePDFViewer();
+    await displayPDFs();
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+async function displayContent() {
+    await displayNotes();
+    await displayPDFs();
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+let adminRefreshTimer = null;
+
+
+function setupRouteUI() {
+    if (!isAdminRoute()) return;
+    const title = document.getElementById("authTitle");
+    const message = document.getElementById("authMessage");
+    if (title) title.textContent = "👑 Admin Login";
+    if (message) message.textContent =
+        "Admin access only. Use your administrator account.";
+}
+setupRouteUI();
+
+document.addEventListener("DOMContentLoaded", async function() {
+    await updateOwnerInterface();
+
+    if (adminRefreshTimer) clearInterval(adminRefreshTimer);
+
+    adminRefreshTimer = setInterval(async () => {
+        if (isAdmin()) {
+            await loadAdminUsers();
+        }
+    }, 15000);
+});
+
+</script>
+
+</body>
+
+</html>
