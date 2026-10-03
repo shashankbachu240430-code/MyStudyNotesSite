@@ -2230,25 +2230,37 @@ async function openPDF(path) {
         return;
     }
 
+    // Open a tab immediately from the user's click. This avoids mobile
+    // popup-blockers, then send the tab to the PDF once the signed URL is ready.
+    const pdfTab = window.open("about:blank", "_blank");
+
     try {
-        // Short-lived signed URL. The PDF is requested inline.
+        // Ask Supabase for an inline PDF URL, not a download URL.
         const { data, error } =
             await supabaseClient
                 .storage
                 .from("pdfs")
-                .createSignedUrl(path, 300);
+                .createSignedUrl(path, 300, {
+                    download: false
+                });
 
         if (error) {
+            if (pdfTab) pdfTab.close();
             console.error("PDF open error:", error);
             alert("Unable to open PDF: " + error.message);
             return;
         }
 
-        const viewer =
-            document.getElementById("pdfViewer");
+        if (pdfTab && !pdfTab.closed) {
+            // The browser's built-in PDF viewer will open the document
+            // directly in the new tab on supported phones/computers.
+            pdfTab.location.href = data.signedUrl;
+            return;
+        }
 
-        const viewerContainer =
-            document.getElementById("pdfViewerContainer");
+        // Popup blocked: use the built-in viewer already present in the page.
+        const viewer = document.getElementById("pdfViewer");
+        const viewerContainer = document.getElementById("pdfViewerContainer");
 
         viewer.src = data.signedUrl;
         viewer.style.display = "block";
@@ -2260,6 +2272,7 @@ async function openPDF(path) {
         });
 
     } catch (error) {
+        if (pdfTab && !pdfTab.closed) pdfTab.close();
         console.error("PDF open error:", error);
         alert("Unable to open this PDF.");
     }
