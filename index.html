@@ -357,6 +357,23 @@
             font-size: 15px;
         }
 
+        .user-row {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        .user-row button {
+            margin-top: 6px;
+            padding: 6px 9px;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
     </style>
 
 </head>
@@ -492,6 +509,11 @@
 
             <div id="folderList" class="folder-list"></div>
 
+            <div id="userManagement" style="display:none; margin-top:20px;">
+                <h3>👥 Manage Users</h3>
+                <div id="userList"></div>
+            </div>
+
             <button
                 onclick="ownerLogout()"
                 style="
@@ -606,6 +628,40 @@ function isAdmin() {
 
 
 /* =========================================================
+   ACCESS CONTROL
+========================================================= */
+
+async function getMyProfile() {
+    if (!currentUser) return null;
+
+    const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("id, email, active, must_change_password")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+
+    if (error) {
+        console.error("Profile error:", error);
+        return null;
+    }
+    return data;
+}
+
+async function ensureActiveUser() {
+    if (!currentUser) return false;
+
+    const profile = await getMyProfile();
+    if (!profile || profile.active !== true) {
+        alert("Your access has been removed by the Admin.");
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        return false;
+    }
+    return true;
+}
+
+
+/* =========================================================
    LOGIN / LOGOUT
 ========================================================= */
 
@@ -688,7 +744,7 @@ async function checkFirstLogin() {
     const { data, error } =
         await supabaseClient
             .from("profiles")
-            .select("must_change_password")
+            .select("must_change_password, active")
             .eq("id", currentUser.id)
             .maybeSingle();
 
@@ -710,6 +766,13 @@ async function checkFirstLogin() {
            if its profile row has not been created yet.
         */
         return !isAdmin();
+    }
+
+    if (data.active !== true) {
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        alert("Your access has been removed by the Admin.");
+        return false;
     }
 
     mustChangePassword =
@@ -779,11 +842,7 @@ async function changeFirstPassword() {
 
     const { error: profileError } =
         await supabaseClient
-            .from("profiles")
-            .update({
-                must_change_password: false
-            })
-            .eq("id", currentUser.id);
+            .rpc("complete_first_login");
 
     if (profileError) {
         console.error(profileError);
@@ -837,6 +896,13 @@ async function updateOwnerInterface() {
 
 async function showApplication() {
 
+    if (!(await ensureActiveUser())) {
+        document.getElementById("appContent").style.display = "none";
+        document.getElementById("passwordSection").style.display = "none";
+        document.getElementById("loginSection").style.display = "block";
+        return;
+    }
+
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("passwordSection").style.display = "none";
     document.getElementById("appContent").style.display = "flex";
@@ -844,6 +910,89 @@ async function showApplication() {
     document.getElementById("editor").style.display = "none";
 
     await loadFolders();
+
+    if (isAdmin()) {
+        await loadUsers();
+    }
+}
+
+
+/* =========================================================
+   USER MANAGEMENT
+========================================================= */
+
+async function loadUsers() {
+
+    const section = document.getElementById("userManagement");
+    const list = document.getElementById("userList");
+
+    if (!isAdmin()) {
+        section.style.display = "none";
+        return;
+    }
+
+    section.style.display = "block";
+    list.innerHTML = "Loading users...";
+
+    const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("id, email, active, must_change_password")
+        .order("email", { ascending: true });
+
+    if (error) {
+        console.error("Load users error:", error);
+        list.innerHTML = "Unable to load users.";
+        return;
+    }
+
+    list.innerHTML = "";
+
+    (data || []).forEach(user => {
+        const row = document.createElement("div");
+        row.className = "user-row";
+
+        const name = document.createElement("div");
+        name.textContent = (user.email || user.id) +
+            (user.id === ADMIN_USER_ID ? " (Admin)" : "");
+
+        const status = document.createElement("div");
+        status.textContent = user.active ? "Active" : "Access removed";
+
+        row.appendChild(name);
+        row.appendChild(status);
+
+        if (user.id !== ADMIN_USER_ID) {
+            const button = document.createElement("button");
+            button.textContent = user.active ? "🚫 Remove access" : "✅ Restore access";
+            button.style.background = user.active ? "#ef4444" : "#16a34a";
+            button.style.color = "white";
+            button.onclick = () => setUserAccess(user.id, !user.active);
+            row.appendChild(button);
+        }
+
+        list.appendChild(row);
+    });
+}
+
+async function setUserAccess(userId, active) {
+
+    if (!isAdmin() || userId === ADMIN_USER_ID) return;
+
+    const action = active ? "restore access to" : "remove access from";
+    if (!confirm("Are you sure you want to " + action + " this user?")) return;
+
+    const { error } = await supabaseClient
+        .from("profiles")
+        .update({ active })
+        .eq("id", userId);
+
+    if (error) {
+        console.error("User access update error:", error);
+        alert("Could not change user access: " + error.message);
+        return;
+    }
+
+    await loadUsers();
 }
 
 
@@ -1450,7 +1599,7 @@ async function openPDF(path) {
         await supabaseClient
             .storage
             .from("pdfs")
-            .createSignedUrl(path, 3600);
+            .createSignedUrl(path, 300, { download: false });
 
     if (error) {
         console.error(error);
@@ -1520,6 +1669,22 @@ async function deletePDF(path) {
 
 
 /* =========================================================
+   PERIODIC ACCESS CHECK
+========================================================= */
+
+setInterval(async function() {
+    if (!currentUser) return;
+
+    const active = await ensureActiveUser();
+    if (!active) {
+        document.getElementById("appContent").style.display = "none";
+        document.getElementById("passwordSection").style.display = "none";
+        document.getElementById("loginSection").style.display = "block";
+    }
+}, 30000);
+
+
+/* =========================================================
    AUTH STATE
 ========================================================= */
 
@@ -1542,12 +1707,23 @@ supabaseClient.auth.onAuthStateChange(
            Avoid re-running the entire UI for token refreshes.
         */
         if (event === "SIGNED_IN") {
-            const firstLogin =
-                await checkFirstLogin();
 
-            if (firstLogin) {
+            const profile = await getMyProfile();
+
+            if (!profile || profile.active !== true) {
+                await supabaseClient.auth.signOut();
+                currentUser = null;
+                document.getElementById("appContent").style.display = "none";
+                document.getElementById("passwordSection").style.display = "none";
+                document.getElementById("loginSection").style.display = "block";
+                return;
+            }
+
+            const firstLogin = await checkFirstLogin();
+
+            if (firstLogin && currentUser) {
                 showPasswordChange();
-            } else {
+            } else if (currentUser) {
                 await showApplication();
             }
         }
