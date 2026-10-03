@@ -687,6 +687,97 @@
             }
         }
 
+    
+        /* Mobile-friendly in-page PDF reader */
+        .pdf-reader {
+            background: rgba(15,23,42,.92);
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 18px 50px rgba(2,6,23,.22);
+        }
+
+        .pdf-reader-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(15,23,42,.94);
+            color: white;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .pdf-close-btn,
+        .pdf-nav-btn {
+            border: 0;
+            border-radius: 9px;
+            cursor: pointer;
+            color: white;
+            background: rgba(255,255,255,.14);
+            padding: 8px 13px;
+            font-size: 15px;
+        }
+
+        .pdf-close-btn {
+            background: #ef4444;
+            margin-right: auto;
+        }
+
+        .pdf-nav-btn {
+            min-width: 42px;
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .pdf-canvas-wrap {
+            width: 100%;
+            min-height: 300px;
+            max-height: 75vh;
+            overflow: auto;
+            padding: 12px;
+            box-sizing: border-box;
+            text-align: center;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #pdfCanvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+            background: white;
+            box-shadow: 0 4px 18px rgba(0,0,0,.28);
+        }
+
+        .pdf-loading {
+            color: white;
+            text-align: center;
+            padding: 18px;
+            font-size: 15px;
+        }
+
+        @media (max-width: 700px) {
+            .pdf-reader-toolbar {
+                gap: 6px;
+                padding: 8px;
+            }
+
+            .pdf-canvas-wrap {
+                max-height: 72vh;
+                padding: 6px;
+            }
+
+            .pdf-close-btn,
+            .pdf-nav-btn {
+                padding: 8px 10px;
+            }
+        }
+
     </style>
 
 </head>
@@ -981,24 +1072,19 @@
 
 
         <!-- PDF VIEWER -->
-
         <div id="pdfViewerContainer" style="display:none; margin-top:20px;">
-            <button
-                onclick="closePDFViewer()"
-                style="
-                    background:#ef4444;
-                    color:white;
-                    border:none;
-                    padding:10px 16px;
-                    border-radius:7px;
-                    cursor:pointer;
-                    font-size:15px;
-                    margin-bottom:10px;
-                ">
-                ✕ Close PDF
-            </button>
-
-            <iframe id="pdfViewer"></iframe>
+            <div class="pdf-reader">
+                <div class="pdf-reader-toolbar">
+                    <button onclick="closePDFViewer()" class="pdf-close-btn">✕ Close</button>
+                    <button onclick="pdfPrevPage()" class="pdf-nav-btn">‹</button>
+                    <span id="pdfPageInfo">Page 1 / 1</span>
+                    <button onclick="pdfNextPage()" class="pdf-nav-btn">›</button>
+                </div>
+                <div id="pdfLoading" class="pdf-loading">Opening PDF…</div>
+                <div id="pdfCanvasWrap" class="pdf-canvas-wrap">
+                    <canvas id="pdfCanvas"></canvas>
+                </div>
+            </div>
         </div>
 
 
@@ -1009,6 +1095,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 /* =========================================================
    MYSTUDYNOTESSITE - FINAL SHARED VERSION
@@ -2224,70 +2311,143 @@ async function displayPDFs() {
     });
 }
 
+let currentPdfDocument = null;
+let currentPdfPage = 1;
+let currentPdfPath = null;
+
 async function openPDF(path) {
     if (!isActiveUser()) {
         alert("Please log in to open this PDF.");
         return;
     }
 
-    // Open a tab immediately from the user's click. This avoids mobile
-    // popup-blockers, then send the tab to the PDF once the signed URL is ready.
-    const pdfTab = window.open("about:blank", "_blank");
+    const container = document.getElementById("pdfViewerContainer");
+    const loading = document.getElementById("pdfLoading");
+
+    container.style.display = "block";
+    loading.style.display = "block";
+    loading.textContent = "Opening PDF…";
+
+    currentPdfPath = path;
+
+    container.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 
     try {
-        // Ask Supabase for an inline PDF URL, not a download URL.
-        const { data, error } =
-            await supabaseClient
-                .storage
-                .from("pdfs")
-                .createSignedUrl(path, 300, {
-                    download: false
-                });
+        const { data, error } = await supabaseClient
+            .storage
+            .from("pdfs")
+            .createSignedUrl(path, 600, { download: false });
 
         if (error) {
-            if (pdfTab) pdfTab.close();
-            console.error("PDF open error:", error);
-            alert("Unable to open PDF: " + error.message);
-            return;
+            throw error;
         }
 
-        if (pdfTab && !pdfTab.closed) {
-            // The browser's built-in PDF viewer will open the document
-            // directly in the new tab on supported phones/computers.
-            pdfTab.location.href = data.signedUrl;
-            return;
+        if (!window.pdfjsLib) {
+            throw new Error("PDF viewer could not be loaded.");
         }
 
-        // Popup blocked: use the built-in viewer already present in the page.
-        const viewer = document.getElementById("pdfViewer");
-        const viewerContainer = document.getElementById("pdfViewerContainer");
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-        viewer.src = data.signedUrl;
-        viewer.style.display = "block";
-        viewerContainer.style.display = "block";
+        if (currentPdfDocument) {
+            try { await currentPdfDocument.destroy(); } catch (_) {}
+            currentPdfDocument = null;
+        }
 
-        viewer.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+        // PDF.js renders the PDF inside the website. This avoids relying on
+        // the phone's native browser PDF/download behavior.
+        currentPdfDocument = await pdfjsLib.getDocument({
+            url: data.signedUrl
+        }).promise;
+
+        currentPdfPage = 1;
+        loading.style.display = "none";
+
+        await renderPdfPage(currentPdfPage);
 
     } catch (error) {
-        if (pdfTab && !pdfTab.closed) pdfTab.close();
         console.error("PDF open error:", error);
-        alert("Unable to open this PDF.");
+        loading.style.display = "block";
+        loading.textContent = "Unable to open this PDF. Please try again.";
     }
 }
 
-function closePDFViewer() {
-    const viewer =
-        document.getElementById("pdfViewer");
+async function renderPdfPage(pageNumber) {
+    if (!currentPdfDocument) return;
 
-    const viewerContainer =
-        document.getElementById("pdfViewerContainer");
+    currentPdfPage = Math.max(
+        1,
+        Math.min(pageNumber, currentPdfDocument.numPages)
+    );
 
-    viewer.src = "";
-    viewer.style.display = "none";
-    viewerContainer.style.display = "none";
+    const page = await currentPdfDocument.getPage(currentPdfPage);
+
+    const canvas = document.getElementById("pdfCanvas");
+    const context = canvas.getContext("2d");
+
+    const wrap = document.getElementById("pdfCanvasWrap");
+    const availableWidth = Math.max(280, wrap.clientWidth - 12);
+
+    const baseViewport = page.getViewport({ scale: 1 });
+    const scale = Math.min(
+        2.0,
+        availableWidth / baseViewport.width
+    );
+
+    const viewport = page.getViewport({ scale });
+
+    const deviceScale = Math.min(window.devicePixelRatio || 1, 2);
+
+    canvas.width = Math.floor(viewport.width * deviceScale);
+    canvas.height = Math.floor(viewport.height * deviceScale);
+
+    canvas.style.width = Math.floor(viewport.width) + "px";
+    canvas.style.height = Math.floor(viewport.height) + "px";
+
+    await page.render({
+        canvasContext: context,
+        viewport: viewport,
+        transform: [deviceScale, 0, 0, deviceScale, 0, 0]
+    }).promise;
+
+    document.getElementById("pdfPageInfo").textContent =
+        "Page " + currentPdfPage + " / " + currentPdfDocument.numPages;
+}
+
+async function pdfPrevPage() {
+    if (!currentPdfDocument || currentPdfPage <= 1) return;
+    await renderPdfPage(currentPdfPage - 1);
+}
+
+async function pdfNextPage() {
+    if (!currentPdfDocument ||
+        currentPdfPage >= currentPdfDocument.numPages) return;
+    await renderPdfPage(currentPdfPage + 1);
+}
+
+async function closePDFViewer() {
+    if (currentPdfDocument) {
+        try { await currentPdfDocument.destroy(); } catch (_) {}
+        currentPdfDocument = null;
+    }
+
+    currentPdfPath = null;
+
+    const container = document.getElementById("pdfViewerContainer");
+    const loading = document.getElementById("pdfLoading");
+    const canvas = document.getElementById("pdfCanvas");
+
+    container.style.display = "none";
+    loading.style.display = "block";
+    loading.textContent = "Opening PDF…";
+
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.width = 1;
+    canvas.height = 1;
 }
 
 async function deletePDF(path) {
