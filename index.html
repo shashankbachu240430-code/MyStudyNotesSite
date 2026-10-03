@@ -306,6 +306,72 @@
             margin-top: 20px;
         }
 
+        /* ADMIN PORTAL */
+        .admin-portal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(15, 23, 42, 0.62);
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .admin-portal {
+            width: min(1100px, 100%);
+            margin: 0 auto;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 18px 60px rgba(0,0,0,.25);
+            overflow: hidden;
+        }
+
+        .admin-portal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 22px;
+            background: #172554;
+            color: white;
+        }
+
+        .admin-portal-body {
+            padding: 20px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .admin-user-row {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .admin-portal-button {
+            border: 0;
+            border-radius: 7px;
+            padding: 9px 14px;
+            cursor: pointer;
+            background: #7c3aed;
+            color: white;
+        }
+
+        .admin-close-button {
+            border: 0;
+            border-radius: 7px;
+            padding: 9px 14px;
+            cursor: pointer;
+            background: #ef4444;
+            color: white;
+        }
+
         /* MOBILE */
 
         @media (max-width: 700px) {
@@ -445,12 +511,22 @@
     flex-wrap:wrap;
 ">
     <span id="accountInfo"></span>
-    <button
-        onclick="ownerLogout()"
-        style="padding:9px 16px;background:#64748b;color:white;border:0;border-radius:6px;cursor:pointer;"
-    >
-        Logout
-    </button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button
+            id="adminPortalButton"
+            class="admin-portal-button"
+            onclick="openAdminPortal()"
+            style="display:none;"
+        >
+            👑 Admin Portal
+        </button>
+        <button
+            onclick="ownerLogout()"
+            style="padding:9px 16px;background:#64748b;color:white;border:0;border-radius:6px;cursor:pointer;"
+        >
+            Logout
+        </button>
+    </div>
 </div>
 
 
@@ -458,19 +534,21 @@
 
 
     
-<div id="adminPanel" style="
-    display:none;
-    margin:15px 20px 0;
-    background:white;
-    border-radius:10px;
-    padding:16px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
-">
-    <h3 style="margin:0 0 12px;">👑 User Management</h3>
-    <p style="margin:0 0 12px;color:#64748b;">
-        Registered users, login information, and access control.
-    </p>
-    <div id="userList">Loading users...</div>
+<div id="adminPortal" class="admin-portal-backdrop">
+    <div class="admin-portal">
+        <div class="admin-portal-header">
+            <div>
+                <h2 style="margin:0;">👑 Admin Portal</h2>
+                <div style="margin-top:4px;color:#cbd5e1;font-size:14px;">
+                    User access, login activity, and account management
+                </div>
+            </div>
+            <button class="admin-close-button" onclick="closeAdminPortal()">✕ Close</button>
+        </div>
+        <div class="admin-portal-body">
+            <div id="userList">Loading users...</div>
+        </div>
+    </div>
 </div>
 
     <!-- SIDEBAR -->
@@ -698,24 +776,18 @@ function isActiveUser() {
 async function recordLogin() {
     if (!currentUser || !currentProfile) return;
 
-    const newLoginCount = Number(currentProfile.login_count || 0) + 1;
-    const loginTime = new Date().toISOString();
-
-    const { error } = await supabaseClient
-        .from("profiles")
-        .update({
-            last_login_at: loginTime,
-            login_count: newLoginCount
-        })
-        .eq("id", currentUser.id);
+    const { data, error } =
+        await supabaseClient.rpc("record_my_login");
 
     if (error) {
         console.warn("Login tracking failed:", error.message);
         return;
     }
 
-    currentProfile.last_login_at = loginTime;
-    currentProfile.login_count = newLoginCount;
+    if (data) {
+        currentProfile.last_login_at = data.last_login_at;
+        currentProfile.login_count = data.login_count;
+    }
 }
 
 function formatDate(value) {
@@ -762,8 +834,7 @@ async function loadAdminUsers() {
 
     data.forEach(user => {
         const row = document.createElement("div");
-        row.style.cssText =
-            "border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;";
+        row.className = "admin-user-row";
 
         const info = document.createElement("div");
         info.innerHTML =
@@ -813,7 +884,10 @@ async function changeUserAccess(userId, email, makeActive) {
 
     const { error } = await supabaseClient
         .from("profiles")
-        .update({ active: makeActive })
+        .update({
+            active: makeActive,
+            access_removed_at: makeActive ? null : new Date().toISOString()
+        })
         .eq("id", userId);
 
     if (error) {
@@ -929,25 +1003,14 @@ async function createAccount() {
 
     currentUser = data.user;
 
-    const { error: profileError } = await supabaseClient
-        .from("profiles")
-        .upsert([{
-            id: currentUser.id,
-            email: currentUser.email,
-            active: true,
-            must_change_password: false
-        }], { onConflict: "id" });
-
-    if (profileError) {
-        console.warn("Profile setup notice:", profileError.message);
-    }
-
+    // The Supabase database trigger creates the viewer profile automatically
+    // with active=true. We only read it here; viewers cannot self-activate.
     await loadCurrentProfile();
 
     if (!isActiveUser()) {
         await supabaseClient.auth.signOut();
         setAuthMessage(
-            "Your account is not active.",
+            "Your account is not active. Please contact the Admin.",
             true
         );
         return;
@@ -992,7 +1055,7 @@ async function ownerLogin() {
 
     if (!currentProfile) {
         setAuthMessage(
-            "Your account profile is not ready. Please contact the Admin.",
+            "Your account could not be initialized. Please try again.",
             true
         );
         await supabaseClient.auth.signOut();
@@ -1001,7 +1064,7 @@ async function ownerLogin() {
 
     if (currentProfile.active === false) {
         setAuthMessage(
-            "Your access has been removed by the Admin.",
+            "Your access has been removed by the Admin. Please contact the Admin.",
             true
         );
         await supabaseClient.auth.signOut();
@@ -1022,7 +1085,7 @@ async function ownerLogout() {
     editingNoteId = null;
 
     document.getElementById("accountBar").style.display = "none";
-    document.getElementById("adminPanel").style.display = "none";
+    closeAdminPortal();
     document.getElementById("authGate").style.display = "flex";
     document.getElementById("authEmail").value = "";
     document.getElementById("authPassword").value = "";
@@ -1052,6 +1115,30 @@ async function loadCurrentProfile() {
         return;
     }
 
+    if (!data) {
+        const { data: created, error: createError } =
+            await supabaseClient
+                .from("profiles")
+                .insert([{
+                    id: currentUser.id,
+                    email: currentUser.email,
+                    active: true,
+                    must_change_password: false,
+                    login_count: 0
+                }])
+                .select("id,email,active,must_change_password,created_at,last_login_at,login_count")
+                .single();
+
+        if (createError) {
+            console.error("Profile creation error:", createError);
+            currentProfile = null;
+            return;
+        }
+
+        currentProfile = created;
+        return;
+    }
+
     currentProfile = data;
 }
 
@@ -1068,12 +1155,15 @@ async function showApplication() {
 
     accountBar.style.display = "flex";
 
-    const adminPanel = document.getElementById("adminPanel");
+    const adminPortalButton =
+        document.getElementById("adminPortalButton");
+
     if (isAdmin()) {
-        adminPanel.style.display = "block";
+        adminPortalButton.style.display = "inline-block";
         await loadAdminUsers();
     } else {
-        adminPanel.style.display = "none";
+        adminPortalButton.style.display = "none";
+        closeAdminPortal();
     }
 
     document.getElementById("accountInfo").textContent =
@@ -1113,6 +1203,7 @@ async function updateOwnerInterface() {
 
     if (!currentUser) {
         currentProfile = null;
+        closeAdminPortal();
         document.getElementById("authGate").style.display = "flex";
         document.getElementById("accountBar").style.display = "none";
         return;
@@ -1120,13 +1211,26 @@ async function updateOwnerInterface() {
 
     await loadCurrentProfile();
 
-    if (!isActiveUser()) {
+    if (!currentProfile) {
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        closeAdminPortal();
+        document.getElementById("authGate").style.display = "flex";
+        setAuthMessage(
+            "Your account profile could not be created. Please try again.",
+            true
+        );
+        return;
+    }
+
+    if (currentProfile.active === false) {
         await supabaseClient.auth.signOut();
         currentUser = null;
         currentProfile = null;
+        closeAdminPortal();
         document.getElementById("authGate").style.display = "flex";
         setAuthMessage(
-            "Your access has been removed by the Admin.",
+            "Your access has been removed by the Admin. Please contact the Admin.",
             true
         );
         return;
@@ -1146,6 +1250,32 @@ supabaseClient.auth.onAuthStateChange(
         }
     }
 );
+
+
+function openAdminPortal() {
+    if (!isAdmin()) return;
+
+    const portal = document.getElementById("adminPortal");
+    if (!portal) return;
+
+    portal.style.display = "block";
+    document.body.style.overflow = "hidden";
+    loadAdminUsers();
+}
+
+function closeAdminPortal() {
+    const portal = document.getElementById("adminPortal");
+    if (!portal) return;
+
+    portal.style.display = "none";
+    document.body.style.overflow = "";
+}
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeAdminPortal();
+    }
+});
 
 
 /* =========================================================
