@@ -1,1748 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>MyStudyNotesSite.com</title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background: #4d7eae;
-            color: #1e293b;
-        }
-
-        /* HEADER */
-
-        header {
-            background: #172554;
-            color: white;
-            padding: 18px 25px;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: bold;
-        }
-
-        .tagline {
-            color: #cbd5e1;
-            font-size: 14px;
-        }
-
-        /* LAYOUT */
-
-        .container {
-            display: flex;
-            min-height: calc(100vh - 70px);
-        }
-
-        /* SIDEBAR */
-
-        .sidebar {
-            width: 260px;
-            background: white;
-            border-right: 1px solid #ddd;
-            padding: 20px;
-        }
-
-        .sidebar h2 {
-            margin-bottom: 15px;
-        }
-
-        .sidebar button {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
-
-            border: none;
-            border-radius: 8px;
-
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        .new-folder {
-            background: #2563eb;
-            color: white;
-        }
-
-        .new-note {
-            background: #16a34a;
-            color: white;
-        }
-
-        .upload-pdf {
-            background: #f59e0b;
-            color: white;
-        }
-
-        .sidebar button:hover {
-            opacity: 0.85;
-        }
-
-        /* FOLDERS */
-
-        .folder-list {
-            margin-top: 20px;
-        }
-
-        .folder {
-            padding: 12px;
-            margin-bottom: 7px;
-
-            border-radius: 7px;
-
-            cursor: pointer;
-            background: #f1f5f9;
-        }
-
-        .folder:hover {
-            background: #e2e8f0;
-        }
-
-        .folder.active {
-            background: #dbeafe;
-            font-weight: bold;
-        }
-
-        /* MAIN */
-
-        .main {
-            flex: 1;
-            padding: 25px;
-            overflow-y: auto;
-        }
-
-        .current-folder {
-            font-size: 25px;
-            margin-bottom: 20px;
-        }
-
-        .search {
-            width: 100%;
-
-            padding: 13px;
-
-            border: 1px solid #ccc;
-            border-radius: 8px;
-
-            margin-bottom: 20px;
-
-            font-size: 15px;
-        }
-
-        /* EDITOR */
-
-        .editor {
-            display: none;
-
-            background: white;
-
-            padding: 20px;
-
-            border-radius: 10px;
-
-            margin-bottom: 20px;
-        }
-
-        .editor input,
-        .editor textarea {
-
-            width: 100%;
-
-            padding: 12px;
-
-            margin-bottom: 12px;
-
-            border: 1px solid #ccc;
-
-            border-radius: 7px;
-
-            font-size: 15px;
-        }
-
-        .editor textarea {
-            height: 250px;
-            resize: vertical;
-        }
-
-        .save-btn {
-            background: #16a34a;
-            color: white;
-
-            border: none;
-
-            padding: 11px 18px;
-
-            border-radius: 7px;
-
-            cursor: pointer;
-        }
-
-        .cancel-btn {
-            background: #64748b;
-            color: white;
-
-            border: none;
-
-            padding: 11px 18px;
-
-            border-radius: 7px;
-
-            cursor: pointer;
-        }
-
-        /* CONTENT */
-
-        .section-title {
-            margin: 25px 0 15px;
-        }
-
-        .items {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fill, minmax(260px, 1fr));
-
-            gap: 15px;
-        }
-
-        .card {
-
-            background: white;
-
-            padding: 18px;
-
-            border-radius: 10px;
-
-            box-shadow:
-                0 2px 7px rgba(0,0,0,0.08);
-        }
-
-        .card h3 {
-            margin-bottom: 10px;
-        }
-
-        .card p {
-
-            color: #555;
-
-            white-space: pre-wrap;
-
-            max-height: 120px;
-
-            overflow: hidden;
-
-            line-height: 1.5;
-        }
-
-        .buttons {
-
-            display: flex;
-
-            gap: 8px;
-
-            margin-top: 15px;
-        }
-
-        .buttons button {
-
-            padding: 8px 12px;
-
-            border: none;
-
-            border-radius: 6px;
-
-            cursor: pointer;
-        }
-
-        .open {
-
-            background: #2563eb;
-
-            color: white;
-        }
-
-        .edit {
-            background: #facc15;
-        }
-
-        .delete {
-
-            background: #ef4444;
-
-            color: white;
-        }
-
-        /* PDF VIEWER */
-
-        #pdfViewer {
-
-            width: 100%;
-
-            height: 650px;
-
-            border: none;
-
-            display: block;
-
-            margin-top: 20px;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 700px) {
-
-            header {
-                padding: 15px;
-            }
-
-            .tagline {
-                display: none;
-            }
-
-            .container {
-                flex-direction: column;
-            }
-
-            .sidebar {
-
-                width: 100%;
-
-                border-right: none;
-
-                border-bottom: 1px solid #ddd;
-            }
-
-            .main {
-                padding: 15px;
-            }
-
-            .items {
-                grid-template-columns: 1fr;
-            }
-        }
-
-
-        #appContent {
-            align-items: stretch;
-        }
-
-        #loginSection,
-        #passwordSection {
-            align-self: center;
-        }
-
-        .folder {
-            width: 100%;
-            border: 0;
-            text-align: left;
-            font-size: 15px;
-        }
-
-        .user-row {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 8px;
-            margin-top: 8px;
-            font-size: 13px;
-        }
-
-        .user-row button {
-            margin-top: 6px;
-            padding: 6px 9px;
-            border: 0;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyStudyNotesSite</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#0f172a}header{background:#1e293b;color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center}.logo{font-size:22px;font-weight:700}.tagline{color:#cbd5e1}.container{display:flex;min-height:calc(100vh - 65px)}.sidebar{width:270px;background:#fff;border-right:1px solid #e2e8f0;padding:20px}.main{flex:1;padding:24px;max-width:1200px;margin:auto;width:100%}.auth-card{max-width:520px;margin:40px auto;background:#fff;padding:28px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.08)}.auth-card input,.editor input,.editor textarea,.search{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;margin:7px 0 12px;font-size:15px}.auth-card button,.sidebar button,.editor button,.buttons button{border:0;border-radius:7px;padding:10px 15px;cursor:pointer}.primary{background:#2563eb;color:#fff}.secondary{background:#64748b;color:#fff}.danger{background:#ef4444;color:#fff}.new-folder{background:#2563eb;color:#fff;width:100%;margin-bottom:10px}.new-note{background:#16a34a;color:#fff;width:100%;margin-bottom:10px}.upload-pdf{background:#7c3aed;color:#fff;width:100%;margin-bottom:15px}.folder{padding:11px;border-radius:7px;cursor:pointer;margin-bottom:5px}.folder:hover,.folder.active{background:#e2e8f0}.current-folder{margin-top:0}.editor{background:#fff;padding:18px;border-radius:10px;margin:18px 0;display:none}.editor textarea{height:220px;resize:vertical}.section-title{margin-top:28px}.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:15px}.card{background:#fff;padding:18px;border-radius:10px;box-shadow:0 2px 7px rgba(0,0,0,.08)}.card p{white-space:pre-wrap;line-height:1.5;color:#475569;max-height:150px;overflow:auto}.buttons{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.open{background:#2563eb;color:#fff}.edit{background:#facc15}.delete{background:#ef4444;color:#fff}.status{margin-top:10px;padding:10px;border-radius:7px;background:#f8fafc}.hidden{display:none!important}.viewer-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;padding:12px;border-radius:8px;margin-top:20px}.pdf-viewer{width:100%;height:700px;border:0;background:#fff;border-radius:8px;margin-top:10px}.top-actions{display:flex;gap:8px;align-items:center}.muted{color:#64748b;font-size:14px}@media(max-width:700px){header{padding:15px}.tagline{display:none}.container{display:block}.sidebar{width:100%;border-right:0;border-bottom:1px solid #ddd}.main{padding:15px}.items{grid-template-columns:1fr}.pdf-viewer{height:70vh}.top-actions{flex-wrap:wrap}}
+</style>
 </head>
-
 <body>
-
 <header>
-    <div class="logo">📚 MyStudyNotesSite.com</div>
-    <div class="tagline">Study • Write • Organize • Learn</div>
+  <div class="logo">📚 MyStudyNotesSite.com</div>
+  <div class="tagline">Study • Write • Organize • Learn</div>
 </header>
 
-<div class="container">
+<section id="authScreen" class="auth-card">
+  <div id="loginForm">
+    <h2>🔐 Login</h2>
+    <p class="muted">Log in to view the study materials.</p>
+    <input id="authEmail" type="email" placeholder="Email address" autocomplete="email">
+    <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password">
+    <button class="primary" style="width:100%" onclick="loginUser()">Login</button>
+    <button class="secondary" style="width:100%;margin-top:8px" onclick="showSignup()">Create Account</button>
+    <p id="authStatus" class="status"></p>
+  </div>
 
-    <!-- LOGIN -->
-    <section id="loginSection" style="
-        background:white;
-        padding:30px;
-        margin:auto;
-        border-radius:12px;
-        width:min(420px, calc(100% - 40px));
-        box-shadow:0 4px 18px rgba(0,0,0,.12);
-    ">
-        <h2>Login</h2>
-        <p style="margin:10px 0 18px;">
-            Enter your email and password to access the study website.
-        </p>
+  <div id="signupForm" class="hidden">
+    <h2>🆕 Create Account</h2>
+    <p class="muted">Create your own account. New accounts are viewers, not admins.</p>
+    <input id="signupEmail" type="email" placeholder="Email address" autocomplete="email">
+    <input id="signupPassword" type="password" placeholder="Create password" autocomplete="new-password">
+    <input id="signupConfirm" type="password" placeholder="Confirm password" autocomplete="new-password">
+    <button class="primary" style="width:100%" onclick="signupUser()">Create Account</button>
+    <button class="secondary" style="width:100%;margin-top:8px" onclick="showLogin()">Back to Login</button>
+    <p id="signupStatus" class="status"></p>
+  </div>
+</section>
 
-        <input
-            id="ownerEmail"
-            type="email"
-            autocomplete="username"
-            placeholder="Email"
-            style="padding:12px; width:100%; margin-bottom:10px;"
-        >
-
-        <input
-            id="ownerPassword"
-            type="password"
-            autocomplete="current-password"
-            placeholder="Password"
-            style="padding:12px; width:100%; margin-bottom:10px;"
-        >
-
-        <button
-            onclick="ownerLogin()"
-            style="
-                padding:11px 18px;
-                background:#2563eb;
-                color:white;
-                border:0;
-                border-radius:6px;
-                cursor:pointer;
-                width:100%;
-            "
-        >Login</button>
-
-        <p id="loginStatus" style="margin-top:12px;"></p>
-    </section>
-
-    <!-- PASSWORD CHANGE -->
-    <section id="passwordSection" style="
-        display:none;
-        background:white;
-        padding:30px;
-        margin:auto;
-        border-radius:12px;
-        width:min(420px, calc(100% - 40px));
-        box-shadow:0 4px 18px rgba(0,0,0,.12);
-    ">
-        <h2>Create your new password</h2>
-        <p style="margin:10px 0 18px;">
-            This is your first login. Create a new password before entering the website.
-        </p>
-
-        <input
-            id="newPassword"
-            type="password"
-            autocomplete="new-password"
-            placeholder="New password"
-            style="padding:12px; width:100%; margin-bottom:10px;"
-        >
-
-        <input
-            id="confirmPassword"
-            type="password"
-            autocomplete="new-password"
-            placeholder="Confirm new password"
-            style="padding:12px; width:100%; margin-bottom:10px;"
-        >
-
-        <button
-            onclick="changeFirstPassword()"
-            style="
-                padding:11px 18px;
-                background:#16a34a;
-                color:white;
-                border:0;
-                border-radius:6px;
-                cursor:pointer;
-                width:100%;
-            "
-        >Save New Password</button>
-
-        <p id="passwordStatus" style="margin-top:12px;"></p>
-    </section>
-
-    <!-- APPLICATION -->
-    <div id="appContent" style="display:none; width:100%;">
-
-        <aside class="sidebar">
-
-            <h2>📁 My Folders</h2>
-
-            <button class="new-folder" onclick="createFolder()">
-                ➕ New Folder
-            </button>
-
-            <button class="new-note" onclick="openNoteEditor()">
-                📝 New Note
-            </button>
-
-            <button class="upload-pdf" onclick="choosePDF()">
-                📄 Upload PDF
-            </button>
-
-            <input
-                type="file"
-                id="pdfInput"
-                accept="application/pdf"
-                style="display:none"
-                onchange="uploadPDF(event)"
-            >
-
-            <div id="folderList" class="folder-list"></div>
-
-            <div id="userManagement" style="display:none; margin-top:20px;">
-                <h3>👥 Manage Users</h3>
-                <div id="userList"></div>
-            </div>
-
-            <button
-                onclick="ownerLogout()"
-                style="
-                    margin-top:20px;
-                    background:#64748b;
-                    color:white;
-                "
-            >Logout</button>
-
-        </aside>
-
-        <main class="main">
-
-            <h2 id="currentFolder" class="current-folder">
-                📁 Select a folder
-            </h2>
-
-            <input
-                id="search"
-                class="search"
-                type="text"
-                placeholder="🔍 Search notes..."
-                oninput="displayContent()"
-            >
-
-            <div id="editor" class="editor">
-
-                <input id="noteTitle" placeholder="Enter note title...">
-
-                <textarea
-                    id="noteContent"
-                    placeholder="Start typing your notes..."
-                ></textarea>
-
-                <button class="save-btn" onclick="saveNote()">
-                    💾 Save Note
-                </button>
-
-                <button class="cancel-btn" onclick="closeEditor()">
-                    Cancel
-                </button>
-
-            </div>
-
-            <h2 class="section-title">📝 My Notes</h2>
-            <div id="notesContainer" class="items"></div>
-
-            <h2 class="section-title">📄 My PDFs</h2>
-            <div id="pdfContainer" class="items"></div>
-
-            <div id="pdfViewerContainer" style="display:none; margin-top:20px;">
-                <button
-                    onclick="closePDFViewer()"
-                    style="
-                        background:#ef4444;
-                        color:white;
-                        border:none;
-                        padding:10px 16px;
-                        border-radius:7px;
-                        cursor:pointer;
-                        font-size:15px;
-                        margin-bottom:10px;
-                    "
-                >✕ Close PDF</button>
-
-                <iframe id="pdfViewer"></iframe>
-            </div>
-
-        </main>
+<div id="app" class="container hidden">
+  <aside class="sidebar">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <h2 style="margin:0">📁 My Folders</h2>
     </div>
+    <p id="roleText" class="muted"></p>
+    <button class="new-folder admin-only" onclick="createFolder()">➕ New Folder</button>
+    <button class="new-note admin-only" onclick="openNoteEditor()">📝 New Note</button>
+    <button class="upload-pdf admin-only" onclick="choosePDF()">📄 Upload PDF</button>
+    <input type="file" id="pdfInput" accept="application/pdf" style="display:none" onchange="uploadPDF(event)">
+    <div id="folderList"></div>
+    <button class="secondary" style="width:100%;margin-top:20px" onclick="logoutUser()">Logout</button>
+  </aside>
+
+  <main class="main">
+    <div class="top-actions">
+      <h2 id="currentFolder" class="current-folder">📁 Select a folder</h2>
+    </div>
+    <input id="search" class="search" type="text" placeholder="🔍 Search notes..." oninput="displayNotes()">
+
+    <div id="editor" class="editor admin-only">
+      <input id="noteTitle" placeholder="Enter note title...">
+      <textarea id="noteContent" placeholder="Start typing your notes..."></textarea>
+      <button class="primary" onclick="saveNote()">💾 Save Note</button>
+      <button class="secondary" onclick="closeEditor()">Cancel</button>
+    </div>
+
+    <h2 class="section-title">📝 My Notes</h2>
+    <div id="notesContainer" class="items"></div>
+
+    <h2 class="section-title">📄 My PDFs</h2>
+    <div id="pdfContainer" class="items"></div>
+
+    <div id="pdfViewerContainer" class="hidden">
+      <div class="viewer-bar">
+        <strong>📄 PDF Viewer</strong>
+        <button class="danger" onclick="closePDFViewer()">✕ Close</button>
+      </div>
+      <iframe id="pdfViewer" class="pdf-viewer"></iframe>
+    </div>
+  </main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
-/* =========================================================
-   SUPABASE
-========================================================= */
-
-const SUPABASE_URL =
-    "https://ozdcpgesiraqughaajog.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_DCZHIdzjXa7uBaLc7B1dBQ_AbZoGu4B";
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
-
-
-/* =========================================================
-   ADMIN
-========================================================= */
-
-const ADMIN_USER_ID =
-    "ec9ba898-f360-44fa-b941-db5497794d36";
+const SUPABASE_URL = "https://ozdcpgesiraqughaajog.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_DCZHIdzjXa7uBaLc7B1dBQ_AbZoGu4B";
+const ADMIN_USER_ID = "ec9ba898-f360-44fa-b941-db5497794d36";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 let currentUser = null;
-let folders = [];
-let notes = [];
 let selectedFolder = null;
 let editingNoteId = null;
-let mustChangePassword = false;
 
+function isAdmin(){ return !!currentUser && currentUser.id === ADMIN_USER_ID; }
+function showLogin(){document.getElementById('loginForm').classList.remove('hidden');document.getElementById('signupForm').classList.add('hidden');}
+function showSignup(){document.getElementById('loginForm').classList.add('hidden');document.getElementById('signupForm').classList.remove('hidden');}
+function setStatus(id,msg){document.getElementById(id).textContent=msg;}
 
-function isAdmin() {
-    return !!currentUser &&
-        currentUser.id === ADMIN_USER_ID;
+async function signupUser(){
+  const email=document.getElementById('signupEmail').value.trim();
+  const password=document.getElementById('signupPassword').value;
+  const confirm=document.getElementById('signupConfirm').value;
+  if(!email || !password || !confirm){setStatus('signupStatus','Please fill all fields.');return;}
+  if(password.length < 6){setStatus('signupStatus','Password must be at least 6 characters.');return;}
+  if(password !== confirm){setStatus('signupStatus','Passwords do not match.');return;}
+  setStatus('signupStatus','Creating account...');
+  const {data,error}=await supabaseClient.auth.signUp({email,password});
+  if(error){setStatus('signupStatus','Account creation failed: '+error.message);return;}
+  if(data.session){
+    currentUser=data.user;
+    await enterApp();
+  }else{
+    setStatus('signupStatus','Account created. Check your email to confirm the account, then log in.');
+  }
 }
 
-
-/* =========================================================
-   ACCESS CONTROL
-========================================================= */
-
-async function getMyProfile() {
-    if (!currentUser) return null;
-
-    const { data, error } = await supabaseClient
-        .from("profiles")
-        .select("id, email, active, must_change_password")
-        .eq("id", currentUser.id)
-        .maybeSingle();
-
-    if (error) {
-        console.error("Profile error:", error);
-        return null;
-    }
-    return data;
+async function loginUser(){
+  const email=document.getElementById('authEmail').value.trim();
+  const password=document.getElementById('authPassword').value;
+  if(!email || !password){setStatus('authStatus','Please enter your email and password.');return;}
+  setStatus('authStatus','Logging in...');
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error){setStatus('authStatus','Invalid email or password.');return;}
+  currentUser=data.user;
+  await enterApp();
 }
 
-async function ensureActiveUser() {
-    if (!currentUser) return false;
+async function logoutUser(){await supabaseClient.auth.signOut();currentUser=null;selectedFolder=null;document.getElementById('app').classList.add('hidden');document.getElementById('authScreen').classList.remove('hidden');showLogin();setStatus('authStatus','You are logged out.');}
 
-    const profile = await getMyProfile();
-    if (!profile || profile.active !== true) {
-        alert("Your access has been removed by the Admin.");
-        await supabaseClient.auth.signOut();
-        currentUser = null;
-        return false;
-    }
-    return true;
+async function checkAccess(){
+  if(!currentUser)return false;
+  const {data,error}=await supabaseClient.from('profiles').select('active').eq('id',currentUser.id).maybeSingle();
+  if(error){console.warn('Profile check:',error.message);return true;}
+  if(data && data.active === false){await supabaseClient.auth.signOut();currentUser=null;alert('Your access has been removed by the administrator.');return false;}
+  return true;
 }
 
-
-/* =========================================================
-   LOGIN / LOGOUT
-========================================================= */
-
-async function ownerLogin() {
-
-    const email =
-        document.getElementById("ownerEmail").value.trim();
-
-    const password =
-        document.getElementById("ownerPassword").value;
-
-    const status =
-        document.getElementById("loginStatus");
-
-    if (!email || !password) {
-        status.textContent =
-            "Please enter your email and password.";
-        return;
-    }
-
-    status.textContent = "Logging in...";
-
-    const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-        });
-
-    if (error) {
-        status.textContent =
-            "Invalid email or password.";
-        console.error(error);
-        return;
-    }
-
-    currentUser = data.user;
-
-    const firstLogin =
-        await checkFirstLogin();
-
-    if (firstLogin) {
-        showPasswordChange();
-        return;
-    }
-
-    await showApplication();
+async function enterApp(){
+  const allowed=await checkAccess();
+  if(!allowed)return;
+  document.getElementById('authScreen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.querySelectorAll('.admin-only').forEach(el=>el.classList.toggle('hidden',!isAdmin()));
+  document.getElementById('roleText').textContent=isAdmin()?'👑 Admin — full access':'👤 Viewer — read-only access';
+  await displayFolders();
 }
 
+supabaseClient.auth.onAuthStateChange(async (_event,session)=>{
+  if(session){currentUser=session.user;await enterApp();}
+  else {currentUser=null;document.getElementById('app').classList.add('hidden');document.getElementById('authScreen').classList.remove('hidden');}
+});
 
-async function ownerLogout() {
-
-    await supabaseClient.auth.signOut();
-
-    currentUser = null;
-    mustChangePassword = false;
-    selectedFolder = null;
-    editingNoteId = null;
-
-    document.getElementById("appContent").style.display = "none";
-    document.getElementById("passwordSection").style.display = "none";
-    document.getElementById("loginSection").style.display = "block";
-
-    document.getElementById("ownerPassword").value = "";
-    document.getElementById("loginStatus").textContent =
-        "You are logged out.";
+async function createFolder(){
+  if(!isAdmin()){return;}
+  const name=prompt('Enter folder name:');
+  if(!name || !name.trim())return;
+  const {data,error}=await supabaseClient.from('folders').insert({name:name.trim()}).select().single();
+  if(error){alert('Could not create folder: '+error.message);return;}
+  selectedFolder=data.id;await displayFolders();
 }
 
-
-/* =========================================================
-   FIRST LOGIN / PASSWORD
-========================================================= */
-
-async function checkFirstLogin() {
-
-    /*
-       The profiles table is the permanent source of truth.
-       New users are created with must_change_password = true.
-    */
-
-    const { data, error } =
-        await supabaseClient
-            .from("profiles")
-            .select("must_change_password, active")
-            .eq("id", currentUser.id)
-            .maybeSingle();
-
-    if (error) {
-        console.error("Profile check error:", error);
-
-        /*
-           Fallback for users whose metadata was manually set.
-        */
-        return (
-            currentUser.user_metadata?.must_change_password === true ||
-            currentUser.user_metadata?.first_login === true
-        );
-    }
-
-    if (!data) {
-        /*
-           Safety fallback: do not lock the existing Admin account
-           if its profile row has not been created yet.
-        */
-        return !isAdmin();
-    }
-
-    if (data.active !== true) {
-        await supabaseClient.auth.signOut();
-        currentUser = null;
-        alert("Your access has been removed by the Admin.");
-        return false;
-    }
-
-    mustChangePassword =
-        data.must_change_password === true;
-
-    return mustChangePassword;
+async function displayFolders(){
+  const {data,error}=await supabaseClient.from('folders').select('*').order('name',{ascending:true});
+  const container=document.getElementById('folderList');container.innerHTML='';
+  if(error){container.innerHTML='<p class="muted">Unable to load folders.</p>';return;}
+  if(!data.length){container.innerHTML='<p class="muted">No folders yet.</p>';return;}
+  data.forEach(folder=>{
+    const div=document.createElement('div');div.className='folder'+(selectedFolder===folder.id?' active':'');div.textContent='📁 '+folder.name;
+    div.onclick=()=>selectFolder(folder.id,folder.name);container.appendChild(div);
+  });
+  if(selectedFolder===null){selectFolder(data[0].id,data[0].name);}
 }
 
-
-function showPasswordChange() {
-
-    document.getElementById("loginSection").style.display = "none";
-    document.getElementById("appContent").style.display = "none";
-    document.getElementById("passwordSection").style.display = "block";
-
-    document.getElementById("newPassword").value = "";
-    document.getElementById("confirmPassword").value = "";
-
-    document.getElementById("passwordStatus").textContent =
-        "Please create your own password.";
+async function selectFolder(id,name){selectedFolder=id;document.getElementById('currentFolder').textContent='📁 '+name;await displayFoldersOnly();await displayNotes();await displayPDFs();}
+async function displayFoldersOnly(){
+  const {data}=await supabaseClient.from('folders').select('*').order('name',{ascending:true});
+  const container=document.getElementById('folderList');container.innerHTML='';
+  (data||[]).forEach(folder=>{const div=document.createElement('div');div.className='folder'+(selectedFolder===folder.id?' active':'');div.textContent='📁 '+folder.name;div.onclick=()=>selectFolder(folder.id,folder.name);container.appendChild(div);});
 }
 
+function openNoteEditor(note=null){
+  if(!isAdmin())return;
+  if(selectedFolder===null){alert('Please select a folder first.');return;}
+  editingNoteId=note?note.id:null;
+  document.getElementById('noteTitle').value=note?note.title:'';
+  document.getElementById('noteContent').value=note?note.content:'';
+  document.getElementById('editor').style.display='block';
+}
+function closeEditor(){editingNoteId=null;document.getElementById('editor').style.display='none';document.getElementById('noteTitle').value='';document.getElementById('noteContent').value='';}
 
-async function changeFirstPassword() {
-
-    const newPassword =
-        document.getElementById("newPassword").value;
-
-    const confirmPassword =
-        document.getElementById("confirmPassword").value;
-
-    const status =
-        document.getElementById("passwordStatus");
-
-    if (!newPassword || !confirmPassword) {
-        status.textContent =
-            "Please enter and confirm your new password.";
-        return;
-    }
-
-    if (newPassword !== confirmPassword) {
-        status.textContent =
-            "The passwords do not match.";
-        return;
-    }
-
-    if (newPassword.length < 6) {
-        status.textContent =
-            "Password must contain at least 6 characters.";
-        return;
-    }
-
-    status.textContent =
-        "Saving your new password...";
-
-    const { error: passwordError } =
-        await supabaseClient.auth.updateUser({
-            password: newPassword
-        });
-
-    if (passwordError) {
-        status.textContent =
-            "Could not change password: " +
-            passwordError.message;
-        return;
-    }
-
-    const { error: profileError } =
-        await supabaseClient
-            .rpc("complete_first_login");
-
-    if (profileError) {
-        console.error(profileError);
-        status.textContent =
-            "Password changed, but the first-login status could not be saved.";
-        return;
-    }
-
-    mustChangePassword = false;
-
-    status.textContent =
-        "Password changed successfully.";
-
-    await showApplication();
+async function saveNote(){
+  if(!isAdmin())return;
+  if(selectedFolder===null){alert('Please select a folder first.');return;}
+  const title=document.getElementById('noteTitle').value.trim();
+  const content=document.getElementById('noteContent').value.trim();
+  if(!title || !content){alert('Please enter a title and note content.');return;}
+  if(editingNoteId){
+    const {error}=await supabaseClient.from('notes').update({title,content}).eq('id',editingNoteId);
+    if(error){alert('Could not update note: '+error.message);return;}
+  }else{
+    const {data:existing}=await supabaseClient.from('notes').select('id').eq('folder_id',selectedFolder).eq('title',title).eq('content',content).limit(1);
+    if(existing && existing.length){alert('This exact note already exists, so a duplicate was not created.');closeEditor();await displayNotes();return;}
+    const {error}=await supabaseClient.from('notes').insert({folder_id:selectedFolder,title,content});
+    if(error){alert('Could not save note: '+error.message);return;}
+  }
+  closeEditor();await displayNotes();
 }
 
-
-/* =========================================================
-   INTERFACE
-========================================================= */
-
-async function updateOwnerInterface() {
-
-    const { data } =
-        await supabaseClient.auth.getSession();
-
-    currentUser =
-        data.session
-            ? data.session.user
-            : null;
-
-    if (!currentUser) {
-
-        document.getElementById("appContent").style.display = "none";
-        document.getElementById("passwordSection").style.display = "none";
-        document.getElementById("loginSection").style.display = "block";
-
-        return;
+async function displayNotes(){
+  const container=document.getElementById('notesContainer');container.innerHTML='';
+  if(selectedFolder===null)return;
+  const search=(document.getElementById('search').value||'').toLowerCase();
+  const {data,error}=await supabaseClient.from('notes').select('*').eq('folder_id',selectedFolder).order('created_at',{ascending:false});
+  if(error){container.innerHTML='<p class="muted">Unable to load notes.</p>';return;}
+  (data||[]).filter(n=>(n.title||'').toLowerCase().includes(search)||(n.content||'').toLowerCase().includes(search)).forEach(note=>{
+    const card=document.createElement('div');card.className='card';
+    const h=document.createElement('h3');h.textContent='📝 '+note.title;
+    const p=document.createElement('p');p.textContent=note.content;
+    card.appendChild(h);card.appendChild(p);
+    if(isAdmin()){
+      const buttons=document.createElement('div');buttons.className='buttons';
+      const edit=document.createElement('button');edit.className='edit';edit.textContent='✏️ Edit';edit.onclick=()=>openNoteEditor(note);
+      const del=document.createElement('button');del.className='delete';del.textContent='🗑️ Delete';del.onclick=()=>deleteNote(note.id);
+      buttons.append(edit,del);card.appendChild(buttons);
     }
-
-    const firstLogin =
-        await checkFirstLogin();
-
-    if (firstLogin) {
-        showPasswordChange();
-    } else {
-        await showApplication();
-    }
+    container.appendChild(card);
+  });
 }
 
-
-async function showApplication() {
-
-    if (!(await ensureActiveUser())) {
-        document.getElementById("appContent").style.display = "none";
-        document.getElementById("passwordSection").style.display = "none";
-        document.getElementById("loginSection").style.display = "block";
-        return;
-    }
-
-    document.getElementById("loginSection").style.display = "none";
-    document.getElementById("passwordSection").style.display = "none";
-    document.getElementById("appContent").style.display = "flex";
-
-    document.getElementById("editor").style.display = "none";
-
-    await loadFolders();
-
-    if (isAdmin()) {
-        await loadUsers();
-    }
+async function deleteNote(id){
+  if(!isAdmin())return;
+  if(!confirm('Delete this note?'))return;
+  const {error}=await supabaseClient.from('notes').delete().eq('id',id);
+  if(error){alert('Could not delete note: '+error.message);return;}
+  await displayNotes();
 }
 
+function choosePDF(){if(isAdmin())document.getElementById('pdfInput').click();}
 
-/* =========================================================
-   USER MANAGEMENT
-========================================================= */
-
-async function loadUsers() {
-
-    const section = document.getElementById("userManagement");
-    const list = document.getElementById("userList");
-
-    if (!isAdmin()) {
-        section.style.display = "none";
-        return;
-    }
-
-    section.style.display = "block";
-    list.innerHTML = "Loading users...";
-
-    const { data, error } = await supabaseClient
-        .from("profiles")
-        .select("id, email, active, must_change_password")
-        .order("email", { ascending: true });
-
-    if (error) {
-        console.error("Load users error:", error);
-        list.innerHTML = "Unable to load users.";
-        return;
-    }
-
-    list.innerHTML = "";
-
-    (data || []).forEach(user => {
-        const row = document.createElement("div");
-        row.className = "user-row";
-
-        const name = document.createElement("div");
-        name.textContent = (user.email || user.id) +
-            (user.id === ADMIN_USER_ID ? " (Admin)" : "");
-
-        const status = document.createElement("div");
-        status.textContent = user.active ? "Active" : "Access removed";
-
-        row.appendChild(name);
-        row.appendChild(status);
-
-        if (user.id !== ADMIN_USER_ID) {
-            const button = document.createElement("button");
-            button.textContent = user.active ? "🚫 Remove access" : "✅ Restore access";
-            button.style.background = user.active ? "#ef4444" : "#16a34a";
-            button.style.color = "white";
-            button.onclick = () => setUserAccess(user.id, !user.active);
-            row.appendChild(button);
-        }
-
-        list.appendChild(row);
-    });
+async function uploadPDF(event){
+  if(!isAdmin()){event.target.value='';return;}
+  const file=event.target.files[0];
+  if(!file)return;
+  if(selectedFolder===null){alert('Please select a folder first.');event.target.value='';return;}
+  if(file.type!=='application/pdf'){alert('Please select a PDF file.');event.target.value='';return;}
+  const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  const path=String(selectedFolder)+'/'+safeName;
+  const {error}=await supabaseClient.storage.from('pdfs').upload(path,file,{contentType:'application/pdf',upsert:true,cacheControl:'3600'});
+  event.target.value='';
+  if(error){alert('PDF upload failed: '+error.message);return;}
+  await displayPDFs();
+  alert('PDF uploaded successfully.');
 }
 
-async function setUserAccess(userId, active) {
-
-    if (!isAdmin() || userId === ADMIN_USER_ID) return;
-
-    const action = active ? "restore access to" : "remove access from";
-    if (!confirm("Are you sure you want to " + action + " this user?")) return;
-
-    const { error } = await supabaseClient
-        .from("profiles")
-        .update({ active })
-        .eq("id", userId);
-
-    if (error) {
-        console.error("User access update error:", error);
-        alert("Could not change user access: " + error.message);
-        return;
-    }
-
-    await loadUsers();
+async function displayPDFs(){
+  const container=document.getElementById('pdfContainer');container.innerHTML='';
+  if(selectedFolder===null)return;
+  const {data,error}=await supabaseClient.storage.from('pdfs').list(String(selectedFolder),{limit:100,sortBy:{column:'name',order:'asc'}});
+  if(error){container.innerHTML='<p class="muted">Unable to load PDFs.</p>';return;}
+  if(!data || !data.length){container.innerHTML='<p class="muted">No PDFs in this folder.</p>';return;}
+  data.filter(x=>x.name && x.name.toLowerCase().endsWith('.pdf')).forEach(pdf=>{
+    const card=document.createElement('div');card.className='card';
+    const h=document.createElement('h3');h.textContent='📄 '+pdf.name;card.appendChild(h);
+    const buttons=document.createElement('div');buttons.className='buttons';
+    const open=document.createElement('button');open.className='open';open.textContent='👁️ Open PDF';open.onclick=()=>openPDF(String(selectedFolder)+'/'+pdf.name);
+    buttons.appendChild(open);
+    if(isAdmin()){const del=document.createElement('button');del.className='delete';del.textContent='🗑️ Delete';del.onclick=()=>deletePDF(String(selectedFolder)+'/'+pdf.name);buttons.appendChild(del);}
+    card.appendChild(buttons);container.appendChild(card);
+  });
 }
 
+async function openPDF(path){
+  const {data,error}=await supabaseClient.storage.from('pdfs').createSignedUrl(path,300);
+  if(error){alert('Unable to open PDF: '+error.message);return;}
+  const viewer=document.getElementById('pdfViewer');
+  viewer.src=data.signedUrl+'#toolbar=1&navpanes=0&view=FitH';
+  document.getElementById('pdfViewerContainer').classList.remove('hidden');
+  document.getElementById('pdfViewerContainer').scrollIntoView({behavior:'smooth'});
+}
+function closePDFViewer(){document.getElementById('pdfViewer').src='';document.getElementById('pdfViewerContainer').classList.add('hidden');}
 
-/* =========================================================
-   FOLDERS
-========================================================= */
-
-async function loadFolders() {
-
-    const folderList =
-        document.getElementById("folderList");
-
-    folderList.innerHTML =
-        "<p>Loading folders...</p>";
-
-    const { data, error } =
-        await supabaseClient
-            .from("folders")
-            .select("*")
-            .order("created_at", {
-                ascending: true
-            });
-
-    if (error) {
-        console.error(error);
-        folderList.innerHTML =
-            "<p>Unable to load folders.</p>";
-        return;
-    }
-
-    folders = data || [];
-
-    folderList.innerHTML = "";
-
-    if (folders.length === 0) {
-        folderList.innerHTML =
-            "<p>No folders yet.</p>";
-        return;
-    }
-
-    folders.forEach(folder => {
-
-        const button =
-            document.createElement("button");
-
-        button.className = "folder";
-
-        if (selectedFolder === folder.id) {
-            button.classList.add("active");
-        }
-
-        button.textContent =
-            "📁 " + folder.name;
-
-        button.onclick = () => {
-            selectFolder(folder.id);
-        };
-
-        folderList.appendChild(button);
-    });
+async function deletePDF(path){
+  if(!isAdmin())return;
+  if(!confirm('Delete this PDF?'))return;
+  const {error}=await supabaseClient.storage.from('pdfs').remove([path]);
+  if(error){alert('Could not delete PDF: '+error.message);return;}
+  await displayPDFs();
 }
 
-
-async function createFolder() {
-
-    if (!isAdmin()) {
-        alert("Only the Admin can create folders.");
-        return;
-    }
-
-    const name =
-        prompt("Enter folder name:");
-
-    if (!name || !name.trim()) {
-        return;
-    }
-
-    const { data, error } =
-        await supabaseClient
-            .from("folders")
-            .insert({
-                name: name.trim()
-            })
-            .select()
-            .single();
-
-    if (error) {
-        console.error(error);
-        alert("Could not create folder: " + error.message);
-        return;
-    }
-
-    folders.push(data);
-
-    await loadFolders();
-
-    selectFolder(data.id);
-}
-
-
-function selectFolder(id) {
-
-    selectedFolder = id;
-
-    const folder =
-        folders.find(f => f.id === id);
-
-    if (!folder) {
-        return;
-    }
-
-    document.getElementById(
-        "currentFolder"
-    ).textContent =
-        "📁 " + folder.name;
-
-    loadFolders();
-    displayContent();
-}
-
-
-/* =========================================================
-   NOTES — SUPABASE ONLY
-   No localStorage. No IndexedDB.
-========================================================= */
-
-async function loadNotes() {
-
-    if (!selectedFolder) {
-        notes = [];
-        return;
-    }
-
-    const { data, error } =
-        await supabaseClient
-            .from("notes")
-            .select("*")
-            .eq("folder_id", selectedFolder)
-            .order("created_at", {
-                ascending: true
-            });
-
-    if (error) {
-        console.error("Load notes error:", error);
-        notes = [];
-        return;
-    }
-
-    notes = data || [];
-}
-
-
-function openNoteEditor(noteId = null) {
-
-    if (!isAdmin()) {
-        alert("Only the Admin can edit notes.");
-        return;
-    }
-
-    if (!selectedFolder) {
-        alert("Please select a folder first.");
-        return;
-    }
-
-    editingNoteId = noteId;
-
-    const editor =
-        document.getElementById("editor");
-
-    editor.style.display = "block";
-
-    if (noteId) {
-
-        const note =
-            notes.find(n => n.id === noteId);
-
-        if (!note) {
-            return;
-        }
-
-        document.getElementById("noteTitle").value =
-            note.title || "";
-
-        document.getElementById("noteContent").value =
-            note.content || "";
-
-    } else {
-
-        document.getElementById("noteTitle").value = "";
-        document.getElementById("noteContent").value = "";
-    }
-}
-
-
-function closeEditor() {
-
-    document.getElementById(
-        "editor"
-    ).style.display = "none";
-
-    editingNoteId = null;
-}
-
-
-async function saveNote() {
-
-    if (!isAdmin()) {
-        alert("Only the Admin can save notes.");
-        return;
-    }
-
-    if (!selectedFolder) {
-        alert("Please select a folder first.");
-        return;
-    }
-
-    const title =
-        document.getElementById("noteTitle")
-            .value.trim();
-
-    const content =
-        document.getElementById("noteContent")
-            .value.trim();
-
-    if (!title || !content) {
-        alert("Please enter title and notes.");
-        return;
-    }
-
-    let result;
-
-    if (editingNoteId) {
-
-        result =
-            await supabaseClient
-                .from("notes")
-                .update({
-                    title,
-                    content
-                })
-                .eq("id", editingNoteId)
-                .select()
-                .single();
-
-    } else {
-
-        /*
-           Prevent an accidental second identical copy if the
-           browser fires the save action twice.
-        */
-        const { data: existing } =
-            await supabaseClient
-                .from("notes")
-                .select("id")
-                .eq("folder_id", selectedFolder)
-                .eq("title", title)
-                .eq("content", content)
-                .limit(1);
-
-        if (existing && existing.length > 0) {
-            alert("This exact note already exists.");
-            closeEditor();
-            await loadNotes();
-            displayNotes();
-            return;
-        }
-
-        result =
-            await supabaseClient
-                .from("notes")
-                .insert({
-                    folder_id: selectedFolder,
-                    title,
-                    content
-                })
-                .select()
-                .single();
-    }
-
-    if (result.error) {
-        console.error(result.error);
-        alert("Could not save note: " + result.error.message);
-        return;
-    }
-
-    closeEditor();
-
-    await loadNotes();
-    displayNotes();
-}
-
-
-async function deleteNote(noteId) {
-
-    if (!isAdmin()) {
-        alert("Only the Admin can delete notes.");
-        return;
-    }
-
-    if (!confirm("Are you sure you want to delete this note?")) {
-        return;
-    }
-
-    const { error } =
-        await supabaseClient
-            .from("notes")
-            .delete()
-            .eq("id", noteId);
-
-    if (error) {
-        console.error(error);
-        alert("Could not delete note: " + error.message);
-        return;
-    }
-
-    await loadNotes();
-    displayNotes();
-}
-
-
-async function displayNotes() {
-
-    const container =
-        document.getElementById("notesContainer");
-
-    container.innerHTML = "";
-
-    if (!selectedFolder) {
-        return;
-    }
-
-    await loadNotes();
-
-    const search =
-        document.getElementById("search")
-            .value
-            .toLowerCase();
-
-    notes.forEach(note => {
-
-        const title =
-            String(note.title || "");
-
-        const content =
-            String(note.content || "");
-
-        if (
-            !title.toLowerCase().includes(search) &&
-            !content.toLowerCase().includes(search)
-        ) {
-            return;
-        }
-
-        const card =
-            document.createElement("div");
-
-        card.className = "card";
-
-        const titleElement =
-            document.createElement("h3");
-
-        titleElement.textContent =
-            "📝 " + title;
-
-        const contentElement =
-            document.createElement("p");
-
-        contentElement.textContent =
-            content;
-
-        const dateElement =
-            document.createElement("small");
-
-        dateElement.textContent =
-            note.created_at
-                ? new Date(note.created_at).toLocaleString()
-                : "";
-
-        card.appendChild(titleElement);
-        card.appendChild(contentElement);
-        card.appendChild(dateElement);
-
-        if (isAdmin()) {
-
-            const buttons =
-                document.createElement("div");
-
-            buttons.className = "buttons";
-
-            const editButton =
-                document.createElement("button");
-
-            editButton.className = "edit";
-            editButton.textContent = "✏️ Edit";
-            editButton.onclick = () =>
-                openNoteEditor(note.id);
-
-            const deleteButton =
-                document.createElement("button");
-
-            deleteButton.className = "delete";
-            deleteButton.textContent = "🗑️ Delete";
-            deleteButton.onclick = () =>
-                deleteNote(note.id);
-
-            buttons.appendChild(editButton);
-            buttons.appendChild(deleteButton);
-
-            card.appendChild(buttons);
-        }
-
-        container.appendChild(card);
-    });
-}
-
-
-/* =========================================================
-   CONTENT
-========================================================= */
-
-async function displayContent() {
-
-    await displayNotes();
-    await displayPDFs();
-}
-
-
-/* =========================================================
-   PDFS — SUPABASE STORAGE ONLY
-========================================================= */
-
-function choosePDF() {
-
-    if (!isAdmin()) {
-        alert("Only the Admin can upload PDFs.");
-        return;
-    }
-
-    if (!selectedFolder) {
-        alert("Please select a folder first.");
-        return;
-    }
-
-    document.getElementById("pdfInput").click();
-}
-
-
-async function uploadPDF(event) {
-
-    if (!isAdmin()) {
-        alert("Only the Admin can upload PDFs.");
-        event.target.value = "";
-        return;
-    }
-
-    const file =
-        event.target.files[0];
-
-    if (!file) {
-        return;
-    }
-
-    if (!selectedFolder) {
-        alert("Please select a folder first.");
-        event.target.value = "";
-        return;
-    }
-
-    if (file.type !== "application/pdf") {
-        alert("Please select a PDF file.");
-        event.target.value = "";
-        return;
-    }
-
-    /*
-       One fixed path per folder + filename.
-       Re-uploading the same filename replaces the file instead
-       of creating a duplicate.
-    */
-    const safeName =
-        file.name
-            .replace(/[^\w.\-() ]/g, "_");
-
-    const path =
-        selectedFolder + "/" + safeName;
-
-    const { error } =
-        await supabaseClient
-            .storage
-            .from("pdfs")
-            .upload(path, file, {
-                upsert: true,
-                contentType: "application/pdf"
-            });
-
-    event.target.value = "";
-
-    if (error) {
-        console.error(error);
-        alert("PDF upload failed: " + error.message);
-        return;
-    }
-
-    await displayPDFs();
-
-    alert("PDF uploaded successfully.");
-}
-
-
-async function displayPDFs() {
-
-    const container =
-        document.getElementById("pdfContainer");
-
-    container.innerHTML = "";
-
-    if (!selectedFolder) {
-        return;
-    }
-
-    const { data, error } =
-        await supabaseClient
-            .storage
-            .from("pdfs")
-            .list(String(selectedFolder), {
-                limit: 100,
-                sortBy: {
-                    column: "name",
-                    order: "asc"
-                }
-            });
-
-    if (error) {
-        console.error(error);
-        container.innerHTML =
-            "<p>Unable to load PDFs.</p>";
-        return;
-    }
-
-    if (!data || data.length === 0) {
-        container.innerHTML =
-            "<p>No PDFs in this folder.</p>";
-        return;
-    }
-
-    data
-        .filter(file => file.name)
-        .forEach(file => {
-
-            const path =
-                selectedFolder + "/" + file.name;
-
-            const card =
-                document.createElement("div");
-
-            card.className = "card";
-
-            const title =
-                document.createElement("h3");
-
-            title.textContent =
-                "📄 " + file.name;
-
-            const buttons =
-                document.createElement("div");
-
-            buttons.className = "buttons";
-
-            const openButton =
-                document.createElement("button");
-
-            openButton.className = "open";
-            openButton.textContent = "👁️ Open";
-            openButton.onclick = () =>
-                openPDF(path);
-
-            buttons.appendChild(openButton);
-
-            if (isAdmin()) {
-
-                const deleteButton =
-                    document.createElement("button");
-
-                deleteButton.className = "delete";
-                deleteButton.textContent = "🗑️ Delete";
-
-                deleteButton.onclick = () =>
-                    deletePDF(path);
-
-                buttons.appendChild(deleteButton);
-            }
-
-            card.appendChild(title);
-            card.appendChild(buttons);
-
-            container.appendChild(card);
-        });
-}
-
-
-async function openPDF(path) {
-
-    const { data, error } =
-        await supabaseClient
-            .storage
-            .from("pdfs")
-            .createSignedUrl(path, 300, { download: false });
-
-    if (error) {
-        console.error(error);
-        alert("Unable to open PDF: " + error.message);
-        return;
-    }
-
-    const viewer =
-        document.getElementById("pdfViewer");
-
-    const viewerContainer =
-        document.getElementById("pdfViewerContainer");
-
-    viewer.src =
-        data.signedUrl;
-
-    viewerContainer.style.display =
-        "block";
-
-    viewer.style.display =
-        "block";
-
-    viewer.scrollIntoView({
-        behavior: "smooth"
-    });
-}
-
-
-function closePDFViewer() {
-
-    document.getElementById(
-        "pdfViewer"
-    ).src = "";
-
-    document.getElementById(
-        "pdfViewerContainer"
-    ).style.display = "none";
-}
-
-
-async function deletePDF(path) {
-
-    if (!isAdmin()) {
-        alert("Only the Admin can delete PDFs.");
-        return;
-    }
-
-    if (!confirm("Delete this PDF?")) {
-        return;
-    }
-
-    const { error } =
-        await supabaseClient
-            .storage
-            .from("pdfs")
-            .remove([path]);
-
-    if (error) {
-        console.error(error);
-        alert("Unable to delete PDF: " + error.message);
-        return;
-    }
-
-    closePDFViewer();
-    await displayPDFs();
-}
-
-
-/* =========================================================
-   PERIODIC ACCESS CHECK
-========================================================= */
-
-setInterval(async function() {
-    if (!currentUser) return;
-
-    const active = await ensureActiveUser();
-    if (!active) {
-        document.getElementById("appContent").style.display = "none";
-        document.getElementById("passwordSection").style.display = "none";
-        document.getElementById("loginSection").style.display = "block";
-    }
-}, 30000);
-
-
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
-supabaseClient.auth.onAuthStateChange(
-    async function(event, session) {
-
-        currentUser =
-            session
-                ? session.user
-                : null;
-
-        if (!currentUser) {
-            document.getElementById("appContent").style.display = "none";
-            document.getElementById("passwordSection").style.display = "none";
-            document.getElementById("loginSection").style.display = "block";
-            return;
-        }
-
-        /*
-           Avoid re-running the entire UI for token refreshes.
-        */
-        if (event === "SIGNED_IN") {
-
-            const profile = await getMyProfile();
-
-            if (!profile || profile.active !== true) {
-                await supabaseClient.auth.signOut();
-                currentUser = null;
-                document.getElementById("appContent").style.display = "none";
-                document.getElementById("passwordSection").style.display = "none";
-                document.getElementById("loginSection").style.display = "block";
-                return;
-            }
-
-            const firstLogin = await checkFirstLogin();
-
-            if (firstLogin && currentUser) {
-                showPasswordChange();
-            } else if (currentUser) {
-                await showApplication();
-            }
-        }
-    }
-);
-
-
-/* =========================================================
-   START
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async function() {
-        await updateOwnerInterface();
-    }
-);
-
+function escapeHTML(value){return String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
+
+document.addEventListener('DOMContentLoaded',async()=>{
+  const {data}=await supabaseClient.auth.getSession();
+  if(data.session){currentUser=data.session.user;await enterApp();}
+});
 </script>
-
 </body>
 </html>
