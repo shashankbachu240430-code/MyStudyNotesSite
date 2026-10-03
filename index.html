@@ -406,6 +406,287 @@
             }
         }
 
+
+        /* =========================================================
+           GLASSMORPHIC UI — smooth, lightweight visual layer
+           ========================================================= */
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 10% 10%, rgba(96,165,250,.34), transparent 28%),
+                radial-gradient(circle at 90% 15%, rgba(167,139,250,.28), transparent 30%),
+                radial-gradient(circle at 50% 95%, rgba(45,212,191,.20), transparent 32%),
+                linear-gradient(135deg, #172554 0%, #315f91 45%, #4d7eae 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(8px);
+            opacity: .28;
+        }
+
+        body::before {
+            top: 8%;
+            left: -90px;
+            background: #60a5fa;
+        }
+
+        body::after {
+            right: -90px;
+            bottom: 8%;
+            background: #a78bfa;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            background: rgba(15, 23, 42, .68);
+            border-bottom: 1px solid rgba(255,255,255,.14);
+            box-shadow: 0 10px 35px rgba(15,23,42,.18);
+            backdrop-filter: blur(18px) saturate(145%);
+            -webkit-backdrop-filter: blur(18px) saturate(145%);
+        }
+
+        .container {
+            gap: 18px;
+            padding: 18px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar,
+        .main,
+        #accountBar,
+        .editor,
+        .card {
+            background: rgba(255,255,255,.72);
+            border: 1px solid rgba(255,255,255,.58);
+            box-shadow:
+                0 12px 35px rgba(15,23,42,.12),
+                inset 0 1px 0 rgba(255,255,255,.65);
+            backdrop-filter: blur(16px) saturate(135%);
+            -webkit-backdrop-filter: blur(16px) saturate(135%);
+        }
+
+        .sidebar {
+            width: 280px;
+            flex: 0 0 280px;
+            border-right: 1px solid rgba(255,255,255,.55);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .main {
+            border-radius: 20px;
+            padding: 25px;
+        }
+
+        .sidebar button,
+        .buttons button,
+        .save-btn,
+        .cancel-btn,
+        .admin-portal-button,
+        .admin-close-button {
+            transition:
+                transform .16s ease,
+                box-shadow .16s ease,
+                opacity .16s ease,
+                background .16s ease;
+            will-change: transform;
+        }
+
+        .sidebar button:hover,
+        .buttons button:hover,
+        .save-btn:hover,
+        .cancel-btn:hover,
+        .admin-portal-button:hover,
+        .admin-close-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(15,23,42,.14);
+            opacity: .96;
+        }
+
+        .folder {
+            background: rgba(248,250,252,.62);
+            border: 1px solid rgba(255,255,255,.65);
+            transition: transform .16s ease, background .16s ease, box-shadow .16s ease;
+        }
+
+        .folder:hover {
+            background: rgba(255,255,255,.86);
+            transform: translateX(2px);
+            box-shadow: 0 7px 18px rgba(15,23,42,.08);
+        }
+
+        .folder.active {
+            background: rgba(219,234,254,.82);
+            box-shadow: inset 3px 0 0 #2563eb, 0 7px 18px rgba(37,99,235,.10);
+        }
+
+        .search,
+        .editor input,
+        .editor textarea {
+            background: rgba(255,255,255,.72);
+            border: 1px solid rgba(148,163,184,.42);
+            outline: none;
+            transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+        }
+
+        .search:focus,
+        .editor input:focus,
+        .editor textarea:focus {
+            background: rgba(255,255,255,.9);
+            border-color: rgba(37,99,235,.55);
+            box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+        }
+
+        .card {
+            border-radius: 16px;
+            transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,.82);
+            box-shadow:
+                0 16px 38px rgba(15,23,42,.15),
+                inset 0 1px 0 rgba(255,255,255,.75);
+        }
+
+        #pdfViewer {
+            border-radius: 16px;
+            background: rgba(255,255,255,.65);
+            box-shadow: 0 12px 35px rgba(15,23,42,.14);
+        }
+
+        #accountBar {
+            margin: 0 18px 0;
+            border-radius: 16px;
+        }
+
+        .admin-portal-backdrop {
+            background: rgba(2,6,23,.58);
+            backdrop-filter: blur(9px);
+            -webkit-backdrop-filter: blur(9px);
+        }
+
+        .admin-portal {
+            background: rgba(248,250,252,.88);
+            border: 1px solid rgba(255,255,255,.62);
+            box-shadow: 0 25px 80px rgba(2,6,23,.30);
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+        }
+
+        .admin-portal-header {
+            background: rgba(23,37,84,.86);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .admin-user-row {
+            background: rgba(255,255,255,.64);
+            border-color: rgba(148,163,184,.25);
+            box-shadow: 0 5px 18px rgba(15,23,42,.05);
+        }
+
+        /* Glass login screen */
+        #authGate {
+            background:
+                radial-gradient(circle at 15% 20%, rgba(96,165,250,.35), transparent 30%),
+                radial-gradient(circle at 85% 80%, rgba(167,139,250,.32), transparent 30%),
+                linear-gradient(135deg, #172554, #4d7eae) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        #authGate > div {
+            background: rgba(255,255,255,.72) !important;
+            border: 1px solid rgba(255,255,255,.65);
+            border-radius: 24px !important;
+            box-shadow:
+                0 25px 70px rgba(2,6,23,.28),
+                inset 0 1px 0 rgba(255,255,255,.8) !important;
+            backdrop-filter: blur(22px) saturate(145%);
+            -webkit-backdrop-filter: blur(22px) saturate(145%);
+        }
+
+        #authEmail,
+        #authPassword,
+        #authConfirmPassword {
+            background: rgba(255,255,255,.68) !important;
+            border: 1px solid rgba(148,163,184,.38) !important;
+            outline: none;
+            transition: box-shadow .16s ease, background .16s ease;
+        }
+
+        #authEmail:focus,
+        #authPassword:focus,
+        #authConfirmPassword:focus {
+            background: rgba(255,255,255,.9) !important;
+            box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+        }
+
+        #authPrimaryButton,
+        #authModeButton {
+            transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+        }
+
+        #authPrimaryButton:hover,
+        #authModeButton:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(15,23,42,.14);
+        }
+
+        /* Respect reduced-motion settings */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .sidebar {
+                width: 100%;
+                flex: none;
+                border-radius: 16px;
+            }
+
+            .main {
+                border-radius: 16px;
+            }
+
+            #accountBar {
+                margin: 10px 10px 0;
+            }
+
+            .admin-portal-backdrop {
+                padding: 10px;
+            }
+        }
+
     </style>
 
 </head>
