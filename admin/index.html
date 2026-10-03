@@ -429,23 +429,16 @@ body.admin-route #authModeButton {
 body.admin-route #authConfirmPassword {
     display: none !important;
 }
-body.admin-route #adminPortalButton {
-    display: none !important;
-}
+
 </style>
 
 <style>
 /* FINAL GLASS ADMIN / USER SEPARATION */
-body:not(.admin-route) #adminPortalButton,
-body:not(.admin-route) #adminPortal,
-body:not(.admin-route) .admin-portal-button,
 body:not(.admin-route) [data-admin-only] {
     display: none !important;
 }
 
-body.admin-route #adminPortalButton {
-    display: none !important;
-}
+
 
 body.admin-route #authModeButton,
 body.admin-route #authConfirmPassword {
@@ -459,8 +452,8 @@ body.admin-route {
         linear-gradient(135deg, #0f172a, #334155 55%, #1e3a8a);
 }
 
-body.admin-route .admin-portal,
-body.admin-route #adminPortal {
+.admin-portal,
+#adminPortal {
     background: rgba(255,255,255,.78);
     border: 1px solid rgba(255,255,255,.65);
     box-shadow: 0 25px 70px rgba(2,6,23,.28);
@@ -1335,15 +1328,17 @@ supabaseClient.auth.onAuthStateChange(
 
 
 function openAdminPortal() {
-    if (!isAdminRoute() || !isAdmin()) return;
-
-    if (!isAdmin()) return;
+    if (!isAdmin()) {
+        return;
+    }
 
     const portal = document.getElementById("adminPortal");
-    if (!portal) return;
+    if (!portal) {
+        console.error("Admin Portal element was not found.");
+        return;
+    }
 
-    portal.style.display = "block";
-    document.body.style.overflow = "hidden";
+    portal.style.display = "flex";
     loadAdminUsers();
 }
 
