@@ -457,6 +457,22 @@
     
 
 
+    
+<div id="adminPanel" style="
+    display:none;
+    margin:15px 20px 0;
+    background:white;
+    border-radius:10px;
+    padding:16px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+">
+    <h3 style="margin:0 0 12px;">👑 User Management</h3>
+    <p style="margin:0 0 12px;color:#64748b;">
+        Registered users, login information, and access control.
+    </p>
+    <div id="userList">Loading users...</div>
+</div>
+
     <!-- SIDEBAR -->
 
     <aside class="sidebar">
@@ -678,6 +694,136 @@ function isActiveUser() {
         currentProfile.active !== false;
 }
 
+
+async function recordLogin() {
+    if (!currentUser || !currentProfile) return;
+
+    const newLoginCount = Number(currentProfile.login_count || 0) + 1;
+    const loginTime = new Date().toISOString();
+
+    const { error } = await supabaseClient
+        .from("profiles")
+        .update({
+            last_login_at: loginTime,
+            login_count: newLoginCount
+        })
+        .eq("id", currentUser.id);
+
+    if (error) {
+        console.warn("Login tracking failed:", error.message);
+        return;
+    }
+
+    currentProfile.last_login_at = loginTime;
+    currentProfile.login_count = newLoginCount;
+}
+
+function formatDate(value) {
+    if (!value) return "Never";
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? "Unknown" : d.toLocaleString();
+}
+
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+async function loadAdminUsers() {
+    if (!isAdmin()) return;
+
+    const container = document.getElementById("userList");
+    if (!container) return;
+
+    container.textContent = "Loading users...";
+
+    const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("id,email,active,must_change_password,created_at,last_login_at,login_count")
+        .order("created_at", { ascending: true });
+
+    if (error) {
+        container.innerHTML =
+            "<p style='color:#dc2626'>Unable to load users: " +
+            escapeHtml(error.message) + "</p>";
+        return;
+    }
+
+    if (!data || !data.length) {
+        container.innerHTML = "<p>No users have registered yet.</p>";
+        return;
+    }
+
+    container.innerHTML = "";
+
+    data.forEach(user => {
+        const row = document.createElement("div");
+        row.style.cssText =
+            "border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;";
+
+        const info = document.createElement("div");
+        info.innerHTML =
+            "<strong>" + escapeHtml(user.email || "(no email)") + "</strong>" +
+            "<div style='font-size:13px;color:#64748b;margin-top:4px'>" +
+            "Created: " + formatDate(user.created_at) +
+            " &nbsp;•&nbsp; Last login: " + formatDate(user.last_login_at) +
+            " &nbsp;•&nbsp; Logins: " + Number(user.login_count || 0) +
+            " &nbsp;•&nbsp; Status: " +
+            (user.active === false ? "Blocked" : "Active") +
+            "</div>";
+
+        const action = document.createElement("div");
+
+        if (user.id === ADMIN_USER_ID) {
+            action.innerHTML =
+                "<span style='color:#15803d;font-weight:600'>👑 Admin</span>";
+        } else {
+            const button = document.createElement("button");
+            button.textContent =
+                user.active === false ? "Restore Access" : "Remove Access";
+
+            button.style.cssText =
+                "padding:8px 12px;border:0;border-radius:6px;cursor:pointer;color:white;background:" +
+                (user.active === false ? "#16a34a" : "#dc2626");
+
+            button.onclick = () =>
+                changeUserAccess(user.id, user.email, user.active === false);
+
+            action.appendChild(button);
+        }
+
+        row.appendChild(info);
+        row.appendChild(action);
+        container.appendChild(row);
+    });
+}
+
+async function changeUserAccess(userId, email, makeActive) {
+    if (!isAdmin() || userId === ADMIN_USER_ID) return;
+
+    const action = makeActive ? "restore access to" : "remove access from";
+
+    if (!confirm("Are you sure you want to " + action + " " + email + "?")) {
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from("profiles")
+        .update({ active: makeActive })
+        .eq("id", userId);
+
+    if (error) {
+        alert("Could not change access: " + error.message);
+        return;
+    }
+
+    await loadAdminUsers();
+}
+
 function setAuthMessage(message, isError = false) {
     const el = document.getElementById("authStatus");
     if (!el) return;
@@ -782,6 +928,20 @@ async function createAccount() {
     }
 
     currentUser = data.user;
+
+    const { error: profileError } = await supabaseClient
+        .from("profiles")
+        .upsert([{
+            id: currentUser.id,
+            email: currentUser.email,
+            active: true,
+            must_change_password: false
+        }], { onConflict: "id" });
+
+    if (profileError) {
+        console.warn("Profile setup notice:", profileError.message);
+    }
+
     await loadCurrentProfile();
 
     if (!isActiveUser()) {
@@ -848,6 +1008,7 @@ async function ownerLogin() {
         return;
     }
 
+    await recordLogin();
     await showApplication();
 }
 
@@ -861,6 +1022,7 @@ async function ownerLogout() {
     editingNoteId = null;
 
     document.getElementById("accountBar").style.display = "none";
+    document.getElementById("adminPanel").style.display = "none";
     document.getElementById("authGate").style.display = "flex";
     document.getElementById("authEmail").value = "";
     document.getElementById("authPassword").value = "";
@@ -880,7 +1042,7 @@ async function loadCurrentProfile() {
     const { data, error } =
         await supabaseClient
             .from("profiles")
-            .select("id,email,active,must_change_password")
+            .select("id,email,active,must_change_password,created_at,last_login_at,login_count")
             .eq("id", currentUser.id)
             .maybeSingle();
 
@@ -905,6 +1067,14 @@ async function showApplication() {
         document.getElementById("accountBar");
 
     accountBar.style.display = "flex";
+
+    const adminPanel = document.getElementById("adminPanel");
+    if (isAdmin()) {
+        adminPanel.style.display = "block";
+        await loadAdminUsers();
+    } else {
+        adminPanel.style.display = "none";
+    }
 
     document.getElementById("accountInfo").textContent =
         isAdmin()
@@ -1737,8 +1907,18 @@ async function displayContent() {
    START
    ========================================================= */
 
+let adminRefreshTimer = null;
+
 document.addEventListener("DOMContentLoaded", async function() {
     await updateOwnerInterface();
+
+    if (adminRefreshTimer) clearInterval(adminRefreshTimer);
+
+    adminRefreshTimer = setInterval(async () => {
+        if (isAdmin()) {
+            await loadAdminUsers();
+        }
+    }, 15000);
 });
 
 </script>
