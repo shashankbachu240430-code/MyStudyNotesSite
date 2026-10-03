@@ -406,380 +406,33 @@
             }
         }
 
-
-        /* =========================================================
-           GLASSMORPHIC UI — smooth, lightweight visual layer
-           ========================================================= */
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background:
-                radial-gradient(circle at 10% 10%, rgba(96,165,250,.34), transparent 28%),
-                radial-gradient(circle at 90% 15%, rgba(167,139,250,.28), transparent 30%),
-                radial-gradient(circle at 50% 95%, rgba(45,212,191,.20), transparent 32%),
-                linear-gradient(135deg, #172554 0%, #315f91 45%, #4d7eae 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        body::before,
-        body::after {
-            content: "";
-            position: fixed;
-            width: 260px;
-            height: 260px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-            filter: blur(8px);
-            opacity: .28;
-        }
-
-        body::before {
-            top: 8%;
-            left: -90px;
-            background: #60a5fa;
-        }
-
-        body::after {
-            right: -90px;
-            bottom: 8%;
-            background: #a78bfa;
-        }
-
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 500;
-            background: rgba(15, 23, 42, .68);
-            border-bottom: 1px solid rgba(255,255,255,.14);
-            box-shadow: 0 10px 35px rgba(15,23,42,.18);
-            backdrop-filter: blur(18px) saturate(145%);
-            -webkit-backdrop-filter: blur(18px) saturate(145%);
-        }
-
-        .container {
-            gap: 18px;
-            padding: 18px;
-            min-height: calc(100vh - 70px);
-        }
-
-        .sidebar,
-        .main,
-        #accountBar,
-        .editor,
-        .card {
-            background: rgba(255,255,255,.72);
-            border: 1px solid rgba(255,255,255,.58);
-            box-shadow:
-                0 12px 35px rgba(15,23,42,.12),
-                inset 0 1px 0 rgba(255,255,255,.65);
-            backdrop-filter: blur(16px) saturate(135%);
-            -webkit-backdrop-filter: blur(16px) saturate(135%);
-        }
-
-        .sidebar {
-            width: 280px;
-            flex: 0 0 280px;
-            border-right: 1px solid rgba(255,255,255,.55);
-            border-radius: 20px;
-            padding: 20px;
-        }
-
-        .main {
-            border-radius: 20px;
-            padding: 25px;
-        }
-
-        .sidebar button,
-        .buttons button,
-        .save-btn,
-        .cancel-btn,
-        .admin-portal-button,
-        .admin-close-button {
-            transition:
-                transform .16s ease,
-                box-shadow .16s ease,
-                opacity .16s ease,
-                background .16s ease;
-            will-change: transform;
-        }
-
-        .sidebar button:hover,
-        .buttons button:hover,
-        .save-btn:hover,
-        .cancel-btn:hover,
-        .admin-portal-button:hover,
-        .admin-close-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(15,23,42,.14);
-            opacity: .96;
-        }
-
-        .folder {
-            background: rgba(248,250,252,.62);
-            border: 1px solid rgba(255,255,255,.65);
-            transition: transform .16s ease, background .16s ease, box-shadow .16s ease;
-        }
-
-        .folder:hover {
-            background: rgba(255,255,255,.86);
-            transform: translateX(2px);
-            box-shadow: 0 7px 18px rgba(15,23,42,.08);
-        }
-
-        .folder.active {
-            background: rgba(219,234,254,.82);
-            box-shadow: inset 3px 0 0 #2563eb, 0 7px 18px rgba(37,99,235,.10);
-        }
-
-        .search,
-        .editor input,
-        .editor textarea {
-            background: rgba(255,255,255,.72);
-            border: 1px solid rgba(148,163,184,.42);
-            outline: none;
-            transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
-        }
-
-        .search:focus,
-        .editor input:focus,
-        .editor textarea:focus {
-            background: rgba(255,255,255,.9);
-            border-color: rgba(37,99,235,.55);
-            box-shadow: 0 0 0 4px rgba(37,99,235,.10);
-        }
-
-        .card {
-            border-radius: 16px;
-            transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            background: rgba(255,255,255,.82);
-            box-shadow:
-                0 16px 38px rgba(15,23,42,.15),
-                inset 0 1px 0 rgba(255,255,255,.75);
-        }
-
-        #pdfViewer {
-            border-radius: 16px;
-            background: rgba(255,255,255,.65);
-            box-shadow: 0 12px 35px rgba(15,23,42,.14);
-        }
-
-        #accountBar {
-            margin: 0 18px 0;
-            border-radius: 16px;
-        }
-
-        .admin-portal-backdrop {
-            background: rgba(2,6,23,.58);
-            backdrop-filter: blur(9px);
-            -webkit-backdrop-filter: blur(9px);
-        }
-
-        .admin-portal {
-            background: rgba(248,250,252,.88);
-            border: 1px solid rgba(255,255,255,.62);
-            box-shadow: 0 25px 80px rgba(2,6,23,.30);
-            backdrop-filter: blur(20px) saturate(140%);
-            -webkit-backdrop-filter: blur(20px) saturate(140%);
-        }
-
-        .admin-portal-header {
-            background: rgba(23,37,84,.86);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-        }
-
-        .admin-user-row {
-            background: rgba(255,255,255,.64);
-            border-color: rgba(148,163,184,.25);
-            box-shadow: 0 5px 18px rgba(15,23,42,.05);
-        }
-
-        /* Glass login screen */
-        #authGate {
-            background:
-                radial-gradient(circle at 15% 20%, rgba(96,165,250,.35), transparent 30%),
-                radial-gradient(circle at 85% 80%, rgba(167,139,250,.32), transparent 30%),
-                linear-gradient(135deg, #172554, #4d7eae) !important;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        #authGate > div {
-            background: rgba(255,255,255,.72) !important;
-            border: 1px solid rgba(255,255,255,.65);
-            border-radius: 24px !important;
-            box-shadow:
-                0 25px 70px rgba(2,6,23,.28),
-                inset 0 1px 0 rgba(255,255,255,.8) !important;
-            backdrop-filter: blur(22px) saturate(145%);
-            -webkit-backdrop-filter: blur(22px) saturate(145%);
-        }
-
-        #authEmail,
-        #authPassword,
-        #authConfirmPassword {
-            background: rgba(255,255,255,.68) !important;
-            border: 1px solid rgba(148,163,184,.38) !important;
-            outline: none;
-            transition: box-shadow .16s ease, background .16s ease;
-        }
-
-        #authEmail:focus,
-        #authPassword:focus,
-        #authConfirmPassword:focus {
-            background: rgba(255,255,255,.9) !important;
-            box-shadow: 0 0 0 4px rgba(37,99,235,.10);
-        }
-
-        #authPrimaryButton,
-        #authModeButton {
-            transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
-        }
-
-        #authPrimaryButton:hover,
-        #authModeButton:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(15,23,42,.14);
-        }
-
-        /* Respect reduced-motion settings */
-        @media (prefers-reduced-motion: reduce) {
-            html { scroll-behavior: auto; }
-            *,
-            *::before,
-            *::after {
-                transition: none !important;
-                animation: none !important;
-            }
-        }
-
-        @media (max-width: 700px) {
-            .container {
-                padding: 10px;
-                gap: 10px;
-            }
-
-            .sidebar {
-                width: 100%;
-                flex: none;
-                border-radius: 16px;
-            }
-
-            .main {
-                border-radius: 16px;
-            }
-
-            #accountBar {
-                margin: 10px 10px 0;
-            }
-
-            .admin-portal-backdrop {
-                padding: 10px;
-            }
-        }
-
-    
-        /* Mobile-friendly in-page PDF reader */
-        .pdf-reader {
-            background: rgba(15,23,42,.92);
-            border: 1px solid rgba(255,255,255,.18);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 18px 50px rgba(2,6,23,.22);
-        }
-
-        .pdf-reader-toolbar {
-            position: sticky;
-            top: 0;
-            z-index: 5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px 12px;
-            background: rgba(15,23,42,.94);
-            color: white;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-        .pdf-close-btn,
-        .pdf-nav-btn {
-            border: 0;
-            border-radius: 9px;
-            cursor: pointer;
-            color: white;
-            background: rgba(255,255,255,.14);
-            padding: 8px 13px;
-            font-size: 15px;
-        }
-
-        .pdf-close-btn {
-            background: #ef4444;
-            margin-right: auto;
-        }
-
-        .pdf-nav-btn {
-            min-width: 42px;
-            font-size: 22px;
-            line-height: 1;
-        }
-
-        .pdf-canvas-wrap {
-            width: 100%;
-            min-height: 300px;
-            max-height: 75vh;
-            overflow: auto;
-            padding: 12px;
-            box-sizing: border-box;
-            text-align: center;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        #pdfCanvas {
-            display: block;
-            margin: 0 auto;
-            max-width: 100%;
-            height: auto;
-            background: white;
-            box-shadow: 0 4px 18px rgba(0,0,0,.28);
-        }
-
-        .pdf-loading {
-            color: white;
-            text-align: center;
-            padding: 18px;
-            font-size: 15px;
-        }
-
-        @media (max-width: 700px) {
-            .pdf-reader-toolbar {
-                gap: 6px;
-                padding: 8px;
-            }
-
-            .pdf-canvas-wrap {
-                max-height: 72vh;
-                padding: 6px;
-            }
-
-            .pdf-close-btn,
-            .pdf-nav-btn {
-                padding: 8px 10px;
-            }
-        }
-
     </style>
 
+
+<script>
+/* Separate routes:
+   /                 = users/viewers
+   /admin            = administrator
+*/
+const ADMIN_ROUTE_PATH = "/admin";
+
+function isAdminRoute() {
+    const path = window.location.pathname.replace(/\/+$/, "") || "/";
+    return path === ADMIN_ROUTE_PATH;
+}
+</script>
+
+<style>
+body.admin-route #authModeButton {
+    display: none !important;
+}
+body.admin-route #authConfirmPassword {
+    display: none !important;
+}
+body.admin-route #adminPortalButton {
+    display: none !important;
+}
+</style>
 </head>
 
 
@@ -1072,19 +725,24 @@
 
 
         <!-- PDF VIEWER -->
+
         <div id="pdfViewerContainer" style="display:none; margin-top:20px;">
-            <div class="pdf-reader">
-                <div class="pdf-reader-toolbar">
-                    <button onclick="closePDFViewer()" class="pdf-close-btn">✕ Close</button>
-                    <button onclick="pdfPrevPage()" class="pdf-nav-btn">‹</button>
-                    <span id="pdfPageInfo">Page 1 / 1</span>
-                    <button onclick="pdfNextPage()" class="pdf-nav-btn">›</button>
-                </div>
-                <div id="pdfLoading" class="pdf-loading">Opening PDF…</div>
-                <div id="pdfCanvasWrap" class="pdf-canvas-wrap">
-                    <canvas id="pdfCanvas"></canvas>
-                </div>
-            </div>
+            <button
+                onclick="closePDFViewer()"
+                style="
+                    background:#ef4444;
+                    color:white;
+                    border:none;
+                    padding:10px 16px;
+                    border-radius:7px;
+                    cursor:pointer;
+                    font-size:15px;
+                    margin-bottom:10px;
+                ">
+                ✕ Close PDF
+            </button>
+
+            <iframe id="pdfViewer"></iframe>
         </div>
 
 
@@ -1095,7 +753,6 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 /* =========================================================
    MYSTUDYNOTESSITE - FINAL SHARED VERSION
@@ -1314,6 +971,8 @@ async function handleAuthPrimary() {
 }
 
 async function createAccount() {
+    if (isAdminRoute()) return;
+
     const email =
         document.getElementById("authEmail").value.trim();
     const password =
@@ -1388,16 +1047,11 @@ async function createAccount() {
 }
 
 async function ownerLogin() {
-    const email =
-        document.getElementById("authEmail").value.trim();
-    const password =
-        document.getElementById("authPassword").value;
+    const email = document.getElementById("authEmail").value.trim();
+    const password = document.getElementById("authPassword").value;
 
     if (!email || !password) {
-        setAuthMessage(
-            "Please enter your email and password.",
-            true
-        );
+        setAuthMessage("Please enter your email and password.", true);
         return;
     }
 
@@ -1411,10 +1065,7 @@ async function ownerLogin() {
 
     if (error) {
         console.error("Login error:", error);
-        setAuthMessage(
-            "Invalid email or password.",
-            true
-        );
+        setAuthMessage("Invalid email or password.", true);
         return;
     }
 
@@ -1422,20 +1073,33 @@ async function ownerLogin() {
     await loadCurrentProfile();
 
     if (!currentProfile) {
-        setAuthMessage(
-            "Your account could not be initialized. Please try again.",
-            true
-        );
         await supabaseClient.auth.signOut();
+        setAuthMessage("Your account could not be initialized. Please try again.", true);
         return;
     }
 
     if (currentProfile.active === false) {
+        await supabaseClient.auth.signOut();
         setAuthMessage(
             "Your access has been removed by the Admin. Please contact the Admin.",
             true
         );
+        return;
+    }
+
+    /* /admin is exclusively for the Admin account. */
+    if (isAdminRoute() && !isAdmin()) {
         await supabaseClient.auth.signOut();
+        currentUser = null;
+        currentProfile = null;
+        setAuthMessage("This account is not an Admin account.", true);
+        return;
+    }
+
+    /* If the Admin logs in from the normal shared link, send the Admin
+       to the dedicated Admin route instead of exposing Admin controls there. */
+    if (!isAdminRoute() && isAdmin()) {
+        window.location.href = "/MyStudyNotesSite/admin";
         return;
     }
 
@@ -1621,6 +1285,8 @@ supabaseClient.auth.onAuthStateChange(
 
 
 function openAdminPortal() {
+    if (!isAdminRoute() || !isAdmin()) return;
+
     if (!isAdmin()) return;
 
     const portal = document.getElementById("adminPortal");
@@ -2311,143 +1977,57 @@ async function displayPDFs() {
     });
 }
 
-let currentPdfDocument = null;
-let currentPdfPage = 1;
-let currentPdfPath = null;
-
 async function openPDF(path) {
     if (!isActiveUser()) {
         alert("Please log in to open this PDF.");
         return;
     }
 
-    const container = document.getElementById("pdfViewerContainer");
-    const loading = document.getElementById("pdfLoading");
-
-    container.style.display = "block";
-    loading.style.display = "block";
-    loading.textContent = "Opening PDF…";
-
-    currentPdfPath = path;
-
-    container.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-
     try {
-        const { data, error } = await supabaseClient
-            .storage
-            .from("pdfs")
-            .createSignedUrl(path, 600, { download: false });
+        // Short-lived signed URL. The PDF is requested inline.
+        const { data, error } =
+            await supabaseClient
+                .storage
+                .from("pdfs")
+                .createSignedUrl(path, 300);
 
         if (error) {
-            throw error;
+            console.error("PDF open error:", error);
+            alert("Unable to open PDF: " + error.message);
+            return;
         }
 
-        if (!window.pdfjsLib) {
-            throw new Error("PDF viewer could not be loaded.");
-        }
+        const viewer =
+            document.getElementById("pdfViewer");
 
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        const viewerContainer =
+            document.getElementById("pdfViewerContainer");
 
-        if (currentPdfDocument) {
-            try { await currentPdfDocument.destroy(); } catch (_) {}
-            currentPdfDocument = null;
-        }
+        viewer.src = data.signedUrl;
+        viewer.style.display = "block";
+        viewerContainer.style.display = "block";
 
-        // PDF.js renders the PDF inside the website. This avoids relying on
-        // the phone's native browser PDF/download behavior.
-        currentPdfDocument = await pdfjsLib.getDocument({
-            url: data.signedUrl
-        }).promise;
-
-        currentPdfPage = 1;
-        loading.style.display = "none";
-
-        await renderPdfPage(currentPdfPage);
+        viewer.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
 
     } catch (error) {
         console.error("PDF open error:", error);
-        loading.style.display = "block";
-        loading.textContent = "Unable to open this PDF. Please try again.";
+        alert("Unable to open this PDF.");
     }
 }
 
-async function renderPdfPage(pageNumber) {
-    if (!currentPdfDocument) return;
+function closePDFViewer() {
+    const viewer =
+        document.getElementById("pdfViewer");
 
-    currentPdfPage = Math.max(
-        1,
-        Math.min(pageNumber, currentPdfDocument.numPages)
-    );
+    const viewerContainer =
+        document.getElementById("pdfViewerContainer");
 
-    const page = await currentPdfDocument.getPage(currentPdfPage);
-
-    const canvas = document.getElementById("pdfCanvas");
-    const context = canvas.getContext("2d");
-
-    const wrap = document.getElementById("pdfCanvasWrap");
-    const availableWidth = Math.max(280, wrap.clientWidth - 12);
-
-    const baseViewport = page.getViewport({ scale: 1 });
-    const scale = Math.min(
-        2.0,
-        availableWidth / baseViewport.width
-    );
-
-    const viewport = page.getViewport({ scale });
-
-    const deviceScale = Math.min(window.devicePixelRatio || 1, 2);
-
-    canvas.width = Math.floor(viewport.width * deviceScale);
-    canvas.height = Math.floor(viewport.height * deviceScale);
-
-    canvas.style.width = Math.floor(viewport.width) + "px";
-    canvas.style.height = Math.floor(viewport.height) + "px";
-
-    await page.render({
-        canvasContext: context,
-        viewport: viewport,
-        transform: [deviceScale, 0, 0, deviceScale, 0, 0]
-    }).promise;
-
-    document.getElementById("pdfPageInfo").textContent =
-        "Page " + currentPdfPage + " / " + currentPdfDocument.numPages;
-}
-
-async function pdfPrevPage() {
-    if (!currentPdfDocument || currentPdfPage <= 1) return;
-    await renderPdfPage(currentPdfPage - 1);
-}
-
-async function pdfNextPage() {
-    if (!currentPdfDocument ||
-        currentPdfPage >= currentPdfDocument.numPages) return;
-    await renderPdfPage(currentPdfPage + 1);
-}
-
-async function closePDFViewer() {
-    if (currentPdfDocument) {
-        try { await currentPdfDocument.destroy(); } catch (_) {}
-        currentPdfDocument = null;
-    }
-
-    currentPdfPath = null;
-
-    const container = document.getElementById("pdfViewerContainer");
-    const loading = document.getElementById("pdfLoading");
-    const canvas = document.getElementById("pdfCanvas");
-
-    container.style.display = "none";
-    loading.style.display = "block";
-    loading.textContent = "Opening PDF…";
-
-    const context = canvas.getContext("2d");
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    canvas.width = 1;
-    canvas.height = 1;
+    viewer.src = "";
+    viewer.style.display = "none";
+    viewerContainer.style.display = "none";
 }
 
 async function deletePDF(path) {
@@ -2492,6 +2072,17 @@ async function displayContent() {
    ========================================================= */
 
 let adminRefreshTimer = null;
+
+
+function setupRouteUI() {
+    if (!isAdminRoute()) return;
+    const title = document.getElementById("authTitle");
+    const message = document.getElementById("authMessage");
+    if (title) title.textContent = "👑 Admin Login";
+    if (message) message.textContent =
+        "Admin access only. Use your administrator account.";
+}
+setupRouteUI();
 
 document.addEventListener("DOMContentLoaded", async function() {
     await updateOwnerInterface();
