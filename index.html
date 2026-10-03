@@ -340,254 +340,229 @@
             }
         }
 
+
+        #appContent {
+            align-items: stretch;
+        }
+
+        #loginSection,
+        #passwordSection {
+            align-self: center;
+        }
+
+        .folder {
+            width: 100%;
+            border: 0;
+            text-align: left;
+            font-size: 15px;
+        }
+
     </style>
 
 </head>
 
-
 <body>
 
-
-<!-- HEADER -->
-
 <header>
-
-    <div class="logo">
-        📚 MyStudyNotesSite.com
-    </div>
-
-    <div class="tagline">
-        Study • Write • Organize • Learn
-    </div>
-
+    <div class="logo">📚 MyStudyNotesSite.com</div>
+    <div class="tagline">Study • Write • Organize • Learn</div>
 </header>
 
-
 <div class="container">
-    <!-- OWNER LOGIN -->
-<div id="loginSection" style="
-    background:white;
-    padding:20px;
-    margin:20px;
-    border-radius:10px;
-">
-    <h2>Login</h2>
 
-    <p style="margin:10px 0;">
-        Log in to view the study materials. Admin can create, edit, update, delete and upload.
-    </p>
-
-    <input
-        id="ownerEmail"
-        type="email"
-        placeholder="Enter your email"
-        style="padding:10px; width:100%; max-width:350px; margin-bottom:10px;"
-    >
-
-    <br>
-
-    <input
-        id="ownerPassword"
-        type="password"
-        placeholder="Enter your password"
-        style="padding:10px; width:100%; max-width:350px; margin-bottom:10px;"
-    >
-
-    <br>
-
-    <button
-        onclick="ownerLogin()"
-        style="padding:10px 18px; background:#2563eb; color:white; border:0; border-radius:6px; cursor:pointer;"
-    >
-        Login
-    </button>
-
-    <button
-        onclick="ownerLogout()"
-        style="padding:10px 18px; background:#64748b; color:white; border:0; border-radius:6px; cursor:pointer;"
-    >
-        Logout
-    </button>
-
-    <p id="loginStatus" style="margin-top:10px;"></p>
-</div>
-
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <h2>📁 My Folders</h2>
-
-
-        <button
-            class="new-folder"
-            onclick="createFolder()">
-
-            ➕ New Folder
-
-        </button>
-
-
-        <button
-            class="new-note"
-            onclick="openNoteEditor()">
-
-            📝 New Note
-
-        </button>
-
-
-        <button
-            class="upload-pdf"
-            onclick="choosePDF()">
-
-            📄 Upload PDF
-
-        </button>
-
+    <!-- LOGIN -->
+    <section id="loginSection" style="
+        background:white;
+        padding:30px;
+        margin:auto;
+        border-radius:12px;
+        width:min(420px, calc(100% - 40px));
+        box-shadow:0 4px 18px rgba(0,0,0,.12);
+    ">
+        <h2>Login</h2>
+        <p style="margin:10px 0 18px;">
+            Enter your email and password to access the study website.
+        </p>
 
         <input
-            type="file"
-            id="pdfInput"
-            accept="application/pdf"
-            style="display:none"
-            onchange="uploadPDF(event)"
+            id="ownerEmail"
+            type="email"
+            autocomplete="username"
+            placeholder="Email"
+            style="padding:12px; width:100%; margin-bottom:10px;"
         >
-
-
-        <div
-            id="folderList"
-            class="folder-list">
-
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN -->
-
-    <main class="main">
-
-
-        <h2
-            id="currentFolder"
-            class="current-folder">
-
-            📁 Select a folder
-
-        </h2>
-
-
-        <!-- SEARCH -->
 
         <input
-            id="search"
-            class="search"
-            type="text"
-            placeholder="🔍 Search notes..."
-            oninput="displayContent()"
+            id="ownerPassword"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Password"
+            style="padding:12px; width:100%; margin-bottom:10px;"
         >
 
+        <button
+            onclick="ownerLogin()"
+            style="
+                padding:11px 18px;
+                background:#2563eb;
+                color:white;
+                border:0;
+                border-radius:6px;
+                cursor:pointer;
+                width:100%;
+            "
+        >Login</button>
 
-        <!-- NOTE EDITOR -->
+        <p id="loginStatus" style="margin-top:12px;"></p>
+    </section>
 
-        <div
-            id="editor"
-            class="editor">
+    <!-- PASSWORD CHANGE -->
+    <section id="passwordSection" style="
+        display:none;
+        background:white;
+        padding:30px;
+        margin:auto;
+        border-radius:12px;
+        width:min(420px, calc(100% - 40px));
+        box-shadow:0 4px 18px rgba(0,0,0,.12);
+    ">
+        <h2>Create your new password</h2>
+        <p style="margin:10px 0 18px;">
+            This is your first login. Create a new password before entering the website.
+        </p>
 
+        <input
+            id="newPassword"
+            type="password"
+            autocomplete="new-password"
+            placeholder="New password"
+            style="padding:12px; width:100%; margin-bottom:10px;"
+        >
+
+        <input
+            id="confirmPassword"
+            type="password"
+            autocomplete="new-password"
+            placeholder="Confirm new password"
+            style="padding:12px; width:100%; margin-bottom:10px;"
+        >
+
+        <button
+            onclick="changeFirstPassword()"
+            style="
+                padding:11px 18px;
+                background:#16a34a;
+                color:white;
+                border:0;
+                border-radius:6px;
+                cursor:pointer;
+                width:100%;
+            "
+        >Save New Password</button>
+
+        <p id="passwordStatus" style="margin-top:12px;"></p>
+    </section>
+
+    <!-- APPLICATION -->
+    <div id="appContent" style="display:none; width:100%;">
+
+        <aside class="sidebar">
+
+            <h2>📁 My Folders</h2>
+
+            <button class="new-folder" onclick="createFolder()">
+                ➕ New Folder
+            </button>
+
+            <button class="new-note" onclick="openNoteEditor()">
+                📝 New Note
+            </button>
+
+            <button class="upload-pdf" onclick="choosePDF()">
+                📄 Upload PDF
+            </button>
 
             <input
-                id="noteTitle"
-                placeholder="Enter note title..."
+                type="file"
+                id="pdfInput"
+                accept="application/pdf"
+                style="display:none"
+                onchange="uploadPDF(event)"
             >
 
-
-            <textarea
-                id="noteContent"
-                placeholder="Start typing your notes..."
-            ></textarea>
-
+            <div id="folderList" class="folder-list"></div>
 
             <button
-                class="save-btn"
-                onclick="saveNote()">
-
-                💾 Save Note
-
-            </button>
-
-
-            <button
-                class="cancel-btn"
-                onclick="closeEditor()">
-
-                Cancel
-
-            </button>
-
-        </div>
-
-
-        <!-- NOTES -->
-
-        <h2 class="section-title">
-
-            📝 My Notes
-
-        </h2>
-
-
-        <div
-            id="notesContainer"
-            class="items">
-
-        </div>
-
-
-        <!-- PDFS -->
-
-        <h2 class="section-title">
-
-            📄 My PDFs
-
-        </h2>
-
-
-        <div
-            id="pdfContainer"
-            class="items">
-
-        </div>
-
-
-        <!-- PDF VIEWER -->
-
-        <div id="pdfViewerContainer" style="display:none; margin-top:20px;">
-            <button
-                onclick="closePDFViewer()"
+                onclick="ownerLogout()"
                 style="
-                    background:#ef4444;
+                    margin-top:20px;
+                    background:#64748b;
                     color:white;
-                    border:none;
-                    padding:10px 16px;
-                    border-radius:7px;
-                    cursor:pointer;
-                    font-size:15px;
-                    margin-bottom:10px;
-                ">
-                ✕ Close PDF
-            </button>
+                "
+            >Logout</button>
 
-            <iframe id="pdfViewer"></iframe>
-        </div>
+        </aside>
 
+        <main class="main">
 
-    </main>
+            <h2 id="currentFolder" class="current-folder">
+                📁 Select a folder
+            </h2>
 
+            <input
+                id="search"
+                class="search"
+                type="text"
+                placeholder="🔍 Search notes..."
+                oninput="displayContent()"
+            >
+
+            <div id="editor" class="editor">
+
+                <input id="noteTitle" placeholder="Enter note title...">
+
+                <textarea
+                    id="noteContent"
+                    placeholder="Start typing your notes..."
+                ></textarea>
+
+                <button class="save-btn" onclick="saveNote()">
+                    💾 Save Note
+                </button>
+
+                <button class="cancel-btn" onclick="closeEditor()">
+                    Cancel
+                </button>
+
+            </div>
+
+            <h2 class="section-title">📝 My Notes</h2>
+            <div id="notesContainer" class="items"></div>
+
+            <h2 class="section-title">📄 My PDFs</h2>
+            <div id="pdfContainer" class="items"></div>
+
+            <div id="pdfViewerContainer" style="display:none; margin-top:20px;">
+                <button
+                    onclick="closePDFViewer()"
+                    style="
+                        background:#ef4444;
+                        color:white;
+                        border:none;
+                        padding:10px 16px;
+                        border-radius:7px;
+                        cursor:pointer;
+                        font-size:15px;
+                        margin-bottom:10px;
+                    "
+                >✕ Close PDF</button>
+
+                <iframe id="pdfViewer"></iframe>
+            </div>
+
+        </main>
+    </div>
 </div>
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -620,22 +595,18 @@ let currentUser = null;
 let folders = [];
 let notes = [];
 let selectedFolder = null;
-let editingNote = null;
-
-
-function isLoggedIn() {
-    return !!currentUser;
-}
+let editingNoteId = null;
+let mustChangePassword = false;
 
 
 function isAdmin() {
     return !!currentUser &&
-           currentUser.id === ADMIN_USER_ID;
+        currentUser.id === ADMIN_USER_ID;
 }
 
 
 /* =========================================================
-   LOGIN
+   LOGIN / LOGOUT
 ========================================================= */
 
 async function ownerLogin() {
@@ -649,16 +620,13 @@ async function ownerLogin() {
     const status =
         document.getElementById("loginStatus");
 
-
     if (!email || !password) {
         status.textContent =
             "Please enter your email and password.";
         return;
     }
 
-
     status.textContent = "Logging in...";
-
 
     const { data, error } =
         await supabaseClient.auth.signInWithPassword({
@@ -666,52 +634,175 @@ async function ownerLogin() {
             password
         });
 
-
     if (error) {
-
-        console.error("Login error:", error);
-
         status.textContent =
-            "Login failed: " + error.message;
-
+            "Invalid email or password.";
+        console.error(error);
         return;
     }
 
-
     currentUser = data.user;
 
-    document.getElementById("ownerPassword").value = "";
+    const firstLogin =
+        await checkFirstLogin();
 
-    await updateOwnerInterface();
+    if (firstLogin) {
+        showPasswordChange();
+        return;
+    }
+
+    await showApplication();
 }
 
 
 async function ownerLogout() {
 
-    const { error } =
-        await supabaseClient.auth.signOut();
-
-
-    if (error) {
-
-        console.error("Logout error:", error);
-
-        document.getElementById("loginStatus").textContent =
-            "Logout failed: " + error.message;
-
-        return;
-    }
+    await supabaseClient.auth.signOut();
 
     currentUser = null;
+    mustChangePassword = false;
     selectedFolder = null;
-    editingNote = null;
+    editingNoteId = null;
 
-    await updateOwnerInterface();
+    document.getElementById("appContent").style.display = "none";
+    document.getElementById("passwordSection").style.display = "none";
+    document.getElementById("loginSection").style.display = "block";
+
+    document.getElementById("ownerPassword").value = "";
+    document.getElementById("loginStatus").textContent =
+        "You are logged out.";
 }
 
 
 /* =========================================================
-   LOGIN / PERMISSION UI
+   FIRST LOGIN / PASSWORD
+========================================================= */
+
+async function checkFirstLogin() {
+
+    /*
+       The profiles table is the permanent source of truth.
+       New users are created with must_change_password = true.
+    */
+
+    const { data, error } =
+        await supabaseClient
+            .from("profiles")
+            .select("must_change_password")
+            .eq("id", currentUser.id)
+            .maybeSingle();
+
+    if (error) {
+        console.error("Profile check error:", error);
+
+        /*
+           Fallback for users whose metadata was manually set.
+        */
+        return (
+            currentUser.user_metadata?.must_change_password === true ||
+            currentUser.user_metadata?.first_login === true
+        );
+    }
+
+    if (!data) {
+        /*
+           Safety fallback: do not lock the existing Admin account
+           if its profile row has not been created yet.
+        */
+        return !isAdmin();
+    }
+
+    mustChangePassword =
+        data.must_change_password === true;
+
+    return mustChangePassword;
+}
+
+
+function showPasswordChange() {
+
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("appContent").style.display = "none";
+    document.getElementById("passwordSection").style.display = "block";
+
+    document.getElementById("newPassword").value = "";
+    document.getElementById("confirmPassword").value = "";
+
+    document.getElementById("passwordStatus").textContent =
+        "Please create your own password.";
+}
+
+
+async function changeFirstPassword() {
+
+    const newPassword =
+        document.getElementById("newPassword").value;
+
+    const confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+    const status =
+        document.getElementById("passwordStatus");
+
+    if (!newPassword || !confirmPassword) {
+        status.textContent =
+            "Please enter and confirm your new password.";
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        status.textContent =
+            "The passwords do not match.";
+        return;
+    }
+
+    if (newPassword.length < 6) {
+        status.textContent =
+            "Password must contain at least 6 characters.";
+        return;
+    }
+
+    status.textContent =
+        "Saving your new password...";
+
+    const { error: passwordError } =
+        await supabaseClient.auth.updateUser({
+            password: newPassword
+        });
+
+    if (passwordError) {
+        status.textContent =
+            "Could not change password: " +
+            passwordError.message;
+        return;
+    }
+
+    const { error: profileError } =
+        await supabaseClient
+            .from("profiles")
+            .update({
+                must_change_password: false
+            })
+            .eq("id", currentUser.id);
+
+    if (profileError) {
+        console.error(profileError);
+        status.textContent =
+            "Password changed, but the first-login status could not be saved.";
+        return;
+    }
+
+    mustChangePassword = false;
+
+    status.textContent =
+        "Password changed successfully.";
+
+    await showApplication();
+}
+
+
+/* =========================================================
+   INTERFACE
 ========================================================= */
 
 async function updateOwnerInterface() {
@@ -720,159 +811,53 @@ async function updateOwnerInterface() {
         await supabaseClient.auth.getSession();
 
     currentUser =
-        data.session ? data.session.user : null;
-
-
-    const status =
-        document.getElementById("loginStatus");
-
-    const admin =
-        isAdmin();
-
+        data.session
+            ? data.session.user
+            : null;
 
     if (!currentUser) {
 
-        status.textContent =
-            "Please log in to view the study materials.";
-
-    } else if (admin) {
-
-        status.textContent =
-            "Logged in as Admin. You can create, edit, update, delete and upload.";
-
-    } else {
-
-        status.textContent =
-            "Logged in as Viewer. You can view the study materials only.";
-    }
-
-
-    document
-        .querySelectorAll(
-            ".new-folder, .new-note, .upload-pdf"
-        )
-        .forEach(button => {
-            button.style.display =
-                admin ? "" : "none";
-        });
-
-
-    const editor =
-        document.getElementById("editor");
-
-    if (editor && !admin) {
-        editor.style.display = "none";
-    }
-
-
-    if (!currentUser) {
-
-        document.getElementById("folderList").innerHTML =
-            "<p>Please log in to view folders.</p>";
-
-        document.getElementById("notesContainer").innerHTML = "";
-        document.getElementById("pdfContainer").innerHTML = "";
+        document.getElementById("appContent").style.display = "none";
+        document.getElementById("passwordSection").style.display = "none";
+        document.getElementById("loginSection").style.display = "block";
 
         return;
     }
 
+    const firstLogin =
+        await checkFirstLogin();
 
-    await displayFolders();
-
-    await displayContent();
+    if (firstLogin) {
+        showPasswordChange();
+    } else {
+        await showApplication();
+    }
 }
 
 
-/* =========================================================
-   AUTH STATE
-========================================================= */
+async function showApplication() {
 
-supabaseClient.auth.onAuthStateChange(
-    function(event, session) {
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("passwordSection").style.display = "none";
+    document.getElementById("appContent").style.display = "flex";
 
-        currentUser =
-            session ? session.user : null;
+    document.getElementById("editor").style.display = "none";
 
-        setTimeout(function() {
-            updateOwnerInterface();
-        }, 0);
-    }
-);
+    await loadFolders();
+}
 
 
 /* =========================================================
    FOLDERS
 ========================================================= */
 
-async function createFolder() {
-
-    if (!isAdmin()) {
-        alert("Only the Admin can create folders.");
-        return;
-    }
-
-
-    const name =
-        prompt("Enter folder name:");
-
-
-    if (!name || !name.trim()) {
-        return;
-    }
-
-
-    const { data, error } =
-        await supabaseClient
-            .from("folders")
-            .insert([
-                {
-                    name: name.trim()
-                }
-            ])
-            .select()
-            .single();
-
-
-    if (error) {
-
-        console.error(
-            "Create folder error:",
-            error
-        );
-
-        alert(
-            "Could not create folder: " +
-            error.message
-        );
-
-        return;
-    }
-
-
-    folders.push(data);
-
-    await displayFolders();
-}
-
-
-async function displayFolders() {
+async function loadFolders() {
 
     const folderList =
         document.getElementById("folderList");
 
-
-    if (!currentUser) {
-
-        folderList.innerHTML =
-            "<p>Please log in to view folders.</p>";
-
-        return;
-    }
-
-
     folderList.innerHTML =
-        "Loading folders...";
-
+        "<p>Loading folders...</p>";
 
     const { data, error } =
         await supabaseClient
@@ -882,139 +867,173 @@ async function displayFolders() {
                 ascending: true
             });
 
-
     if (error) {
-
-        console.error(
-            "Load folders error:",
-            error
-        );
-
+        console.error(error);
         folderList.innerHTML =
-            "Unable to load folders.";
-
+            "<p>Unable to load folders.</p>";
         return;
     }
-
 
     folders = data || [];
 
     folderList.innerHTML = "";
 
-
     if (folders.length === 0) {
-
         folderList.innerHTML =
             "<p>No folders yet.</p>";
-
         return;
     }
 
-
     folders.forEach(folder => {
-
-        const wrapper =
-            document.createElement("div");
-
-        wrapper.style.display = "flex";
-        wrapper.style.gap = "6px";
-        wrapper.style.marginBottom = "7px";
-
 
         const button =
             document.createElement("button");
 
+        button.className = "folder";
+
+        if (selectedFolder === folder.id) {
+            button.classList.add("active");
+        }
+
         button.textContent =
             "📁 " + folder.name;
 
-        button.className =
-            "folder-item";
-
-        button.style.flex = "1";
-        button.style.marginBottom = "0";
-
-
-        if (selectedFolder === folder.id) {
-            button.style.background = "#dbeafe";
-            button.style.fontWeight = "bold";
-        }
-
-
-        button.onclick = function() {
-
-            selectedFolder =
-                folder.id;
-
-            document.getElementById(
-                "currentFolder"
-            ).textContent =
-                "📁 " + folder.name;
-
-            displayContent();
-            displayFolders();
+        button.onclick = () => {
+            selectFolder(folder.id);
         };
 
-
-        wrapper.appendChild(button);
-        folderList.appendChild(wrapper);
+        folderList.appendChild(button);
     });
 }
 
 
-/* =========================================================
-   NOTE EDITOR
-========================================================= */
-
-function openNoteEditor(index = null) {
+async function createFolder() {
 
     if (!isAdmin()) {
-        alert("Only the Admin can create or edit notes.");
+        alert("Only the Admin can create folders.");
         return;
     }
 
+    const name =
+        prompt("Enter folder name:");
 
-    if (selectedFolder === null) {
-
-        alert(
-            "Please select a folder first."
-        );
-
+    if (!name || !name.trim()) {
         return;
     }
 
+    const { data, error } =
+        await supabaseClient
+            .from("folders")
+            .insert({
+                name: name.trim()
+            })
+            .select()
+            .single();
+
+    if (error) {
+        console.error(error);
+        alert("Could not create folder: " + error.message);
+        return;
+    }
+
+    folders.push(data);
+
+    await loadFolders();
+
+    selectFolder(data.id);
+}
+
+
+function selectFolder(id) {
+
+    selectedFolder = id;
+
+    const folder =
+        folders.find(f => f.id === id);
+
+    if (!folder) {
+        return;
+    }
 
     document.getElementById(
-        "editor"
-    ).style.display = "block";
+        "currentFolder"
+    ).textContent =
+        "📁 " + folder.name;
+
+    loadFolders();
+    displayContent();
+}
 
 
-    editingNote = index;
+/* =========================================================
+   NOTES — SUPABASE ONLY
+   No localStorage. No IndexedDB.
+========================================================= */
+
+async function loadNotes() {
+
+    if (!selectedFolder) {
+        notes = [];
+        return;
+    }
+
+    const { data, error } =
+        await supabaseClient
+            .from("notes")
+            .select("*")
+            .eq("folder_id", selectedFolder)
+            .order("created_at", {
+                ascending: true
+            });
+
+    if (error) {
+        console.error("Load notes error:", error);
+        notes = [];
+        return;
+    }
+
+    notes = data || [];
+}
 
 
-    if (index !== null) {
+function openNoteEditor(noteId = null) {
+
+    if (!isAdmin()) {
+        alert("Only the Admin can edit notes.");
+        return;
+    }
+
+    if (!selectedFolder) {
+        alert("Please select a folder first.");
+        return;
+    }
+
+    editingNoteId = noteId;
+
+    const editor =
+        document.getElementById("editor");
+
+    editor.style.display = "block";
+
+    if (noteId) {
 
         const note =
-            notes[index];
+            notes.find(n => n.id === noteId);
 
-        document.getElementById(
-            "noteTitle"
-        ).value =
+        if (!note) {
+            return;
+        }
+
+        document.getElementById("noteTitle").value =
             note.title || "";
 
-        document.getElementById(
-            "noteContent"
-        ).value =
+        document.getElementById("noteContent").value =
             note.content || "";
 
     } else {
 
-        document.getElementById(
-            "noteTitle"
-        ).value = "";
-
-        document.getElementById(
-            "noteContent"
-        ).value = "";
+        document.getElementById("noteTitle").value = "";
+        document.getElementById("noteContent").value = "";
     }
 }
 
@@ -1025,214 +1044,145 @@ function closeEditor() {
         "editor"
     ).style.display = "none";
 
-    editingNote = null;
+    editingNoteId = null;
 }
 
-
-/* =========================================================
-   NOTES - LOAD FROM SUPABASE
-========================================================= */
-
-async function loadNotes() {
-
-    if (!currentUser) {
-        notes = [];
-        return;
-    }
-
-
-    const { data, error } =
-        await supabaseClient
-            .from("notes")
-            .select("*")
-            .order("created_at", {
-                ascending: false
-            });
-
-
-    if (error) {
-
-        console.error(
-            "Load notes error:",
-            error
-        );
-
-        notes = [];
-
-        return;
-    }
-
-
-    notes = data || [];
-}
-
-
-/* =========================================================
-   SAVE NOTE
-========================================================= */
 
 async function saveNote() {
 
     if (!isAdmin()) {
-
-        alert(
-            "Only the Admin can save notes."
-        );
-
+        alert("Only the Admin can save notes.");
         return;
     }
 
-
-    if (selectedFolder === null) {
-
-        alert(
-            "Please select a folder first."
-        );
-
+    if (!selectedFolder) {
+        alert("Please select a folder first.");
         return;
     }
-
 
     const title =
-        document.getElementById(
-            "noteTitle"
-        ).value.trim();
-
+        document.getElementById("noteTitle")
+            .value.trim();
 
     const content =
-        document.getElementById(
-            "noteContent"
-        ).value.trim();
-
+        document.getElementById("noteContent")
+            .value.trim();
 
     if (!title || !content) {
-
-        alert(
-            "Please enter title and notes."
-        );
-
+        alert("Please enter title and notes.");
         return;
     }
-
 
     let result;
 
-
-    if (editingNote !== null) {
-
-        const note =
-            notes[editingNote];
-
+    if (editingNoteId) {
 
         result =
             await supabaseClient
                 .from("notes")
                 .update({
-                    folder_id: selectedFolder,
-                    title: title,
-                    content: content
+                    title,
+                    content
                 })
-                .eq("id", note.id)
+                .eq("id", editingNoteId)
                 .select()
                 .single();
 
     } else {
 
+        /*
+           Prevent an accidental second identical copy if the
+           browser fires the save action twice.
+        */
+        const { data: existing } =
+            await supabaseClient
+                .from("notes")
+                .select("id")
+                .eq("folder_id", selectedFolder)
+                .eq("title", title)
+                .eq("content", content)
+                .limit(1);
+
+        if (existing && existing.length > 0) {
+            alert("This exact note already exists.");
+            closeEditor();
+            await loadNotes();
+            displayNotes();
+            return;
+        }
+
         result =
             await supabaseClient
                 .from("notes")
-                .insert([
-                    {
-                        folder_id: selectedFolder,
-                        title: title,
-                        content: content
-                    }
-                ])
+                .insert({
+                    folder_id: selectedFolder,
+                    title,
+                    content
+                })
                 .select()
                 .single();
     }
 
-
     if (result.error) {
-
-        console.error(
-            "Save note error:",
-            result.error
-        );
-
-        alert(
-            "Could not save note: " +
-            result.error.message
-        );
-
+        console.error(result.error);
+        alert("Could not save note: " + result.error.message);
         return;
     }
-
 
     closeEditor();
 
     await loadNotes();
-
-    await displayContent();
+    displayNotes();
 }
 
 
-/* =========================================================
-   DISPLAY CONTENT
-========================================================= */
+async function deleteNote(noteId) {
 
-async function displayContent() {
-
-    if (!currentUser) {
+    if (!isAdmin()) {
+        alert("Only the Admin can delete notes.");
         return;
     }
 
+    if (!confirm("Are you sure you want to delete this note?")) {
+        return;
+    }
+
+    const { error } =
+        await supabaseClient
+            .from("notes")
+            .delete()
+            .eq("id", noteId);
+
+    if (error) {
+        console.error(error);
+        alert("Could not delete note: " + error.message);
+        return;
+    }
 
     await loadNotes();
-
     displayNotes();
-
-    await displayPDFs();
 }
 
 
-/* =========================================================
-   DISPLAY NOTES
-========================================================= */
-
-function displayNotes() {
+async function displayNotes() {
 
     const container =
-        document.getElementById(
-            "notesContainer"
-        );
-
+        document.getElementById("notesContainer");
 
     container.innerHTML = "";
 
-
-    if (selectedFolder === null) {
+    if (!selectedFolder) {
         return;
     }
 
+    await loadNotes();
 
     const search =
-        document.getElementById(
-            "search"
-        ).value
-         .trim()
-         .toLowerCase();
+        document.getElementById("search")
+            .value
+            .toLowerCase();
 
-
-    notes.forEach((note, index) => {
-
-        if (
-            String(note.folder_id) !==
-            String(selectedFolder)
-        ) {
-            return;
-        }
-
+    notes.forEach(note => {
 
         const title =
             String(note.title || "");
@@ -1240,93 +1190,70 @@ function displayNotes() {
         const content =
             String(note.content || "");
 
-
         if (
-            search &&
             !title.toLowerCase().includes(search) &&
             !content.toLowerCase().includes(search)
         ) {
             return;
         }
 
-
         const card =
             document.createElement("div");
 
         card.className = "card";
 
+        const titleElement =
+            document.createElement("h3");
 
-        card.innerHTML = `
-            <h3>
-                📝 ${escapeHTML(title)}
-            </h3>
+        titleElement.textContent =
+            "📝 " + title;
 
-            <p>
-                ${escapeHTML(content)}
-            </p>
+        const contentElement =
+            document.createElement("p");
 
-            <small>
-                ${escapeHTML(
-                    note.created_at
-                        ? new Date(
-                            note.created_at
-                          ).toLocaleString()
-                        : ""
-                )}
-            </small>
-        `;
+        contentElement.textContent =
+            content;
 
+        const dateElement =
+            document.createElement("small");
+
+        dateElement.textContent =
+            note.created_at
+                ? new Date(note.created_at).toLocaleString()
+                : "";
+
+        card.appendChild(titleElement);
+        card.appendChild(contentElement);
+        card.appendChild(dateElement);
 
         if (isAdmin()) {
 
             const buttons =
                 document.createElement("div");
 
-            buttons.className =
-                "buttons";
-
+            buttons.className = "buttons";
 
             const editButton =
                 document.createElement("button");
 
-            editButton.className =
-                "edit";
-
-            editButton.textContent =
-                "✏️ Edit";
-
-            editButton.onclick =
-                function() {
-                    openNoteEditor(index);
-                };
-
+            editButton.className = "edit";
+            editButton.textContent = "✏️ Edit";
+            editButton.onclick = () =>
+                openNoteEditor(note.id);
 
             const deleteButton =
                 document.createElement("button");
 
-            deleteButton.className =
-                "delete";
+            deleteButton.className = "delete";
+            deleteButton.textContent = "🗑️ Delete";
+            deleteButton.onclick = () =>
+                deleteNote(note.id);
 
-            deleteButton.textContent =
-                "🗑️ Delete";
-
-            deleteButton.onclick =
-                function() {
-                    deleteNote(index);
-                };
-
-
-            buttons.appendChild(
-                editButton
-            );
-
-            buttons.appendChild(
-                deleteButton
-            );
+            buttons.appendChild(editButton);
+            buttons.appendChild(deleteButton);
 
             card.appendChild(buttons);
         }
-
 
         container.appendChild(card);
     });
@@ -1334,516 +1261,246 @@ function displayNotes() {
 
 
 /* =========================================================
-   DELETE NOTE
+   CONTENT
 ========================================================= */
 
-async function deleteNote(index) {
+async function displayContent() {
 
-    if (!isAdmin()) {
-
-        alert(
-            "Only the Admin can delete notes."
-        );
-
-        return;
-    }
-
-
-    const note =
-        notes[index];
-
-
-    if (!note) {
-        return;
-    }
-
-
-    if (
-        !confirm(
-            "Are you sure you want to delete this note?"
-        )
-    ) {
-        return;
-    }
-
-
-    const { error } =
-        await supabaseClient
-            .from("notes")
-            .delete()
-            .eq("id", note.id);
-
-
-    if (error) {
-
-        console.error(
-            "Delete note error:",
-            error
-        );
-
-        alert(
-            "Could not delete note: " +
-            error.message
-        );
-
-        return;
-    }
-
-
-    await loadNotes();
-
-    await displayContent();
+    await displayNotes();
+    await displayPDFs();
 }
 
 
 /* =========================================================
-   SAFE TEXT
-========================================================= */
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-/* =========================================================
-   PDF
+   PDFS — SUPABASE STORAGE ONLY
 ========================================================= */
 
 function choosePDF() {
 
     if (!isAdmin()) {
-
-        alert(
-            "Only the Admin can upload PDFs."
-        );
-
+        alert("Only the Admin can upload PDFs.");
         return;
     }
 
-
-    if (selectedFolder === null) {
-
-        alert(
-            "Please select a folder first."
-        );
-
+    if (!selectedFolder) {
+        alert("Please select a folder first.");
         return;
     }
 
-
-    document.getElementById(
-        "pdfInput"
-    ).click();
+    document.getElementById("pdfInput").click();
 }
 
 
 async function uploadPDF(event) {
 
     if (!isAdmin()) {
-
-        alert(
-            "Only the Admin can upload PDFs."
-        );
-
+        alert("Only the Admin can upload PDFs.");
         event.target.value = "";
-
         return;
     }
 
-
-    const input =
-        event.target;
-
     const file =
-        input.files[0];
-
+        event.target.files[0];
 
     if (!file) {
         return;
     }
 
-
-    if (selectedFolder === null) {
-
-        alert(
-            "Please select a folder first."
-        );
-
-        input.value = "";
-
+    if (!selectedFolder) {
+        alert("Please select a folder first.");
+        event.target.value = "";
         return;
     }
 
-
-    if (
-        file.type !==
-        "application/pdf"
-    ) {
-
-        alert(
-            "Please select a PDF file."
-        );
-
-        input.value = "";
-
+    if (file.type !== "application/pdf") {
+        alert("Please select a PDF file.");
+        event.target.value = "";
         return;
     }
 
+    /*
+       One fixed path per folder + filename.
+       Re-uploading the same filename replaces the file instead
+       of creating a duplicate.
+    */
+    const safeName =
+        file.name
+            .replace(/[^\w.\-() ]/g, "_");
 
-    try {
+    const path =
+        selectedFolder + "/" + safeName;
 
-        const safeName =
-            file.name.replace(
-                /[^a-zA-Z0-9._ -]/g,
-                "_"
-            );
+    const { error } =
+        await supabaseClient
+            .storage
+            .from("pdfs")
+            .upload(path, file, {
+                upsert: true,
+                contentType: "application/pdf"
+            });
 
+    event.target.value = "";
 
-        const filePath =
-            String(selectedFolder) +
-            "/" +
-            Date.now() +
-            "_" +
-            safeName;
-
-
-        const { error } =
-            await supabaseClient
-                .storage
-                .from("pdfs")
-                .upload(
-                    filePath,
-                    file
-                );
-
-
-        if (error) {
-
-            console.error(
-                "PDF upload error:",
-                error
-            );
-
-            alert(
-                "PDF upload failed: " +
-                error.message
-            );
-
-            input.value = "";
-
-            return;
-        }
-
-
-        input.value = "";
-
-        await displayPDFs();
-
-
-        alert(
-            "PDF uploaded successfully."
-        );
-
-    } catch (error) {
-
-        console.error(
-            "PDF upload error:",
-            error
-        );
-
-        alert(
-            "The PDF could not be uploaded."
-        );
-
-        input.value = "";
+    if (error) {
+        console.error(error);
+        alert("PDF upload failed: " + error.message);
+        return;
     }
+
+    await displayPDFs();
+
+    alert("PDF uploaded successfully.");
 }
 
 
 async function displayPDFs() {
 
     const container =
-        document.getElementById(
-            "pdfContainer"
-        );
-
+        document.getElementById("pdfContainer");
 
     container.innerHTML = "";
 
-
-    if (
-        !currentUser ||
-        selectedFolder === null
-    ) {
+    if (!selectedFolder) {
         return;
     }
 
+    const { data, error } =
+        await supabaseClient
+            .storage
+            .from("pdfs")
+            .list(String(selectedFolder), {
+                limit: 100,
+                sortBy: {
+                    column: "name",
+                    order: "asc"
+                }
+            });
 
-    try {
+    if (error) {
+        console.error(error);
+        container.innerHTML =
+            "<p>Unable to load PDFs.</p>";
+        return;
+    }
 
-        const { data, error } =
-            await supabaseClient
-                .storage
-                .from("pdfs")
-                .list(
-                    String(selectedFolder),
-                    {
-                        limit: 100,
-                        sortBy: {
-                            column: "name",
-                            order: "asc"
-                        }
-                    }
-                );
+    if (!data || data.length === 0) {
+        container.innerHTML =
+            "<p>No PDFs in this folder.</p>";
+        return;
+    }
 
-
-        if (error) {
-
-            console.error(
-                "PDF list error:",
-                error
-            );
-
-            container.innerHTML =
-                "<p>Unable to load PDFs.</p>";
-
-            return;
-        }
-
-
-        const pdfs =
-            (data || []).filter(
-                item =>
-                    item.name &&
-                    item.name.toLowerCase()
-                        .endsWith(".pdf")
-            );
-
-
-        if (pdfs.length === 0) {
-
-            container.innerHTML =
-                "<p>No PDFs in this folder.</p>";
-
-            return;
-        }
-
-
-        pdfs.forEach(pdf => {
+    data
+        .filter(file => file.name)
+        .forEach(file => {
 
             const path =
-                String(selectedFolder) +
-                "/" +
-                pdf.name;
-
+                selectedFolder + "/" + file.name;
 
             const card =
                 document.createElement("div");
 
-            card.className =
-                "card";
-
+            card.className = "card";
 
             const title =
                 document.createElement("h3");
 
             title.textContent =
-                "📄 " + pdf.name;
-
+                "📄 " + file.name;
 
             const buttons =
                 document.createElement("div");
 
-            buttons.className =
-                "buttons";
-
+            buttons.className = "buttons";
 
             const openButton =
                 document.createElement("button");
 
-            openButton.className =
-                "open";
+            openButton.className = "open";
+            openButton.textContent = "👁️ Open";
+            openButton.onclick = () =>
+                openPDF(path);
 
-            openButton.textContent =
-                "👁️ Open";
-
-            openButton.onclick =
-                function() {
-                    openPDF(path);
-                };
-
-
-            buttons.appendChild(
-                openButton
-            );
-
+            buttons.appendChild(openButton);
 
             if (isAdmin()) {
 
                 const deleteButton =
                     document.createElement("button");
 
-                deleteButton.className =
-                    "delete";
+                deleteButton.className = "delete";
+                deleteButton.textContent = "🗑️ Delete";
 
-                deleteButton.textContent =
-                    "🗑️ Delete";
+                deleteButton.onclick = () =>
+                    deletePDF(path);
 
-                deleteButton.onclick =
-                    function() {
-                        deletePDF(path);
-                    };
-
-                buttons.appendChild(
-                    deleteButton
-                );
+                buttons.appendChild(deleteButton);
             }
-
 
             card.appendChild(title);
             card.appendChild(buttons);
 
             container.appendChild(card);
         });
-
-    } catch (error) {
-
-        console.error(
-            "PDF display error:",
-            error
-        );
-
-        container.innerHTML =
-            "<p>Unable to load PDFs.</p>";
-    }
 }
 
 
-/* =========================================================
-   OPEN PDF
-========================================================= */
-
 async function openPDF(path) {
 
-    try {
+    const { data, error } =
+        await supabaseClient
+            .storage
+            .from("pdfs")
+            .createSignedUrl(path, 3600);
 
-        const { data, error } =
-            await supabaseClient
-                .storage
-                .from("pdfs")
-                .createSignedUrl(
-                    path,
-                    3600
-                );
-
-
-        if (error) {
-
-            console.error(
-                "PDF open error:",
-                error
-            );
-
-            alert(
-                "Unable to open PDF: " +
-                error.message
-            );
-
-            return;
-        }
-
-
-        const viewer =
-            document.getElementById(
-                "pdfViewer"
-            );
-
-        const viewerContainer =
-            document.getElementById(
-                "pdfViewerContainer"
-            );
-
-
-        viewer.src =
-            data.signedUrl;
-
-        viewer.style.display =
-            "block";
-
-        viewerContainer.style.display =
-            "block";
-
-        viewerContainer.scrollIntoView({
-            behavior: "smooth"
-        });
-
-    } catch (error) {
-
-        console.error(
-            "PDF open error:",
-            error
-        );
-
-        alert(
-            "Unable to open this PDF."
-        );
+    if (error) {
+        console.error(error);
+        alert("Unable to open PDF: " + error.message);
+        return;
     }
+
+    const viewer =
+        document.getElementById("pdfViewer");
+
+    const viewerContainer =
+        document.getElementById("pdfViewerContainer");
+
+    viewer.src =
+        data.signedUrl;
+
+    viewerContainer.style.display =
+        "block";
+
+    viewer.style.display =
+        "block";
+
+    viewer.scrollIntoView({
+        behavior: "smooth"
+    });
 }
 
 
 function closePDFViewer() {
 
-    const viewer =
-        document.getElementById(
-            "pdfViewer"
-        );
+    document.getElementById(
+        "pdfViewer"
+    ).src = "";
 
-    const viewerContainer =
-        document.getElementById(
-            "pdfViewerContainer"
-        );
-
-
-    viewer.src = "";
-
-    viewer.style.display =
-        "none";
-
-    viewerContainer.style.display =
-        "none";
+    document.getElementById(
+        "pdfViewerContainer"
+    ).style.display = "none";
 }
 
-
-/* =========================================================
-   DELETE PDF
-========================================================= */
 
 async function deletePDF(path) {
 
     if (!isAdmin()) {
-
-        alert(
-            "Only the Admin can delete PDFs."
-        );
-
+        alert("Only the Admin can delete PDFs.");
         return;
     }
 
-
-    if (
-        !confirm(
-            "Delete this PDF?"
-        )
-    ) {
+    if (!confirm("Delete this PDF?")) {
         return;
     }
-
 
     const { error } =
         await supabaseClient
@@ -1851,25 +1508,51 @@ async function deletePDF(path) {
             .from("pdfs")
             .remove([path]);
 
-
     if (error) {
-
-        console.error(
-            "PDF delete error:",
-            error
-        );
-
-        alert(
-            "Unable to delete PDF: " +
-            error.message
-        );
-
+        console.error(error);
+        alert("Unable to delete PDF: " + error.message);
         return;
     }
 
-
+    closePDFViewer();
     await displayPDFs();
 }
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+    async function(event, session) {
+
+        currentUser =
+            session
+                ? session.user
+                : null;
+
+        if (!currentUser) {
+            document.getElementById("appContent").style.display = "none";
+            document.getElementById("passwordSection").style.display = "none";
+            document.getElementById("loginSection").style.display = "block";
+            return;
+        }
+
+        /*
+           Avoid re-running the entire UI for token refreshes.
+        */
+        if (event === "SIGNED_IN") {
+            const firstLogin =
+                await checkFirstLogin();
+
+            if (firstLogin) {
+                showPasswordChange();
+            } else {
+                await showApplication();
+            }
+        }
+    }
+);
 
 
 /* =========================================================
@@ -1879,9 +1562,7 @@ async function deletePDF(path) {
 document.addEventListener(
     "DOMContentLoaded",
     async function() {
-
         await updateOwnerInterface();
-
     }
 );
 
