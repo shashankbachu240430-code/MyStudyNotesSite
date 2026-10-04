@@ -19,7 +19,7 @@
         }
 
         body {
-            background: #4d7eae;
+            background: #f4f6f8;
             color: #1e293b;
             overflow-x: hidden;
             position: relative;
@@ -38,26 +38,241 @@
 
         body::before {
             background-image:
-                radial-gradient(circle at 12% 95%, rgba(255,255,255,.28) 0 7px, transparent 8px),
-                radial-gradient(circle at 34% 100%, rgba(125,211,252,.22) 0 5px, transparent 6px),
-                radial-gradient(circle at 58% 92%, rgba(255,255,255,.24) 0 9px, transparent 10px),
-                radial-gradient(circle at 82% 98%, rgba(56,189,248,.20) 0 6px, transparent 7px);
-            animation: bubblesUp 13s linear infinite;
+                radial-gradient(circle at 12% 92%, rgba(59,130,246,.18) 0 7px, transparent 8px),
+                radial-gradient(circle at 78% 88%, rgba(56,189,248,.16) 0 5px, transparent 6px),
+                radial-gradient(circle at 45% 96%, rgba(14,165,233,.14) 0 9px, transparent 10px),
+                radial-gradient(circle at 91% 70%, rgba(96,165,250,.15) 0 6px, transparent 7px);
+            animation: bubblesUp 12s linear infinite;
         }
 
         body::after {
             background-image:
-                radial-gradient(circle at 20% 100%, rgba(255,255,255,.20) 0 4px, transparent 5px),
-                radial-gradient(circle at 48% 96%, rgba(125,211,252,.20) 0 6px, transparent 7px),
-                radial-gradient(circle at 72% 100%, rgba(255,255,255,.22) 0 8px, transparent 9px),
-                radial-gradient(circle at 92% 94%, rgba(56,189,248,.18) 0 5px, transparent 6px);
-            animation: bubblesUp 17s linear 2s infinite;
+                radial-gradient(circle at 25% 98%, rgba(125,211,252,.16) 0 4px, transparent 5px),
+                radial-gradient(circle at 65% 94%, rgba(59,130,246,.14) 0 6px, transparent 7px),
+                radial-gradient(circle at 84% 99%, rgba(14,165,233,.16) 0 8px, transparent 9px);
+            animation: bubblesUp 16s linear 2s infinite;
         }
 
         @keyframes bubblesUp {
-            0% { transform: translateY(30px); opacity: .15; }
-            45% { opacity: .8; }
-            100% { transform: translateY(-110vh); opacity: 0; }
+            0% {
+                transform: translateY(30px);
+                opacity: .25;
+            }
+
+            50% {
+                opacity: .8;
+            }
+
+            100% {
+                transform: translateY(-110vh);
+                opacity: 0;
+            }
+        }
+
+        /* PAGE-OPEN ENTRANCE ANIMATION */
+        @keyframes siteHeaderIn {
+            from {
+                opacity: 0;
+                transform: translateY(-18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes siteContentIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes logoGlowIn {
+            0% {
+                opacity: 0;
+                transform: scale(.96);
+            }
+
+            60% {
+                opacity: 1;
+                transform: scale(1.03);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* EXTRA INTERACTION ANIMATIONS */
+        @keyframes sectionSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(-12px) scale(.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.12);
+            }
+        }
+
+        /* SLOW UP AND DOWN ICON ANIMATION */
+        @keyframes bounceIcon {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            25% {
+                transform: translateY(-8px);
+            }
+
+            50% {
+                transform: translateY(0);
+            }
+
+            75% {
+                transform: translateY(6px);
+            }
+        }
+
+        @keyframes progressShine {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes softSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pageFade {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        button,
+        .folder,
+        .card {
+            transition:
+                transform .22s ease,
+                box-shadow .22s ease,
+                opacity .22s ease,
+                filter .22s ease;
+        }
+
+        button:not(:disabled):hover {
+            transform: translateY(-2px);
+            filter: brightness(1.03);
+        }
+
+        button:not(:disabled):active {
+            transform: translateY(1px) scale(.98);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(30,41,59,.14);
+        }
+
+        .folder:hover {
+            transform: translateX(4px);
+            box-shadow: 0 7px 18px rgba(30,41,59,.10);
+        }
+
+        .section-animate {
+            animation: sectionSlideIn .5s ease-out both;
+        }
+
+        .icon-pulse {
+            display: inline-block;
+            animation: pulseIcon 1.8s ease-in-out infinite;
+        }
+
+        .icon-bounce {
+            display: inline-block;
+            animation: bounceIcon 1.8s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        .loading-spinner {
+            width: 34px;
+            height: 34px;
+            border: 4px solid rgba(37,99,235,.18);
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: softSpin .8s linear infinite;
+            margin: 12px auto;
+        }
+
+        .animated-progress {
+            background:
+                linear-gradient(
+                    90deg,
+                    #60a5fa,
+                    #818cf8,
+                    #60a5fa
+                );
+            background-size: 200% 100%;
+            animation: progressShine 2.5s linear infinite;
+        }
+
+        .animated-toast {
+            position: fixed;
+            top: 22px;
+            right: 22px;
+            z-index: 9999;
+            padding: 12px 18px;
+            border-radius: 12px;
+            background: rgba(23,37,84,.96);
+            color: white;
+            box-shadow: 0 10px 28px rgba(15,23,42,.22);
+            pointer-events: none;
+            animation: toastIn .35s ease-out both;
+        }
+
+        .smooth-page {
+            animation: pageFade .45s ease-out both;
         }
 
         /* HEADER */
@@ -70,11 +285,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
+            animation: siteHeaderIn .8s ease-out both;
         }
 
         .logo {
             font-size: 23px;
             font-weight: bold;
+
+            animation:
+                logoGlowIn
+                1s
+                ease-out
+                .15s
+                both;
         }
 
         .tagline {
@@ -89,6 +313,13 @@
             min-height: calc(100vh - 70px);
             position: relative;
             z-index: 1;
+
+            animation:
+                siteContentIn
+                .9s
+                ease-out
+                .2s
+                both;
         }
 
         /* SIDEBAR */
@@ -166,6 +397,7 @@
             flex: 1;
             padding: 25px;
             overflow-y: auto;
+            min-width: 0;
         }
 
         .current-folder {
@@ -267,9 +499,11 @@
 
             background: white;
 
-            padding: 18px;
+            padding: 20px;
 
             border-radius: 10px;
+
+            min-width: 0;
 
             box-shadow:
                 0 2px 7px rgba(0,0,0,0.08);
@@ -303,29 +537,21 @@
             flex-wrap: wrap;
 
             width: 100%;
-
-            overflow: visible;
         }
 
         .buttons button {
 
-            padding: 11px 14px;
+            padding: 11px 15px;
 
             border: none;
 
-            border-radius: 7px;
+            border-radius: 6px;
 
             cursor: pointer;
 
-            min-width: 92px;
-
-            min-height: 46px;
-
             white-space: nowrap;
 
-            overflow: visible;
-
-            text-overflow: clip;
+            min-width: 86px;
 
             flex: 0 1 auto;
 
@@ -365,70 +591,39 @@
             margin-top: 20px;
         }
 
-        /* ADMIN PORTAL */
-        .admin-portal-backdrop {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            background: rgba(15, 23, 42, 0.62);
-            padding: 24px;
-            overflow-y: auto;
+        #pdfViewerContainer {
+            animation:
+                sectionSlideIn
+                .5s
+                ease-out
+                both;
         }
 
-        .admin-portal {
-            width: min(1100px, 100%);
-            margin: 0 auto;
-            background: white;
-            border-radius: 14px;
-            box-shadow: 0 18px 60px rgba(0,0,0,.25);
-            overflow: hidden;
-        }
+        #pdfViewerContainer.loading::before {
 
-        .admin-portal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            padding: 18px 22px;
-            background: #172554;
-            color: white;
-        }
+            content: "";
 
-        .admin-portal-body {
-            padding: 20px;
-            max-height: 75vh;
-            overflow-y: auto;
-        }
+            display: block;
 
-        .admin-user-row {
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
+            width: 34px;
+            height: 34px;
 
-        .admin-portal-button {
-            border: 0;
-            border-radius: 7px;
-            padding: 9px 14px;
-            cursor: pointer;
-            background: #7c3aed;
-            color: white;
-        }
+            margin: 0 auto 8px;
 
-        .admin-close-button {
-            border: 0;
-            border-radius: 7px;
-            padding: 9px 14px;
-            cursor: pointer;
-            background: #ef4444;
-            color: white;
+            border:
+                4px solid
+                rgba(37,99,235,.18);
+
+            border-top-color:
+                #2563eb;
+
+            border-radius: 50%;
+
+            animation:
+                softSpin
+                .8s
+                linear
+                infinite;
         }
 
         /* MOBILE */
@@ -453,7 +648,8 @@
 
                 border-right: none;
 
-                border-bottom: 1px solid #ddd;
+                border-bottom:
+                    1px solid #ddd;
             }
 
             .main {
@@ -463,324 +659,50 @@
             .items {
                 grid-template-columns: 1fr;
             }
+
+            .card {
+                padding: 20px;
+                width: 100%;
+                overflow: visible;
+            }
+
+            .buttons {
+                gap: 10px;
+                overflow: visible;
+            }
+
+            .buttons button {
+                min-width: 92px;
+                min-height: 46px;
+
+                padding:
+                    11px 14px;
+
+                flex:
+                    0 0 auto;
+            }
         }
 
     </style>
 
-
-<script>
-/* Separate routes:
-   /                 = users/viewers
-   /admin            = administrator
-*/
-const ADMIN_ROUTE_PATH = "/admin";
-
-function isAdminRoute() {
-    const path = window.location.pathname.replace(/\/+$/, "");
-    return path === "/admin" || path.endsWith("/admin");
-}
-</script>
-
-<style>
-body.admin-route #authModeButton {
-    display: none !important;
-}
-body.admin-route #authConfirmPassword {
-    display: none !important;
-}
-
-</style>
-
-<style>
-/* FINAL GLASS ADMIN / USER SEPARATION */
-body:not(.admin-route) [data-admin-only] {
-    display: none !important;
-}
-
-
-
-body.admin-route #authModeButton,
-body.admin-route #authConfirmPassword {
-    display: none !important;
-}
-
-body.admin-route {
-    background:
-        radial-gradient(circle at 12% 15%, rgba(96,165,250,.32), transparent 30%),
-        radial-gradient(circle at 88% 80%, rgba(167,139,250,.30), transparent 32%),
-        linear-gradient(135deg, #0f172a, #334155 55%, #1e3a8a);
-}
-
-.admin-portal,
-#adminPortal {
-    background: rgba(255,255,255,.78);
-    border: 1px solid rgba(255,255,255,.65);
-    box-shadow: 0 25px 70px rgba(2,6,23,.28);
-    backdrop-filter: blur(20px) saturate(145%);
-    -webkit-backdrop-filter: blur(20px) saturate(145%);
-    border-radius: 22px;
-}
-
-body.admin-route .admin-user-row {
-    background: rgba(255,255,255,.62);
-    border: 1px solid rgba(255,255,255,.65);
-    border-radius: 14px;
-    box-shadow: 0 8px 22px rgba(15,23,42,.08);
-}
-
-body.admin-route .admin-portal-header {
-    background: rgba(15,23,42,.82);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-}
-</style>
-
-
-<style id="approval-ui">
-.access-request-badge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-weight:700;font-size:12px;margin-left:8px}.status-pending{background:#fef3c7;color:#92400e}.status-active{background:#dcfce7;color:#166534}.status-removed{background:#fee2e2;color:#991b1b}.status-rejected{background:#f1f5f9;color:#475569}.request-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.approve-btn{background:#16a34a;color:#fff}.reject-btn{background:#64748b;color:#fff}.remove-btn{background:#dc2626;color:#fff}.restore-btn{background:#2563eb;color:#fff}
-</style>
-
-<style id="premium-glass-features">
-:root{
- --gx:rgba(255,255,255,.60);--gx2:rgba(255,255,255,.80);
- --gb:rgba(255,255,255,.52);--gs:0 18px 55px rgba(15,23,42,.14);
-}
-body{
- background:radial-gradient(circle at 8% 8%,rgba(59,130,246,.28),transparent 28%),
- radial-gradient(circle at 92% 12%,rgba(168,85,247,.24),transparent 28%),
- radial-gradient(circle at 50% 100%,rgba(14,165,233,.18),transparent 35%),
- linear-gradient(135deg,#dbeafe,#eef2ff 52%,#e0f2fe)!important;
- background-attachment:fixed!important;
-}
-header,#accountBar,.sidebar,.main,.card,.folder,.editor,.admin-portal,
-.glass-dashboard,.glass-tool-panel,.admin-user-row{
- background:var(--gx)!important;border:1px solid var(--gb)!important;
- box-shadow:var(--gs)!important;backdrop-filter:blur(20px) saturate(145%);
- -webkit-backdrop-filter:blur(20px) saturate(145%);border-radius:18px;
-}
-header{margin:12px;border-radius:20px!important}
-button{border-radius:11px!important;transition:transform .16s ease,box-shadow .16s ease,filter .16s ease!important}
-button:hover{transform:translateY(-1px);box-shadow:0 9px 24px rgba(15,23,42,.13)!important;filter:brightness(1.03)}
-.glass-dashboard{display:none;margin:18px 0;padding:16px;gap:10px;grid-template-columns:repeat(auto-fit,minmax(145px,1fr))}
-.glass-stat{padding:15px;border-radius:15px;background:rgba(255,255,255,.48);border:1px solid rgba(255,255,255,.55)}
-.glass-stat b{display:block;font-size:24px;margin-top:5px}
-.glass-tools{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.glass-tools button{border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.58);padding:9px 12px;cursor:pointer}
-.favorite-btn.is-fav{background:rgba(250,204,21,.35)!important}
-.user-status-pill{display:inline-block;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.55);font-size:12px}
-@media(max-width:700px){.glass-dashboard{grid-template-columns:repeat(2,1fr)}}
-</style>
-<style>.portal-toast{position:fixed;right:20px;bottom:20px;z-index:99999;padding:13px 17px;border-radius:14px;background:rgba(15,23,42,.88);color:#fff;backdrop-filter:blur(14px);display:none}</style>
-<style id="final-layout-arrangement">
-/* FINAL USER PORTAL LAYOUT
-   Folders stay at the extreme left. Main content stays on the right.
-   Small feature buttons sit directly below Admin Portal. */
-.container{position:relative!important;display:flex!important;align-items:stretch!important;gap:12px!important;padding:0 0 24px 0!important}
-.sidebar{order:0!important;flex:0 0 285px!important;min-width:285px!important;align-self:flex-start!important;position:sticky!important;top:88px!important;max-height:calc(100vh - 110px)!important;overflow:auto!important;margin:12px 0 0 0!important}
-.main{order:1!important;min-width:0!important;flex:1 1 auto!important;padding-top:18px!important}
-#accountBar{position:relative!important;z-index:20!important;width:auto!important;margin:6px 12px 10px!important;padding:8px 10px!important;display:none;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;flex-wrap:wrap!important;background:rgba(255,255,255,.72)!important;border:1px solid rgba(255,255,255,.7)!important;box-shadow:0 10px 28px rgba(15,23,42,.10)!important;backdrop-filter:blur(20px) saturate(145%)!important;-webkit-backdrop-filter:blur(20px) saturate(145%)!important;border-radius:16px!important}
-#accountInfo{font-size:11px!important;line-height:1.2!important;word-break:break-word!important;padding:2px 4px!important;flex:0 1 auto!important;max-width:180px!important}
-#accountBar>div{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:5px!important;align-items:center!important}
-#adminPortalButton,#accountBar button[onclick="ownerLogout()"]{width:auto!important;box-sizing:border-box!important;min-height:30px!important;padding:6px 9px!important;font-size:12px!important}
-#adminPortalButton{background:linear-gradient(135deg,#7c3aed,#5b21b6)!important}
-#accountBar button[onclick="ownerLogout()"]{background:rgba(100,116,139,.92)!important}
-#glassTools{order:10!important;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:7px!important;margin:0!important;padding:0!important;border:0!important}
-#glassTools button{width:auto!important;padding:6px 9px!important;font-size:11px!important;min-height:30px!important;background:rgba(255,255,255,.78)!important;box-shadow:none!important;transform:none!important}
-#glassTools button:hover{transform:translateY(-1px)!important}
-#glassDashboard{margin-left:0!important;margin-right:0!important}
-@media(max-width:1100px){
-  .sidebar{flex-basis:245px!important;min-width:245px!important}
-}
-@media(max-width:800px){
-  .container{flex-direction:row!important;gap:8px!important;padding:0 8px 20px!important}
-  .sidebar{position:relative!important;top:auto!important;width:38%!important;min-width:0!important;flex:0 0 38%!important;max-height:none!important;order:0!important;padding:12px 12px 12px 0!important;margin-left:0!important}
-  .main{order:1!important;flex:1 1 62%!important;padding:12px!important}
-  #accountBar{position:relative!important;width:auto!important;margin:6px 10px!important;padding:7px!important;display:none;flex-direction:row!important;align-items:center!important;gap:6px!important}
-  #accountBar>div{flex-direction:row!important;flex-wrap:wrap!important}
-  #adminPortalButton,#accountBar button[onclick="ownerLogout()"]{width:auto!important;flex:0 1 auto!important;min-height:29px!important;padding:5px 7px!important;font-size:11px!important}
-  #glassTools{flex-direction:row!important;flex-wrap:wrap!important}
-  #glassTools button{flex:0 1 auto!important;padding:5px 7px!important;font-size:10px!important;min-height:28px!important}
-}
-</style>
-
-
-<style id="student-dashboard-style">
-.student-welcome{margin:18px 0;padding:20px;border-radius:18px;background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.7);box-shadow:0 12px 35px rgba(15,23,42,.10)}
-.student-welcome h2{margin-bottom:6px}.student-welcome h3{margin:20px 0 10px}.student-shortcuts{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.student-shortcuts button{padding:9px 13px;border:0;background:#e0e7ff;cursor:pointer}
-.favorite-btn{padding:8px 11px;border:0;background:#fef3c7;cursor:pointer}.favorite-btn.is-fav{background:#fde68a}
-</style>
-<style id="classic-colorful-refresh">
-/* Classic, welcoming colors while preserving the Glass layout and Glass Mode. */
-:root{--classic-ink:#26334a;--classic-blue:#4169a8;--classic-teal:#3f8f88;--classic-gold:#e5ad4b;--classic-rose:#d97783;}
-body{background:linear-gradient(145deg,#f7f3ea 0%,#edf3f8 52%,#f8eee8 100%)!important;color:var(--classic-ink)!important;}
-header{background:linear-gradient(110deg,rgba(255,255,255,.94),rgba(235,243,250,.88))!important;border-color:#d7e1eb!important;}
-.student-welcome{background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(247,250,252,.90));border:1px solid #dce5ed;box-shadow:0 12px 32px rgba(48,66,91,.10);}
-.student-welcome h2{color:#315b91}.student-welcome h3{color:#376f70;border-bottom:2px solid #e7d6b7;padding-bottom:6px;}
-.student-shortcuts button{background:#e5edf8;color:#315b91;border:1px solid #cbd9ea;}
-.student-shortcuts button:nth-child(2){background:#fff1c9;color:#815b18;border-color:#f0d995;}
-.student-shortcuts button:nth-child(3){background:#e0f1ed;color:#286b62;border-color:#b9ddd4;}
-.favorite-btn{background:#fff0c2!important;color:#765515!important;border:1px solid #efd68d!important;}
-.favorite-btn.is-fav{background:#ffe29a!important;}
-.card{border-color:#dce4eb!important;}
-button.open{background:#4169a8!important;color:#fff!important;}
-#importantItems .card{border-left:4px solid #e5ad4b!important;}
-#studyPlannerList .card{border-left:4px solid #3f8f88!important;}
-@media(max-width:700px){.student-welcome{padding:15px}.student-welcome h3{font-size:17px}}
-</style>
-<style id="visible-header-back-fix">
-header .logo{color:#172554!important;font-weight:800!important;opacity:1!important;visibility:visible!important;text-shadow:none!important}
-header .tagline{color:#334155!important;opacity:1!important;visibility:visible!important}
-.site-back-button{flex:0 0 auto!important;display:none;align-items:center;justify-content:center;padding:9px 13px!important;margin-right:12px!important;border:1px solid #315b91!important;border-radius:10px!important;background:#315b91!important;color:#fff!important;font-weight:700!important;cursor:pointer;white-space:nowrap;position:relative;z-index:2}
-@media(max-width:700px){header{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:8px!important}.site-back-button{margin-right:2px!important}.logo{font-size:20px!important}}
-</style>
-
-
-<style id="compact-horizontal-admin-toolbar">
-/* One compact horizontal toolbar directly below the site title. */
-#accountBar{display:none;flex-flow:row nowrap!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:calc(100% - 24px)!important;min-height:0!important;height:auto!important;box-sizing:border-box!important;overflow-x:auto!important;overflow-y:hidden!important;white-space:nowrap!important;}
-#accountInfo{flex:0 0 auto!important;max-width:none!important;white-space:nowrap!important;word-break:normal!important;font-size:12px!important;}
-#accountBar>div{flex:0 0 auto!important;display:flex!important;flex-flow:row nowrap!important;align-items:center!important;gap:6px!important;}
-#glassTools{flex:0 0 auto!important;display:flex!important;flex-flow:row nowrap!important;align-items:center!important;gap:6px!important;}
-#accountBar button,#glassTools button{flex:0 0 auto!important;width:auto!important;white-space:nowrap!important;}
-@media(max-width:800px){#accountBar{flex-flow:row nowrap!important;gap:6px!important;margin:6px 10px!important;padding:6px!important;}#accountInfo{font-size:10px!important;}#accountBar button,#glassTools button{font-size:10px!important;padding:5px 7px!important;min-height:28px!important;}}
-</style>
-
-<style id="single-row-account-toolbar">
-#accountBar{
-  width:calc(100% - 30px)!important; box-sizing:border-box!important;
-  margin:8px 15px 12px!important; padding:8px 12px!important;
-  display:none; flex-direction:row!important; flex-wrap:nowrap!important;
-  align-items:center!important; justify-content:flex-start!important; gap:10px!important;
-  overflow-x:auto!important; overflow-y:hidden!important; white-space:nowrap!important;
-}
-#accountInfo{flex:0 0 auto!important; max-width:none!important; white-space:nowrap!important; word-break:normal!important; font-size:12px!important;}
-#accountBar>div{display:flex!important; flex:0 0 auto!important; flex-direction:row!important; flex-wrap:nowrap!important; align-items:center!important; gap:7px!important;}
-#glassTools{display:flex!important; flex:0 0 auto!important; flex-direction:row!important; flex-wrap:nowrap!important; align-items:center!important; gap:7px!important; margin:0!important;}
-#accountBar button,#glassTools button{flex:0 0 auto!important; width:auto!important; min-height:32px!important; padding:6px 10px!important; font-size:12px!important; white-space:nowrap!important;}
-@media(max-width:700px){#accountBar{width:calc(100% - 20px)!important;margin:6px 10px 10px!important;padding:7px!important;gap:7px!important;}#accountInfo{font-size:11px!important;}#accountBar button,#glassTools button{font-size:11px!important;min-height:30px!important;padding:5px 8px!important;}}
-</style>
-
-<style id="enhanced-glass-animations">
-/* Soft glass finish and lightweight motion; existing layout and functionality preserved. */
-:root{--glass-line:rgba(255,255,255,.72);--glass-shadow:0 16px 42px rgba(36,55,82,.12)}
-body{background-image:radial-gradient(ellipse at 12% 8%,rgba(255,255,255,.9),transparent 34%),radial-gradient(ellipse at 88% 18%,rgba(190,218,245,.48),transparent 32%),linear-gradient(135deg,#edf3f8,#f8f5ef 55%,#e9f0f6)!important;background-attachment:fixed!important}
-header,.sidebar,.main,.student-welcome,.card,.folder,.editor,.admin-portal,#accountBar,.glass-dashboard,.glass-tool-panel{border:1px solid var(--glass-line)!important;box-shadow:var(--glass-shadow)!important;backdrop-filter:blur(22px) saturate(155%)!important;-webkit-backdrop-filter:blur(22px) saturate(155%)!important}
-.sidebar,.student-welcome,.card,.folder,.glass-stat{transition:transform .28s ease,box-shadow .28s ease,background .28s ease}
-.sidebar:hover,.student-welcome:hover,.card:hover,.folder:hover,.glass-stat:hover{box-shadow:0 20px 48px rgba(36,55,82,.16)!important}
-button,.student-shortcuts button,.favorite-btn{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease,background .2s ease!important}
-button:hover,.student-shortcuts button:hover,.favorite-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(36,55,82,.14)!important;filter:saturate(1.08)}
-button:active,.student-shortcuts button:active{transform:translateY(0) scale(.98)}
-header{animation:glassDrop .65s cubic-bezier(.2,.75,.25,1) both}
-.sidebar{animation:glassSlideIn .7s .08s both}
-.main{animation:glassFadeUp .7s .14s both}
-.student-welcome h2,.student-welcome h3{letter-spacing:.1px}
-@keyframes glassDrop{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
-@keyframes glassSlideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
-@keyframes glassFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
-</style>
-
-<style id="bubble-water-motion">
-/* Subtle floating bubbles, liquid shimmer and glass ripple accents. */
-body{background-size:160% 160%;animation:waterDrift 24s ease-in-out infinite alternate}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.42;background-image:radial-gradient(circle at 8% 92%,rgba(255,255,255,.62) 0 3px,transparent 4px),radial-gradient(circle at 22% 78%,rgba(132,205,235,.28) 0 5px,transparent 6px),radial-gradient(circle at 72% 95%,rgba(255,255,255,.58) 0 4px,transparent 5px),radial-gradient(circle at 88% 72%,rgba(132,205,235,.25) 0 6px,transparent 7px),radial-gradient(circle at 48% 88%,rgba(255,255,255,.45) 0 2px,transparent 3px);background-size:100% 100%;animation:bubbleRise 18s linear infinite}
-header,.sidebar,.main,.student-welcome,.card,.folder,.editor,.admin-portal,#accountBar,.glass-dashboard,.glass-tool-panel{background-image:linear-gradient(125deg,rgba(255,255,255,.48),rgba(255,255,255,.10) 42%,rgba(180,220,245,.12) 60%,rgba(255,255,255,.36))!important;background-size:220% 220%;animation:liquidGlass 14s ease-in-out infinite alternate}
-.folder:hover,.card:hover,.sidebar:hover{animation:waterFloat 3s ease-in-out infinite alternate}
-button{position:relative;overflow:hidden}
-button::after{content:"";position:absolute;top:-120%;left:-45%;width:35%;height:340%;transform:rotate(25deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);transition:left .65s ease;pointer-events:none}
-button:hover::after{left:130%}
-@keyframes waterDrift{0%{background-position:0% 0%}100%{background-position:100% 100%}}
-@keyframes bubbleRise{0%{transform:translateY(18px);background-position:0 0}100%{transform:translateY(-24px);background-position:0 -120px}}
-@keyframes liquidGlass{0%{background-position:0% 40%}100%{background-position:100% 60%}}
-@keyframes waterFloat{from{transform:translateY(0)}to{transform:translateY(-3px)}}
-@media(prefers-reduced-motion:reduce){body,body::before,header,.sidebar,.main,.student-welcome,.card,.folder,.editor,.admin-portal,#accountBar,.glass-dashboard,.glass-tool-panel{animation:none!important}button::after{display:none}}
-</style>
-
-<style id="mobile-pdf-button-fix">
-/* Keep all PDF action buttons fully visible on phones. */
-@media (max-width: 700px) {
-    #pdfContainer .card {
-        width: 100%;
-        overflow: visible;
-    }
-    #pdfContainer .card {
-        padding: 22px;
-        min-height: 180px;
-    }
-    #pdfContainer .buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        width: 100%;
-        overflow: visible;
-    }
-    #pdfContainer .buttons button {
-        flex: 0 1 auto;
-        min-width: 96px;
-        min-height: 48px;
-        max-width: none;
-        padding: 11px 15px;
-        white-space: nowrap;
-        overflow: visible;
-        text-overflow: clip;
-        font-size: 15px;
-    }
-}
-</style>
-
-
-
-<style id="all-animations-complete">
-/* Complete animation package: opening, bubbles, cards, icons, sections, toast, progress. */
-@keyframes completeSectionIn{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes completeToastIn{from{opacity:0;transform:translateY(14px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes completeIconPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
-@keyframes completeIconBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@keyframes completeBubbleRise{0%{transform:translateY(35px) translateX(0) scale(.75);opacity:0}15%{opacity:.7}50%{transform:translateY(-45vh) translateX(18px) scale(1)}100%{transform:translateY(-110vh) translateX(-14px) scale(1.12);opacity:0}}
-@keyframes completeProgressShine{from{background-position:0 0}to{background-position:200% 0}}
-
-.complete-water-bubbles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.complete-water-bubbles span{position:absolute;bottom:-30px;width:12px;height:12px;border:1px solid rgba(255,255,255,.65);border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.75),rgba(125,211,252,.12) 55%,transparent 70%);filter:blur(.1px);animation:completeBubbleRise linear infinite}
-.complete-water-bubbles span:nth-child(1){left:7%;width:10px;height:10px;animation-duration:11s;animation-delay:-3s}
-.complete-water-bubbles span:nth-child(2){left:16%;width:18px;height:18px;animation-duration:15s;animation-delay:-8s}
-.complete-water-bubbles span:nth-child(3){left:28%;width:8px;height:8px;animation-duration:10s;animation-delay:-5s}
-.complete-water-bubbles span:nth-child(4){left:39%;width:15px;height:15px;animation-duration:13s;animation-delay:-10s}
-.complete-water-bubbles span:nth-child(5){left:52%;width:22px;height:22px;animation-duration:17s;animation-delay:-2s}
-.complete-water-bubbles span:nth-child(6){left:63%;width:9px;height:9px;animation-duration:12s;animation-delay:-7s}
-.complete-water-bubbles span:nth-child(7){left:74%;width:16px;height:16px;animation-duration:14s;animation-delay:-4s}
-.complete-water-bubbles span:nth-child(8){left:86%;width:11px;height:11px;animation-duration:10.5s;animation-delay:-9s}
-.complete-water-bubbles span:nth-child(9){left:94%;width:19px;height:19px;animation-duration:16s;animation-delay:-6s}
-
-.section-animate{animation:completeSectionIn .5s cubic-bezier(.2,.75,.25,1) both!important}
-.icon-pulse{display:inline-block;animation:completeIconPulse 1.8s ease-in-out infinite!important}
-.icon-bounce{display:inline-block;animation:completeIconBounce 1.7s ease-in-out infinite!important}
-.animated-toast{animation:completeToastIn .35s ease-out both!important}
-.animated-progress{background:linear-gradient(90deg,rgba(96,165,250,.9),rgba(129,140,248,.9),rgba(96,165,250,.9))!important;background-size:200% 100%!important;animation:completeProgressShine 2.5s linear infinite!important}
-
-.card,.glass-stat,.student-welcome,.sidebar,.main{transition:transform .25s ease,box-shadow .25s ease,filter .25s ease!important}
-.card:hover,.glass-stat:hover{transform:translateY(-5px)!important;filter:saturate(1.04)!important}
-.folder:hover{transform:translateX(4px) translateY(-1px)!important}
-.favorite-btn:hover{transform:translateY(-2px) scale(1.02)!important}
-.student-shortcuts button:hover{transform:translateY(-3px) scale(1.01)!important}
-
-#portalToast{animation:completeToastIn .35s ease-out both!important}
-
-@media(prefers-reduced-motion:reduce){.complete-water-bubbles{display:none!important}.icon-pulse,.icon-bounce,.animated-progress,#portalToast,.section-animate{animation:none!important}.card:hover,.glass-stat:hover,.folder:hover,.favorite-btn:hover,.student-shortcuts button:hover{transform:none!important}}
-</style>
-
 </head>
-
 
 <body>
 
+<div
+    id="siteToast"
+    class="animated-toast"
+    style="display:none;"
+    aria-live="polite">
+</div>
 
 <!-- HEADER -->
 
 <header>
 
-    <button id="sectionBackButton" class="site-back-button" onclick="showStudentSection('home')" style="display:none" aria-label="Back to Home">← Back</button>
     <div class="logo">
-        📚 MyStudyNotesSite.com
+        <span class="icon-pulse">📚</span>
+        MyStudyNotesSite.com
     </div>
 
     <div class="tagline">
@@ -789,197 +711,43 @@ button:hover::after{left:130%}
 
 </header>
 
-
-<div id="accountBar" style="
-    background:white;
-    margin:20px 20px 0;
-    padding:12px 16px;
-    border-radius:10px;
-    display:none;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    flex-wrap:wrap;
-">
-    <span id="accountInfo"></span>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button
-            id="adminPortalButton"
-            class="admin-portal-button"
-            onclick="openAdminPortal()"
-            style="display:none;"
-        >
-            👑 Admin Portal
-        </button>
-        <button
-            onclick="ownerLogout()"
-            style="padding:9px 16px;background:#64748b;color:white;border:0;border-radius:6px;cursor:pointer;"
-        >
-            Logout
-        </button>
-    </div>
-    <div id="glassTools" class="glass-tools" style="display:none;">
-  <button onclick="goHome()">🏠 Dashboard</button>
-  <button onclick="refreshPortal()">🔄 Refresh</button>
-  <button onclick="toggleDarkGlass()">🌙 Glass Mode</button>
-  <button onclick="focusSearch()">🔎 Search</button>
-</div>
-</div>
-
-
 <div class="container">
-    
-<!-- LOGIN / ACCOUNT -->
-<div id="authGate" style="
-    position:fixed;
-    inset:0;
-    z-index:9999;
-    background:#4d7eae;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-">
-    <div style="
-        background:white;
-        width:100%;
-        max-width:430px;
-        padding:28px;
-        border-radius:14px;
-        box-shadow:0 8px 30px rgba(0,0,0,.18);
-    ">
-        <h2 id="authTitle" style="margin-bottom:10px;">🔐 Login</h2>
-        <p id="authMessage" style="margin:0 0 18px;color:#475569;">
-            Sign in to access My Study Notes.
-        </p>
-
-        <input
-            id="authEmail"
-            type="email"
-            autocomplete="email"
-            placeholder="Email"
-            style="padding:12px;width:100%;margin-bottom:10px;border:1px solid #cbd5e1;border-radius:7px;"
-        >
-
-        <input
-            id="authPassword"
-            type="password"
-            autocomplete="current-password"
-            placeholder="Password"
-            style="padding:12px;width:100%;margin-bottom:10px;border:1px solid #cbd5e1;border-radius:7px;"
-        >
-
-        <button
-            id="forgotPasswordButton"
-            type="button"
-            onclick="sendPasswordReset()"
-            style="display:block;margin:0 0 12px auto;padding:0;border:0;background:transparent;color:#2563eb;text-decoration:underline;cursor:pointer;font-size:14px;"
-        >
-            Forgot password?
-        </button>
-
-        <input
-            id="authConfirmPassword"
-            type="password"
-            autocomplete="new-password"
-            placeholder="Confirm password"
-            style="display:none;padding:12px;width:100%;margin-bottom:10px;border:1px solid #cbd5e1;border-radius:7px;"
-        >
-
-        <button
-            id="authPrimaryButton"
-            onclick="handleAuthPrimary()"
-            style="width:100%;padding:12px 18px;background:#2563eb;color:white;border:0;border-radius:7px;cursor:pointer;font-size:15px;"
-        >
-            Login
-        </button>
-
-        <button
-            id="authModeButton"
-            onclick="toggleAuthMode()"
-            style="width:100%;padding:12px 18px;margin-top:10px;background:#e2e8f0;color:#1e293b;border:0;border-radius:7px;cursor:pointer;font-size:15px;"
-        >
-            Create Account
-        </button>
-
-        <p id="authStatus" style="margin-top:14px;min-height:20px;"></p>
-    </div>
-</div>
-
-
-
-<div id="mobileStudyNav" aria-label="Study navigation">
-  <button type="button" onclick="goHome()">🏠<small>Home</small></button>
-  <button type="button" onclick="document.getElementById('studentWelcome').scrollIntoView({behavior:'smooth'})">📚<small>Study</small></button>
-  <button type="button" onclick="focusSearch()">🔎<small>Search</small></button>
-  <button type="button" onclick="toggleDarkGlass()">🌙<small>Glass</small></button>
-</div>
-<div id="adminPortal" class="admin-portal-backdrop">
-    <div class="admin-portal">
-        <div class="admin-portal-header">
-            <div>
-                <h2 style="margin:0;">👑 Admin Portal</h2>
-                <div style="margin-top:4px;color:#cbd5e1;font-size:14px;">
-                    User access, login activity, and account management
-                </div>
-            </div>
-            <button class="admin-close-button" onclick="closeAdminPortal()">✕ Close</button>
-        </div>
-        <div class="admin-portal-body">
-            <div class="glass-tools" style="display:flex;">
-              <button onclick="loadAdminUsers()">🔄 Refresh Users</button>
-              <button onclick="filterAdminUsers('pending')">🟡 Pending</button>
-              <button onclick="filterAdminUsers('active')">🟢 Active</button>
-              <button onclick="filterAdminUsers('removed')">🔴 Removed</button>
-              <button onclick="filterAdminUsers('all')">👥 All Users</button>
-            </div>
-            <div id="adminStats" class="glass-dashboard" style="display:grid;">
-              <div class="glass-stat">🟡 Pending<b id="adminPending">0</b></div>
-              <div class="glass-stat">🟢 Active<b id="adminActive">0</b></div>
-              <div class="glass-stat">🔴 Removed<b id="adminRemoved">0</b></div>
-              <div class="glass-stat">👥 Total<b id="adminTotal">0</b></div>
-            </div>
-            <div id="adminUserSearch" style="margin-bottom:12px;">
-              <input id="adminSearch" placeholder="🔎 Search users by email..." style="width:100%;padding:11px;border-radius:10px;border:1px solid #cbd5e1;" oninput="renderAdminFilter()">
-            </div>
-            <div id="userList">Loading users...</div>
-        </div>
-    </div>
-</div>
 
     <!-- SIDEBAR -->
 
     <aside class="sidebar">
 
-        <h2>📁 My Folders</h2>
-
+        <h2>
+            <span class="icon-bounce">📁</span>
+            My Folders
+        </h2>
 
         <button
             class="new-folder"
             onclick="createFolder()">
 
-            ➕ New Folder
+            <span class="icon-bounce">➕</span>
+            New Folder
 
         </button>
-
 
         <button
             class="new-note"
             onclick="openNoteEditor()">
 
-            📝 New Note
+            <span class="icon-bounce">📝</span>
+            New Note
 
         </button>
-
 
         <button
             class="upload-pdf"
             onclick="choosePDF()">
 
-            📄 Upload PDF
+            <span class="icon-pulse">📄</span>
+            Upload PDF
 
         </button>
-
 
         <input
             type="file"
@@ -989,29 +757,25 @@ button:hover::after{left:130%}
             onchange="uploadPDF(event)"
         >
 
-
         <div
             id="folderList"
             class="folder-list">
-
         </div>
 
     </aside>
 
-
     <!-- MAIN -->
 
-    <main class="main">
-
+    <main class="main smooth-page">
 
         <h2
             id="currentFolder"
             class="current-folder">
 
-            📁 Select a folder
+            <span class="icon-bounce">📁</span>
+            Select a folder
 
         </h2>
-
 
         <!-- SEARCH -->
 
@@ -1023,25 +787,21 @@ button:hover::after{left:130%}
             oninput="displayContent()"
         >
 
-
         <!-- NOTE EDITOR -->
 
         <div
             id="editor"
-            class="editor">
-
+            class="editor section-animate">
 
             <input
                 id="noteTitle"
                 placeholder="Enter note title..."
             >
 
-
             <textarea
                 id="noteContent"
                 placeholder="Start typing your notes..."
             ></textarea>
-
 
             <button
                 class="save-btn"
@@ -1050,7 +810,6 @@ button:hover::after{left:130%}
                 💾 Save Note
 
             </button>
-
 
             <button
                 class="cancel-btn"
@@ -1062,42 +821,41 @@ button:hover::after{left:130%}
 
         </div>
 
-
         <!-- NOTES -->
 
         <h2 class="section-title">
 
-            📝 My Notes
+            <span class="icon-bounce">📝</span>
+            My Notes
 
         </h2>
-
 
         <div
             id="notesContainer"
             class="items">
-
         </div>
-
 
         <!-- PDFS -->
 
         <h2 class="section-title">
 
-            📄 My PDFs
+            <span class="icon-bounce">📄</span>
+            My PDFs
 
         </h2>
-
 
         <div
             id="pdfContainer"
             class="items">
-
         </div>
-
 
         <!-- PDF VIEWER -->
 
-        <div id="pdfViewerContainer" style="display:none; margin-top:20px;">
+        <div
+            id="pdfViewerContainer"
+            class="section-animate"
+            style="display:none; margin-top:20px;">
+
             <button
                 onclick="closePDFViewer()"
                 style="
@@ -1110,1696 +868,1116 @@ button:hover::after{left:130%}
                     font-size:15px;
                     margin-bottom:10px;
                 ">
+
                 ✕ Close PDF
+
             </button>
 
             <iframe id="pdfViewer"></iframe>
-        </div>
 
+        </div>
 
     </main>
 
 </div>
 
-<section id="studentWelcome" class="student-welcome" style="display:none;">
-  <h2 id="welcomeHeading">Good day 👋</h2>
-  <p>Ready to continue studying?</p>
-  <div class="student-shortcuts">
-    <button onclick="showStudentSection('home')">🏠 Home</button>
-    <button onclick="showStudentSection('favorites')">⭐ Favorites</button>
-    <button onclick="showStudentSection('recent')">🕘 Recently Opened</button>
-    <button onclick="showStudentSection('planner')">🗓️ Study Planner</button>
-    <button onclick="showStudentSection('exam')">🎯 Exam Mode</button>
-  </div>
-  <h3>⭐ Your Favorites</h3>
-  <div id="favoriteItems" class="items"><p>No favorites yet. Tap ☆ on a PDF or note.</p></div>
-  <h3>📌 Important Documents</h3>
-  <p>Mark useful notes or PDFs as important while viewing them.</p>
-  <div id="importantItems" class="items"></div>
-  <h3>🗓️ Study Planner</h3>
-  <input id="plannerTask" placeholder="What will you study?" style="padding:10px;max-width:100%;">
-  <input id="plannerDate" type="date" style="padding:10px;">
-  <button onclick="addStudyTask()">Add task</button>
-  <div id="studyPlannerList" class="items"></div>
-  <h3>🎯 Exam Mode</h3>
-  <p>Start a focused study session with a countdown timer.</p>
-  <div class="exam-mode-controls">
-    <select id="examMinutes" aria-label="Session length"><option value="25">25 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select>
-    <button type="button" onclick="startExamMode()">▶ Start focus session</button>
-    <button type="button" onclick="stopExamMode()">■ Stop</button>
-    <strong id="examCountdown" aria-live="polite">25:00</strong>
-  </div>
-  <div id="examStatus" class="items">Ready when you are.</div>
-  <h3>📊 Study Goals</h3>
-  <p>Set a daily target and mark your study progress.</p>
-  <div class="exam-mode-controls"><input id="dailyGoalMinutes" type="number" min="5" max="600" value="60" style="width:110px" aria-label="Daily study goal in minutes"><span>minutes per day</span><button type="button" onclick="saveDailyGoal()">Save goal</button></div>
-  <div id="dailyGoalStatus" class="items"></div>
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* =========================================================
-   MYSTUDYNOTESSITE - FINAL SHARED VERSION
-   Admin:
-     ec9ba898-f360-44fa-b941-db5497794d36
-   Viewers:
-     Can create their own account and view content only.
-   ========================================================= */
 
-const SUPABASE_URL = "https://ozdcpgesiraqughaajog.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_DCZHIdzjXa7uBaLc7B1dBQ_AbZoGu4B";
+/* ===============================
+   DATA
+================================ */
 
-const ADMIN_USER_ID =
-    "ec9ba898-f360-44fa-b941-db5497794d36";
+let folders =
+    JSON.parse(
+        localStorage.getItem("folders")
+    ) || [];
 
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-);
+let notes =
+    JSON.parse(
+        localStorage.getItem("notes")
+    ) || [];
 
-let currentUser = null;
-let currentProfile = null;
-let folders = [];
-let notes = [];
 let selectedFolder = null;
-let editingNoteId = null;
-let authMode = "login";
+
+let editingNote = null;
 
 
-/* =========================================================
-   AUTH UI
-   ========================================================= */
+/* ===============================
+   SAVE DATA
+================================ */
 
-function isAdmin() {
-    return !!currentUser && currentUser.id === ADMIN_USER_ID;
+function saveData() {
+
+    localStorage.setItem(
+        "folders",
+        JSON.stringify(folders)
+    );
+
+    localStorage.setItem(
+        "notes",
+        JSON.stringify(notes)
+    );
+
 }
 
-function isActiveUser() {
-    return !!currentUser &&
-        !!currentProfile &&
-        currentProfile.active !== false;
-}
 
+/* ===============================
+   CREATE FOLDER
+================================ */
 
-async function recordLogin() {
-    if (!currentUser || !currentProfile) return;
+function createFolder() {
 
-    const { data, error } =
-        await supabaseClient.rpc("record_my_login");
+    const name =
+        prompt("Enter folder name:");
 
-    if (error) {
-        console.warn("Login tracking failed:", error.message);
+    if (!name) {
+
         return;
+
     }
 
-    if (data) {
-        currentProfile.last_login_at = data.last_login_at;
-        currentProfile.login_count = data.login_count;
-    }
+    folders.push({
+
+        id: Date.now(),
+
+        name: name
+
+    });
+
+    saveData();
+
+    displayFolders();
+
 }
 
-function formatDate(value) {
-    if (!value) return "Never";
-    const d = new Date(value);
-    return Number.isNaN(d.getTime()) ? "Unknown" : d.toLocaleString();
-}
 
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+/* ===============================
+   DISPLAY FOLDERS
+================================ */
 
-async function loadAdminUsers() {
-    if (!isAdmin()) return;
-    const container = document.getElementById("userList");
-    if (!container) return;
-    container.textContent = "Loading users...";
-    const { data: users, error } = await supabaseClient
-        .from("profiles")
-        .select("id,email,active,must_change_password,created_at,last_login_at,login_count")
-        .order("created_at", { ascending: false });
-    if (error) { container.innerHTML = "<p style='color:#dc2626'>Unable to load users: "+escapeHtml(error.message)+"</p>"; return; }
-    const { data: requests } = await supabaseClient
-        .from("access_requests")
-        .select("id,user_id,status,requested_at,reviewed_at")
-        .order("requested_at", { ascending: false });
-    const requestMap = new Map((requests || []).map(r => [r.user_id, r]));
-    if (!users || !users.length) { container.innerHTML = "<p>No users have registered yet.</p>"; return; }
+function displayFolders() {
+
+    const container =
+        document.getElementById(
+            "folderList"
+        );
+
     container.innerHTML = "";
-    users.forEach(user => {
-        const row = document.createElement("div"); row.className = "admin-user-row";
-        const req = requestMap.get(user.id);
-        let status = user.id === ADMIN_USER_ID ? "admin" : (user.active === false ? (req?.status || "removed") : "active");
-        const statusLabel = status === "pending" ? "🟡 Pending Approval" : status === "active" ? "🟢 Active" : status === "rejected" ? "⚪ Rejected" : status === "admin" ? "👑 Admin" : "🔴 Access Removed";
-        const badgeClass = status === "pending" ? "status-pending" : status === "active" ? "status-active" : status === "rejected" ? "status-rejected" : "status-removed";
-        const info = document.createElement("div");
-        info.innerHTML = "<strong>"+escapeHtml(user.email || "(no email)")+"</strong>" +
-          "<span class='access-request-badge "+badgeClass+"'>"+statusLabel+"</span>" +
-          "<div style='font-size:13px;color:#64748b;margin-top:6px'>Created: "+formatDate(user.created_at)+" &nbsp;•&nbsp; Last login: "+formatDate(user.last_login_at)+" &nbsp;•&nbsp; Logins: "+Number(user.login_count||0)+
-          (req?.requested_at ? " &nbsp;•&nbsp; Request: "+formatDate(req.requested_at) : "") + "</div>";
-        const action = document.createElement("div"); action.className="request-actions";
-        if (user.id === ADMIN_USER_ID) { action.innerHTML = "<span style='font-weight:700'>Owner account</span>"; }
-        else if (status === "pending") {
-            const approve=document.createElement("button"); approve.className="approve-btn"; approve.textContent="✅ Approve"; approve.onclick=()=>reviewAccessRequest(user.id,"approved",req?.id);
-            const reject=document.createElement("button"); reject.className="reject-btn"; reject.textContent="❌ Reject"; reject.onclick=()=>reviewAccessRequest(user.id,"rejected",req?.id); action.append(approve,reject);
-        } else if (status === "active") {
-            const remove=document.createElement("button"); remove.className="remove-btn"; remove.textContent="🚫 Remove Access"; remove.onclick=()=>changeUserAccess(user.id,user.email,false); action.appendChild(remove);
-        } else {
-            const restore=document.createElement("button"); restore.className="restore-btn"; restore.textContent="🔄 Restore Access"; restore.onclick=()=>changeUserAccess(user.id,user.email,true); action.appendChild(restore);
-        }
-        row.append(info,action); container.appendChild(row);
-    });
-}
-
-async function reviewAccessRequest(userId, status, requestId) {
-    if (!isAdmin()) return;
-    const makeActive = status === "approved";
-    const { error: pErr } = await supabaseClient.from("profiles").update({ active: makeActive, access_removed_at: makeActive ? null : new Date().toISOString() }).eq("id", userId);
-    if (pErr) { alert("Could not update user: "+pErr.message); return; }
-    if (requestId) {
-        const { error: rErr } = await supabaseClient.from("access_requests").update({status, reviewed_at:new Date().toISOString(), reviewed_by:currentUser.id}).eq("id",requestId);
-        if (rErr) { alert("User was updated, but request status could not be saved: "+rErr.message); }
-    }
-    await loadAdminUsers();
-}
-
-async function changeUserAccess(userId, email, makeActive) {
-    if (!isAdmin() || userId === ADMIN_USER_ID) return;
-
-    const action = makeActive ? "restore access to" : "remove access from";
-
-    if (!confirm("Are you sure you want to " + action + " " + email + "?")) {
-        return;
-    }
-
-    const { error } = await supabaseClient
-        .from("profiles")
-        .update({
-            active: makeActive,
-            access_removed_at: makeActive ? null : new Date().toISOString()
-        })
-        .eq("id", userId);
-
-    if (error) {
-        alert("Could not change access: " + error.message);
-        return;
-    }
-
-    await loadAdminUsers();
-}
-
-function setAuthMessage(message, isError = false) {
-    const el = document.getElementById("authStatus");
-    if (!el) return;
-    el.textContent = message || "";
-    el.style.color = isError ? "#dc2626" : "#15803d";
-}
-
-function toggleAuthMode() {
-    authMode = authMode === "login" ? "signup" : "login";
-
-    const title = document.getElementById("authTitle");
-    const message = document.getElementById("authMessage");
-    const confirm = document.getElementById("authConfirmPassword");
-    const primary = document.getElementById("authPrimaryButton");
-    const modeButton = document.getElementById("authModeButton");
-    const password = document.getElementById("authPassword");
-
-    if (authMode === "signup") {
-        title.textContent = "📝 Create Account";
-        message.textContent =
-            "Create your own account. New accounts are view-only.";
-        confirm.style.display = "block";
-        document.getElementById("forgotPasswordButton").style.display = "none";
-        confirm.value = "";
-        password.autocomplete = "new-password";
-        primary.textContent = "Create Account";
-        modeButton.textContent = "Back to Login";
-        setAuthMessage("");
-    } else {
-        title.textContent = "🔐 Login";
-        message.textContent =
-            "Sign in to access My Study Notes.";
-        confirm.style.display = "none";
-        document.getElementById("forgotPasswordButton").style.display = "block";
-        password.autocomplete = "current-password";
-        primary.textContent = "Login";
-        modeButton.textContent = "Create Account";
-        setAuthMessage("");
-    }
-}
-
-async function sendPasswordReset() {
-    if (authMode !== "login") {
-        setAuthMessage("Switch to Login to reset your password.", true);
-        return;
-    }
-    const email = document.getElementById("authEmail").value.trim();
-    if (!email) {
-        setAuthMessage("Enter your email address first, then click Forgot password.", true);
-        document.getElementById("authEmail").focus();
-        return;
-    }
-    setAuthMessage("Sending password reset email...");
-    const redirectTo = window.location.origin + "/MyStudyNotesSite/";
-    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo });
-    if (error) {
-        console.error("Password reset error:", error);
-        setAuthMessage("Could not send reset email: " + error.message, true);
-        return;
-    }
-    setAuthMessage("If an account exists for this email, a password reset link has been sent. Check your inbox and spam folder.");
-}
-
-async function handleAuthPrimary() {
-    if (authMode === "signup") {
-        await createAccount();
-    } else {
-        await ownerLogin();
-    }
-}
-
-async function createAccount() {
-    if (isAdminRoute()) return;
-    const email=document.getElementById("authEmail").value.trim();
-    const password=document.getElementById("authPassword").value;
-    const confirmPassword=document.getElementById("authConfirmPassword").value;
-    if(!email||!password||!confirmPassword){setAuthMessage("Please enter email, password, and confirm password.",true);return;}
-    if(password.length<6){setAuthMessage("Password must contain at least 6 characters.",true);return;}
-    if(password!==confirmPassword){setAuthMessage("Passwords do not match.",true);return;}
-    setAuthMessage("Creating your account...");
-    const {data,error}=await supabaseClient.auth.signUp({email,password});
-    if(error){console.error("Sign-up error:",error);setAuthMessage("Account creation failed: "+error.message,true);return;}
-    const user=data.user;
-    if(!user){setAuthMessage("Account was not created. Please try again.",true);return;}
-    // Always start a new user as pending, never active.
-    await supabaseClient.from("profiles").upsert({id:user.id,email:user.email,active:false,must_change_password:false,login_count:0},{onConflict:"id"});
-    const {error:reqError}=await supabaseClient.from("access_requests").upsert({user_id:user.id,status:"pending",requested_at:new Date().toISOString()},{onConflict:"user_id"});
-    if(reqError){console.error("Request error:",reqError);setAuthMessage("Account created, but the Admin request could not be created: "+reqError.message,true);return;}
-    if(data.session) await supabaseClient.auth.signOut();
-    currentUser=null; currentProfile=null;
-    setAuthMessage("✅ Account created. Your access request has been sent to the Admin. Please wait for approval before logging in.");
-    document.getElementById("authPassword").value=""; document.getElementById("authConfirmPassword").value="";
-}
-
-async function ownerLogin() {
-    const email = document.getElementById("authEmail").value.trim();
-    const password = document.getElementById("authPassword").value;
-
-    if (!email || !password) {
-        setAuthMessage("Please enter your email and password.", true);
-        return;
-    }
-
-    setAuthMessage("Logging in...");
-
-    const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-        });
-
-    if (error) {
-        console.error("Login error:", error);
-        setAuthMessage("Invalid email or password.", true);
-        return;
-    }
-
-    currentUser = data.user;
-    await loadCurrentProfile();
-
-    if (!currentProfile) {
-        await supabaseClient.auth.signOut();
-        setAuthMessage("Your account could not be initialized. Please try again.", true);
-        return;
-    }
-
-    if (currentProfile.active === false) {
-        const { data: req } = await supabaseClient.from("access_requests").select("status").eq("user_id", currentUser.id).maybeSingle();
-        await supabaseClient.auth.signOut();
-        currentUser=null; currentProfile=null;
-        if (req?.status === "pending") setAuthMessage("🕐 Your access request is waiting for Admin approval.", true);
-        else if (req?.status === "rejected") setAuthMessage("❌ Your access request was rejected by the Admin.", true);
-        else setAuthMessage("🚫 Your access has been removed by the Admin.", true);
-        return;
-    }
-
-    /* /admin is exclusively for the Admin account. */
-    if (isAdminRoute() && !isAdmin()) {
-        await supabaseClient.auth.signOut();
-        currentUser = null;
-        currentProfile = null;
-        setAuthMessage("This account is not an Admin account.", true);
-        return;
-    }
-
-    await recordLogin();
-    await showApplication();
-}
-
-async function ownerLogout() {
-    await supabaseClient.auth.signOut();
-    currentUser = null;
-    currentProfile = null;
-    folders = [];
-    notes = [];
-    selectedFolder = null;
-    editingNoteId = null;
-
-    document.getElementById("accountBar").style.display = "none";
-    closeAdminPortal();
-    document.getElementById("authGate").style.display = "flex";
-    document.getElementById("authEmail").value = "";
-    document.getElementById("authPassword").value = "";
-    document.getElementById("authConfirmPassword").value = "";
-
-    authMode = "login";
-    toggleAuthMode();
-    setAuthMessage("");
-}
-
-async function loadCurrentProfile() {
-    if (!currentUser) {
-        currentProfile = null;
-        return;
-    }
-
-    const { data, error } =
-        await supabaseClient
-            .from("profiles")
-            .select("id,email,active,must_change_password,created_at,last_login_at,login_count")
-            .eq("id", currentUser.id)
-            .maybeSingle();
-
-    if (error) {
-        console.error("Profile load error:", error);
-        currentProfile = null;
-        return;
-    }
-
-    if (!data) {
-        const { data: created, error: createError } =
-            await supabaseClient
-                .from("profiles")
-                .insert([{
-                    id: currentUser.id,
-                    email: currentUser.email,
-                    active: currentUser.id === ADMIN_USER_ID,
-                    must_change_password: false,
-                    login_count: 0
-                }])
-                .select("id,email,active,must_change_password,created_at,last_login_at,login_count")
-                .single();
-
-        if (createError) {
-            console.error("Profile creation error:", createError);
-            currentProfile = null;
-            return;
-        }
-
-        currentProfile = created;
-        return;
-    }
-
-    currentProfile = data;
-}
-
-async function showApplication() {
-    if (!currentUser || !currentProfile || !isActiveUser()) {
-        document.getElementById("authGate").style.display = "flex";
-        return;
-    }
-
-    document.getElementById("authGate").style.display = "none";
-    const welcome=document.getElementById("studentWelcome"); if(welcome){welcome.style.display="block";document.getElementById("welcomeHeading").textContent="Good day, "+(currentUser.email?.split('@')[0]||"Student")+" 👋";}
-    renderStudentExtras();
-
-    const accountBar =
-        document.getElementById("accountBar");
-
-    accountBar.style.display = "flex";
-
-    const adminPortalButton =
-        document.getElementById("adminPortalButton");
-
-    if (isAdmin()) {
-        adminPortalButton.style.display = "inline-block";
-        await loadAdminUsers();
-    } else {
-        adminPortalButton.style.display = "none";
-        closeAdminPortal();
-    }
-
-    document.getElementById("accountInfo").textContent =
-        isAdmin()
-            ? "👑 Admin: " + (currentUser.email || "")
-            : "👤 Viewer: " + (currentUser.email || "");
-
-    document.querySelectorAll(
-        ".new-folder, .new-note, .upload-pdf"
-    ).forEach(button => {
-        button.style.display = isAdmin() ? "" : "none";
-    });
-
-    const editor = document.getElementById("editor");
-    if (editor && !isAdmin()) {
-        editor.style.display = "none";
-    }
-
-    await displayFolders();
-
-    if (selectedFolder !== null) {
-        await displayContent();
-    } else {
-        document.getElementById("notesContainer").innerHTML = "";
-        document.getElementById("pdfContainer").innerHTML =
-            "<p>Select a folder to view its PDFs.</p>";
-    }
-}
-
-async function updateOwnerInterface() {
-    const { data } =
-        await supabaseClient.auth.getSession();
-
-    currentUser = data.session
-        ? data.session.user
-        : null;
-
-    if (!currentUser) {
-        currentProfile = null;
-        closeAdminPortal();
-        document.getElementById("authGate").style.display = "flex";
-        document.getElementById("accountBar").style.display = "none";
-        return;
-    }
-
-    await loadCurrentProfile();
-
-    if (!currentProfile) {
-        await supabaseClient.auth.signOut();
-        currentUser = null;
-        closeAdminPortal();
-        document.getElementById("authGate").style.display = "flex";
-        setAuthMessage(
-            "Your account profile could not be loaded. Please run the latest Supabase access SQL, then try logging in again.",
-            true
-        );
-        return;
-    }
-
-    if (currentProfile.active === false) {
-        await supabaseClient.auth.signOut();
-        currentUser = null;
-        currentProfile = null;
-        closeAdminPortal();
-        document.getElementById("authGate").style.display = "flex";
-        setAuthMessage(
-            "Your access has been removed by the Admin. Please contact the Admin.",
-            true
-        );
-        return;
-    }
-
-    await showApplication();
-}
-
-supabaseClient.auth.onAuthStateChange(
-    async (_event, session) => {
-        currentUser = session ? session.user : null;
-
-        if (currentUser) {
-            setTimeout(async () => {
-                await updateOwnerInterface();
-            }, 0);
-        }
-    }
-);
-
-
-function openAdminPortal() {
-    if (!isAdmin()) {
-        return;
-    }
-
-    const portal = document.getElementById("adminPortal");
-    if (!portal) {
-        console.error("Admin Portal element was not found.");
-        return;
-    }
-
-    portal.style.display = "flex";
-    loadAdminUsers();
-}
-
-function closeAdminPortal() {
-    const portal = document.getElementById("adminPortal");
-    if (!portal) return;
-
-    portal.style.display = "none";
-    document.body.style.overflow = "";
-}
-
-document.addEventListener("keydown", function(event) {
-    if (event.key === "Escape") {
-        closeAdminPortal();
-    }
-});
-
-
-/* =========================================================
-   FOLDERS
-   ========================================================= */
-
-async function createFolder() {
-    if (!isAdmin()) {
-        alert("Only the Admin can create folders.");
-        return;
-    }
-
-    const name = prompt("Enter folder name:");
-    if (!name || !name.trim()) return;
-
-    const cleanName = name.trim();
-
-    const { data: existing, error: checkError } =
-        await supabaseClient
-            .from("folders")
-            .select("id")
-            .ilike("name", cleanName)
-            .limit(1);
-
-    if (checkError) {
-        alert("Could not check folder: " + checkError.message);
-        return;
-    }
-
-    if (existing && existing.length) {
-        alert("A folder with this name already exists.");
-        return;
-    }
-
-    const { error } =
-        await supabaseClient
-            .from("folders")
-            .insert([{ name: cleanName }]);
-
-    if (error) {
-        console.error("Create folder error:", error);
-        alert("Could not create folder: " + error.message);
-        return;
-    }
-
-    await displayFolders();
-}
-
-async function deleteFolder(folderId, folderName) {
-    if (!isAdmin()) {
-        alert("Only the Admin can delete folders.");
-        return;
-    }
-
-    if (!confirm(
-        'Delete folder "' + folderName +
-        '" and all of its notes and PDFs?'
-    )) {
-        return;
-    }
-
-    // Delete PDFs stored under this folder.
-    const { data: files, error: listError } =
-        await supabaseClient
-            .storage
-            .from("pdfs")
-            .list(String(folderId), {
-                limit: 1000
-            });
-
-    if (listError) {
-        alert("Could not inspect folder PDFs: " + listError.message);
-        return;
-    }
-
-    if (files && files.length) {
-        const paths = files
-            .filter(file => file.name)
-            .map(file => String(folderId) + "/" + file.name);
-
-        const { error: removeError } =
-            await supabaseClient
-                .storage
-                .from("pdfs")
-                .remove(paths);
-
-        if (removeError) {
-            alert("Could not delete folder PDFs: " + removeError.message);
-            return;
-        }
-    }
-
-    // Delete notes in this folder.
-    const { error: notesError } =
-        await supabaseClient
-            .from("notes")
-            .delete()
-            .eq("folder_id", folderId);
-
-    if (notesError) {
-        alert("Could not delete folder notes: " + notesError.message);
-        return;
-    }
-
-    const { error: folderError } =
-        await supabaseClient
-            .from("folders")
-            .delete()
-            .eq("id", folderId);
-
-    if (folderError) {
-        alert("Could not delete folder: " + folderError.message);
-        return;
-    }
-
-    selectedFolder = null;
-    document.getElementById("currentFolder").textContent =
-        "📁 Select a folder";
-
-    await displayFolders();
-    await displayContent();
-}
-
-async function displayFolders() {
-    const folderList =
-        document.getElementById("folderList");
-
-    folderList.innerHTML = "Loading folders...";
-
-    const { data, error } =
-        await supabaseClient
-            .from("folders")
-            .select("*")
-            .order("created_at", { ascending: true });
-
-    if (error) {
-        console.error("Load folders error:", error);
-        folderList.innerHTML =
-            "<p>Unable to load folders.</p>";
-        return;
-    }
-
-    folders = data || [];
-    folderList.innerHTML = "";
-
-    if (!folders.length) {
-        folderList.innerHTML =
-            "<p>No folders yet.</p>";
-        return;
-    }
 
     folders.forEach(folder => {
-        const wrapper =
-            document.createElement("div");
 
-        wrapper.style.display = "flex";
-        wrapper.style.gap = "5px";
-        wrapper.style.marginBottom = "7px";
+        const div =
+            document.createElement(
+                "div"
+            );
 
-        const button =
-            document.createElement("button");
+        div.className = "folder";
 
-        button.textContent =
+        if (
+            selectedFolder === folder.id
+        ) {
+
+            div.classList.add(
+                "active"
+            );
+
+        }
+
+        div.textContent =
             "📁 " + folder.name;
 
-        button.className = "folder";
+        div.onclick = function() {
 
-        button.style.flex = "1";
-        button.style.border = "0";
-        button.style.textAlign = "left";
-
-        if (selectedFolder === folder.id) {
-            button.classList.add("active");
-        }
-
-        button.onclick = function() {
             selectFolder(folder.id);
+
         };
 
-        wrapper.appendChild(button);
+        container.appendChild(div);
 
-        if (isAdmin()) {
-            const deleteButton =
-                document.createElement("button");
-
-            deleteButton.textContent = "🗑️";
-            deleteButton.title = "Delete folder";
-            deleteButton.style.width = "45px";
-            deleteButton.style.marginBottom = "0";
-            deleteButton.style.background = "#ef4444";
-            deleteButton.style.color = "white";
-
-            deleteButton.onclick = function() {
-                deleteFolder(folder.id, folder.name);
-            };
-
-            wrapper.appendChild(deleteButton);
-
-            const renameButton = document.createElement("button");
-            renameButton.textContent = "✏️";
-            renameButton.title = "Rename folder";
-            renameButton.style.width = "45px";
-            renameButton.style.marginBottom = "0";
-            renameButton.style.background = "#475569";
-            renameButton.style.color = "white";
-            renameButton.onclick = function() {
-                renameFolder(folder.id, folder.name);
-            };
-            wrapper.appendChild(renameButton);
-        }
-
-        folderList.appendChild(wrapper);
     });
+
 }
 
+
+/* ===============================
+   SELECT FOLDER
+================================ */
+
 function selectFolder(id) {
+
     selectedFolder = id;
 
     const folder =
-        folders.find(f => f.id === id);
+        folders.find(
+            f => f.id === id
+        );
 
-    if (!folder) return;
-
-    document.getElementById("currentFolder").textContent =
+    document.getElementById(
+        "currentFolder"
+    ).textContent =
         "📁 " + folder.name;
 
     displayFolders();
+
     displayContent();
+
 }
 
 
-/* =========================================================
-   NOTES
-   ========================================================= */
+/* ===============================
+   NOTE EDITOR
+================================ */
 
-function openNoteEditor(noteId = null) {
-    if (!isAdmin()) {
-        alert("Only the Admin can create or edit notes.");
+function openNoteEditor(
+    index = null
+) {
+
+    if (
+        selectedFolder === null
+    ) {
+
+        alert(
+            "Please select a folder first."
+        );
+
         return;
+
     }
 
-    if (selectedFolder === null) {
-        alert("Please select a folder first.");
-        return;
-    }
+    document.getElementById(
+        "editor"
+    ).style.display = "block";
 
-    editingNoteId = noteId;
+    editingNote = index;
 
-    const editor =
-        document.getElementById("editor");
+    if (index !== null) {
 
-    editor.style.display = "block";
+        document.getElementById(
+            "noteTitle"
+        ).value =
+            notes[index].title;
 
-    if (noteId !== null) {
-        const note =
-            notes.find(n => n.id === noteId);
+        document.getElementById(
+            "noteContent"
+        ).value =
+            notes[index].content;
 
-        if (!note) {
-            editingNoteId = null;
-            return;
-        }
-
-        document.getElementById("noteTitle").value =
-            note.title || "";
-
-        document.getElementById("noteContent").value =
-            note.content || "";
     } else {
-        document.getElementById("noteTitle").value = "";
-        document.getElementById("noteContent").value = "";
+
+        document.getElementById(
+            "noteTitle"
+        ).value = "";
+
+        document.getElementById(
+            "noteContent"
+        ).value = "";
+
     }
+
 }
+
+
+/* ===============================
+   CLOSE EDITOR
+================================ */
 
 function closeEditor() {
-    document.getElementById("editor").style.display = "none";
-    editingNoteId = null;
+
+    document.getElementById(
+        "editor"
+    ).style.display = "none";
+
+    editingNote = null;
+
 }
 
-async function saveNote() {
-    if (!isAdmin()) {
-        alert("Only the Admin can save notes.");
-        return;
-    }
 
-    if (selectedFolder === null) {
-        alert("Please select a folder first.");
-        return;
-    }
+/* ===============================
+   SAVE NOTE
+================================ */
+
+function saveNote() {
 
     const title =
-        document.getElementById("noteTitle").value.trim();
+        document.getElementById(
+            "noteTitle"
+        ).value.trim();
 
     const content =
-        document.getElementById("noteContent").value.trim();
+        document.getElementById(
+            "noteContent"
+        ).value.trim();
 
     if (!title || !content) {
-        alert("Please enter title and notes.");
+
+        alert(
+            "Please enter title and notes."
+        );
+
         return;
+
     }
 
-    if (editingNoteId !== null) {
-        const { error } =
-            await supabaseClient
-                .from("notes")
-                .update({
-                    title,
-                    content
-                })
-                .eq("id", editingNoteId);
+    const note = {
 
-        if (error) {
-            alert("Could not update note: " + error.message);
-            return;
-        }
+        id: Date.now(),
+
+        folderId:
+            selectedFolder,
+
+        title:
+            title,
+
+        content:
+            content,
+
+        date:
+            new Date().toLocaleString()
+
+    };
+
+    if (
+        editingNote !== null
+    ) {
+
+        notes[editingNote] = note;
+
     } else {
-        // Prevent accidental duplicate note insertion.
-        const { data: duplicate, error: duplicateError } =
-            await supabaseClient
-                .from("notes")
-                .select("id")
-                .eq("folder_id", selectedFolder)
-                .eq("title", title)
-                .eq("content", content)
-                .limit(1);
 
-        if (duplicateError) {
-            alert("Could not check for duplicate note: " +
-                duplicateError.message);
-            return;
-        }
+        notes.push(note);
 
-        if (duplicate && duplicate.length) {
-            alert("An identical note already exists in this folder.");
-            return;
-        }
-
-        const { error } =
-            await supabaseClient
-                .from("notes")
-                .insert([{
-                    folder_id: selectedFolder,
-                    title,
-                    content
-                }]);
-
-        if (error) {
-            alert("Could not save note: " + error.message);
-            return;
-        }
     }
+
+    saveData();
 
     closeEditor();
-    await displayNotes();
+
+    displayContent();
+
 }
 
-async function displayNotes() {
+
+/* ===============================
+   DISPLAY CONTENT
+================================ */
+
+function displayContent() {
+
+    displayNotes();
+
+    displayPDFs();
+
+}
+
+
+/* ===============================
+   DISPLAY NOTES
+================================ */
+
+function displayNotes() {
+
     const container =
-        document.getElementById("notesContainer");
+        document.getElementById(
+            "notesContainer"
+        );
 
     container.innerHTML = "";
 
-    if (selectedFolder === null) return;
+    if (
+        selectedFolder === null
+    ) {
+
+        return;
+
+    }
 
     const search =
-        document.getElementById("search").value
-            .trim()
-            .toLowerCase();
+        document.getElementById(
+            "search"
+        ).value.toLowerCase();
 
-    const { data, error } =
-        await supabaseClient
-            .from("notes")
-            .select("*")
-            .eq("folder_id", selectedFolder)
-            .order("created_at", { ascending: false });
+    notes.forEach(
+        (note, index) => {
 
-    if (error) {
-        console.error("Load notes error:", error);
-        container.innerHTML =
-            "<p>Unable to load notes.</p>";
-        return;
-    }
+            if (
+                note.folderId !==
+                selectedFolder
+            ) {
 
-    notes = data || [];
+                return;
 
-    const filtered =
-        notes.filter(note => {
-            const title =
-                String(note.title || "").toLowerCase();
+            }
 
-            const content =
-                String(note.content || "").toLowerCase();
+            if (
+                !note.title
+                    .toLowerCase()
+                    .includes(search)
+                &&
+                !note.content
+                    .toLowerCase()
+                    .includes(search)
+            ) {
 
-            return !search ||
-                title.includes(search) ||
-                content.includes(search);
-        });
+                return;
 
-    if (!filtered.length) {
-        container.innerHTML =
-            "<p>No notes found in this folder.</p>";
-        return;
-    }
+            }
 
-    filtered.forEach(note => {
-        const card =
-            document.createElement("div");
-
-        card.className = "card";
-
-        const title =
-            document.createElement("h3");
-
-        title.textContent =
-            "📝 " + (note.title || "");
-
-        const content =
-            document.createElement("p");
-
-        content.textContent =
-            note.content || "";
-
-        const date =
-            document.createElement("small");
-
-        date.textContent =
-            note.created_at
-                ? new Date(note.created_at).toLocaleString()
-                : "";
-
-        card.appendChild(title);
-        card.appendChild(content);
-        card.appendChild(date);
-        const favButton=document.createElement("button"); favButton.className="favorite-btn"+(isFavorite("note",note.id)?" is-fav":""); favButton.textContent=isFavorite("note",note.id)?"⭐ Favorited":"☆ Add to Favorites";
-        favButton.onclick=()=>toggleFavorite("note",note.id,note.title,note.folder_id); card.appendChild(favButton);
-        const recentButton=document.createElement("button"); recentButton.textContent="▶ Open"; recentButton.onclick=()=>{rememberRecent("note",note.id,note.title,note.folder_id);portalToast("Added to recently opened");}; card.appendChild(recentButton);
-
-        if (isAdmin()) {
-            const buttons =
-                document.createElement("div");
-
-            buttons.className = "buttons";
-
-            const editButton =
-                document.createElement("button");
-
-            editButton.className = "edit";
-            editButton.textContent = "✏️ Edit";
-            editButton.onclick = function() {
-                openNoteEditor(note.id);
-            };
-
-            const deleteButton =
-                document.createElement("button");
-
-            deleteButton.className = "delete";
-            deleteButton.textContent = "🗑️ Delete";
-
-            deleteButton.onclick = function() {
-                deleteNote(note.id);
-            };
-
-            buttons.appendChild(editButton);
-            buttons.appendChild(deleteButton);
-            card.appendChild(buttons);
-        }
-
-        container.appendChild(card);
-    });
-}
-
-async function deleteNote(noteId) {
-    if (!isAdmin()) {
-        alert("Only the Admin can delete notes.");
-        return;
-    }
-
-    if (!confirm("Are you sure you want to delete this note?")) {
-        return;
-    }
-
-    const { error } =
-        await supabaseClient
-            .from("notes")
-            .delete()
-            .eq("id", noteId);
-
-    if (error) {
-        alert("Could not delete note: " + error.message);
-        return;
-    }
-
-    await displayNotes();
-}
-
-
-/* =========================================================
-   STUDENT DASHBOARD / FAVORITES / RECENT HISTORY
-   Saved per signed-in account in this browser.
-   ========================================================= */
-function studentKey(kind){return 'msn_'+kind+'_'+(currentUser?.id||'guest');}
-function readStudentList(kind){try{return JSON.parse(localStorage.getItem(studentKey(kind))||'[]')}catch(_){return []}}
-function writeStudentList(kind,items){localStorage.setItem(studentKey(kind),JSON.stringify(items));}
-function isFavorite(type,id){return readStudentList('favorites').some(x=>x.type===type&&x.id===String(id));}
-function toggleFavorite(type,id,title,folderId){
-  const items=readStudentList('favorites'); const key=String(id);
-  const i=items.findIndex(x=>x.type===type&&x.id===key);
-  if(i>=0) items.splice(i,1); else items.unshift({type,id:key,title,folderId:String(folderId||'')});
-  writeStudentList('favorites',items); renderStudentExtras();
-  if(selectedFolder!==null) displayContent();
-}
-function rememberRecent(type,id,title,folderId){
-  const items=readStudentList('recent').filter(x=>!(x.type===type&&x.id===String(id)));
-  items.unshift({type,id:String(id),title,folderId:String(folderId||''),openedAt:Date.now()});
-  writeStudentList('recent',items.slice(0,20)); renderStudentExtras();
-}
-function showStudentSection(section){
-  const home=document.getElementById('studentWelcome'); if(!home)return;
-  home.style.display='block';
-  const back=document.getElementById('sectionBackButton'); if(back)back.style.display=(section==='home'?'none':'inline-flex');
-  const headings=[...home.querySelectorAll('h3')];
-  const groups={};
-  headings.forEach(h=>{const t=h.textContent.toLowerCase();let key=t.includes('favorite')?'favorites':t.includes('continue')?'recent':t.includes('planner')?'planner':t.includes('exam mode')?'exam':t.includes('important')?'important':t.includes('annotation')?'annotations':t.includes('study goals')?'goals':'other';groups[key]=groups[key]||[];let n=h;while(n&&n!==home&&!((n!==h)&&n.tagName==='H3')){groups[key].push(n);n=n.nextElementSibling;}});
-  const all=[...home.children]; all.forEach(el=>{if(el.classList.contains('student-shortcuts')||el.id==='welcomeHeading'||el.tagName==='P')el.style.display=(section==='home'?'':'none');});
-  Object.entries(groups).forEach(([key,nodes])=>nodes.forEach(el=>el.style.display=(key==='favorites' ? section==='favorites' : (section==='home'||key===section))?'':'none'));
-  if(section==='home'){home.scrollIntoView({behavior:'smooth'});return;}
-  const first=groups[section]?.[0]; if(first)first.scrollIntoView({behavior:'smooth',block:'start'});
-}
-function renderStudentExtras(){
- const recent=readStudentList('recent').slice(0,3), fav=readStudentList('favorites');
- const makeCard=(item,isFav=false)=>{const card=document.createElement('div');card.className='card';const h=document.createElement('h3');h.textContent=(item.type==='pdf'?'📄 ':'📝 ')+item.title;const p=document.createElement('p');p.textContent=item.openedAt?'Last opened '+new Date(item.openedAt).toLocaleString():('Folder: '+(folders.find(f=>String(f.id)===item.folderId)?.name||'Study materials'));const b=document.createElement('button');b.className='open';b.textContent='▶ Open';b.onclick=()=>openStudentItem(item);card.append(h,p,b);if(isFav){const remove=document.createElement('button');remove.className='favorite-btn';remove.textContent='✕ Remove from Favorites';remove.setAttribute('aria-label','Remove '+item.title+' from favorites');remove.onclick=()=>toggleFavorite(item.type,item.id,item.title,item.folderId);card.appendChild(remove);}return card;};
- const r=document.getElementById('recentItems'),f=document.getElementById('favoriteItems'); if(!r||!f)return;
- r.replaceChildren();f.replaceChildren(); if(!recent.length)r.textContent='Open a PDF or note to see it here.';else recent.forEach(x=>r.appendChild(makeCard(x)));
- if(!fav.length)f.textContent='No favorites yet. Tap ☆ on a PDF or note.';else fav.forEach(x=>f.appendChild(makeCard(x,true)));
- const stat=document.getElementById('statFavorites');if(stat)stat.textContent=fav.length;
-}
-async function openStudentItem(item){
- const folder=folders.find(x=>String(x.id)===item.folderId); if(!folder){portalToast('This folder is no longer available.');return;}
- selectedFolder=folder.id;document.getElementById('currentFolder').textContent='📁 '+folder.name;await displayFolders();await displayContent();
- if(item.type==='pdf') await openPDF(item.id); else {const n=notes.find(x=>String(x.id)===item.id);if(n){const el=[...document.querySelectorAll('#notesContainer .card')].find(c=>c.querySelector('h3')?.textContent.includes(n.title));el?.scrollIntoView({behavior:'smooth',block:'center'});}}
-}
-
-/* =========================================================
-   PDFS
-   ========================================================= */
-
-function choosePDF() {
-    if (!isAdmin()) {
-        alert("Only the Admin can upload PDFs.");
-        return;
-    }
-
-    if (selectedFolder === null) {
-        alert("Please select a folder first.");
-        return;
-    }
-
-    document.getElementById("pdfInput").click();
-}
-
-function safeFileName(name) {
-    return name
-        .trim()
-        .replace(/[\\/:*?"<>|#%{}[\]^~`]/g, "_")
-        .replace(/\s+/g, " ");
-}
-
-async function uploadPDF(event) {
-    if (!isAdmin()) {
-        alert("Only the Admin can upload PDFs.");
-        event.target.value = "";
-        return;
-    }
-
-    const input = event.target;
-    const file = input.files[0];
-
-    if (!file) return;
-
-    if (selectedFolder === null) {
-        alert("Please select a folder first.");
-        input.value = "";
-        return;
-    }
-
-    if (file.type !== "application/pdf") {
-        alert("Please select a PDF file.");
-        input.value = "";
-        return;
-    }
-
-    const cleanName = safeFileName(file.name);
-
-    if (!cleanName) {
-        alert("Invalid PDF filename.");
-        input.value = "";
-        return;
-    }
-
-    const filePath =
-        String(selectedFolder) + "/" + cleanName;
-
-    try {
-        const { error } =
-            await supabaseClient
-                .storage
-                .from("pdfs")
-                .upload(
-                    filePath,
-                    file,
-                    {
-                        contentType: "application/pdf",
-                        upsert: true
-                    }
+            const card =
+                document.createElement(
+                    "div"
                 );
 
-        if (error) {
-            console.error("PDF upload error:", error);
-            alert("PDF upload failed: " + error.message);
-            input.value = "";
-            return;
+            card.className = "card";
+
+            card.innerHTML = `
+
+                <h3>
+                    📝
+                    ${escapeHTML(
+                        note.title
+                    )}
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        note.content
+                    )}
+                </p>
+
+                <small>
+                    ${note.date}
+                </small>
+
+                <div class="buttons">
+
+                    <button
+                        class="edit"
+                        onclick="
+                            openNoteEditor(${index})
+                        ">
+
+                        ✏️ Edit
+
+                    </button>
+
+                    <button
+                        class="delete"
+                        onclick="
+                            deleteNote(${index})
+                        ">
+
+                        🗑️ Delete
+
+                    </button>
+
+                </div>
+
+            `;
+
+            container.appendChild(card);
+
         }
+    );
+
+}
+
+
+/* ===============================
+   DELETE NOTE
+================================ */
+
+function deleteNote(index) {
+
+    if (
+        !confirm(
+            "Are you sure you want to delete this note?"
+        )
+    ) {
+
+        return;
+
+    }
+
+    notes.splice(index, 1);
+
+    saveData();
+
+    displayContent();
+
+}
+
+
+/* ===============================
+   SAFE TEXT DISPLAY
+================================ */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* ===============================
+   PDF STORAGE
+================================ */
+
+const DB_NAME =
+    "MyStudyNotesSiteDB";
+
+const DB_VERSION = 1;
+
+const PDF_STORE = "pdfs";
+
+
+function openPDFDatabase() {
+
+    return new Promise(
+        (
+            resolve,
+            reject
+        ) => {
+
+            const request =
+                indexedDB.open(
+                    DB_NAME,
+                    DB_VERSION
+                );
+
+            request.onupgradeneeded =
+                function(event) {
+
+                    const db =
+                        event.target.result;
+
+                    if (
+                        !db.objectStoreNames
+                            .contains(PDF_STORE)
+                    ) {
+
+                        db.createObjectStore(
+                            PDF_STORE,
+                            {
+                                keyPath: "id"
+                            }
+                        );
+
+                    }
+
+                };
+
+            request.onsuccess =
+                function(event) {
+
+                    resolve(
+                        event.target.result
+                    );
+
+                };
+
+            request.onerror =
+                function() {
+
+                    reject(
+                        request.error
+                    );
+
+                };
+
+        }
+    );
+
+}
+
+
+/* ===============================
+   UPLOAD PDF
+================================ */
+
+function choosePDF() {
+
+    if (
+        selectedFolder === null
+    ) {
+
+        alert(
+            "Please select a folder first."
+        );
+
+        return;
+
+    }
+
+    const input =
+        document.getElementById(
+            "pdfInput"
+        );
+
+    /* Clear the previous selection
+       so the same PDF can be selected again. */
+
+    input.value = "";
+
+    input.click();
+
+}
+
+
+async function uploadPDF(event) {
+
+    const input =
+        event.target;
+
+    const file =
+        input.files[0];
+
+    if (!file) {
+
+        return;
+
+    }
+
+    if (
+        selectedFolder === null
+    ) {
+
+        alert(
+            "Please select a folder first."
+        );
+
+        input.value = "";
+
+        return;
+
+    }
+
+    if (
+        file.type !==
+        "application/pdf"
+    ) {
+
+        alert(
+            "Please select a PDF file."
+        );
+
+        input.value = "";
+
+        return;
+
+    }
+
+    try {
+
+        const db =
+            await openPDFDatabase();
+
+        const pdf = {
+
+            id:
+                Date.now() +
+                Math.random(),
+
+            folderId:
+                selectedFolder,
+
+            name:
+                file.name,
+
+            file:
+                file
+
+        };
+
+        await new Promise(
+            (
+                resolve,
+                reject
+            ) => {
+
+                const transaction =
+                    db.transaction(
+                        [PDF_STORE],
+                        "readwrite"
+                    );
+
+                const store =
+                    transaction
+                        .objectStore(
+                            PDF_STORE
+                        );
+
+                const request =
+                    store.put(pdf);
+
+                request.onsuccess =
+                    function() {
+
+                        resolve();
+
+                    };
+
+                request.onerror =
+                    function() {
+
+                        reject(
+                            request.error
+                        );
+
+                    };
+
+                transaction.onerror =
+                    function() {
+
+                        reject(
+                            transaction.error
+                        );
+
+                    };
+
+            }
+        );
 
         input.value = "";
 
         await displayPDFs();
 
         alert(
-            "PDF uploaded successfully. If a PDF with the same name existed, it was replaced."
+            "PDF uploaded successfully!"
         );
+
     } catch (error) {
-        console.error("PDF upload error:", error);
-        alert("The PDF could not be uploaded.");
+
+        console.error(
+            "PDF upload error:",
+            error
+        );
+
+        alert(
+            "The PDF could not be saved. Please try again."
+        );
+
         input.value = "";
+
     }
+
 }
 
+
+/* ===============================
+   DISPLAY PDFS
+================================ */
+
 async function displayPDFs() {
+
     const container =
-        document.getElementById("pdfContainer");
+        document.getElementById(
+            "pdfContainer"
+        );
 
     container.innerHTML = "";
 
-    if (selectedFolder === null) {
+    if (
+        selectedFolder === null
+    ) {
+
         return;
-    }
 
-    const { data, error } =
-        await supabaseClient
-            .storage
-            .from("pdfs")
-            .list(String(selectedFolder), {
-                limit: 1000,
-                sortBy: {
-                    column: "name",
-                    order: "asc"
-                }
-            });
-
-    if (error) {
-        console.error("PDF list error:", error);
-        container.innerHTML =
-            "<p>Unable to load PDFs.</p>";
-        return;
-    }
-
-    const pdfs = (data || []).filter(file =>
-        file.name &&
-        file.name.toLowerCase().endsWith(".pdf")
-    );
-
-    if (!pdfs.length) {
-        container.innerHTML =
-            "<p>No PDFs in this folder.</p>";
-        return;
-    }
-
-    pdfs.forEach(pdf => {
-        const path =
-            String(selectedFolder) + "/" + pdf.name;
-
-        const card =
-            document.createElement("div");
-
-        card.className = "card";
-
-        const title =
-            document.createElement("h3");
-
-        title.textContent =
-            "📄 " + pdf.name;
-
-        const buttons =
-            document.createElement("div");
-
-        buttons.className = "buttons";
-
-        const openButton =
-            document.createElement("button");
-
-        openButton.className = "open";
-        openButton.textContent = "👁️ Open";
-        openButton.onclick = function() {
-            rememberRecent("pdf",path,pdf.name,selectedFolder);
-            openPDF(path);
-        };
-
-        buttons.appendChild(openButton);
-        const favButton=document.createElement("button"); favButton.className="favorite-btn"+(isFavorite("pdf",path)?" is-fav":""); favButton.textContent=isFavorite("pdf",path)?"⭐":"☆ Favorite";
-        favButton.onclick=()=>toggleFavorite("pdf",path,pdf.name,selectedFolder); buttons.appendChild(favButton);
-
-        const downloadButton = document.createElement("button");
-        downloadButton.textContent = "⬇️ Download";
-        downloadButton.onclick = function() {
-            downloadPDF(path, pdf.name);
-        };
-        buttons.appendChild(downloadButton);
-
-        if (isAdmin()) {
-            const renameButton = document.createElement("button");
-            renameButton.className = "edit";
-            renameButton.textContent = "✏️ Rename";
-            renameButton.onclick = function() {
-                renamePDF(path, pdf.name);
-            };
-
-            const deleteButton =
-                document.createElement("button");
-
-            deleteButton.className = "delete";
-            deleteButton.textContent = "🗑️ Delete";
-
-            deleteButton.onclick = function() {
-                deletePDF(path);
-            };
-
-            buttons.appendChild(renameButton);
-            buttons.appendChild(deleteButton);
-        }
-
-        card.appendChild(title);
-        card.appendChild(buttons);
-
-        container.appendChild(card);
-    });
-}
-
-async function openPDF(path) {
-    if (!isActiveUser()) {
-        alert("Please log in to open this PDF.");
-        return;
     }
 
     try {
-        // Short-lived signed URL. The PDF is requested inline.
-        const { data, error } =
-            await supabaseClient
-                .storage
-                .from("pdfs")
-                .createSignedUrl(path, 300);
 
-        if (error) {
-            console.error("PDF open error:", error);
-            alert("Unable to open PDF: " + error.message);
-            return;
-        }
+        const db =
+            await openPDFDatabase();
 
-        const viewer =
-            document.getElementById("pdfViewer");
+        const pdfs =
+            await new Promise(
+                (
+                    resolve,
+                    reject
+                ) => {
 
-        const viewerContainer =
-            document.getElementById("pdfViewerContainer");
+                    const transaction =
+                        db.transaction(
+                            [PDF_STORE],
+                            "readonly"
+                        );
 
-        viewer.src = data.signedUrl;
-        viewer.style.display = "block";
-        viewerContainer.style.display = "block";
+                    const store =
+                        transaction.objectStore(
+                            PDF_STORE
+                        );
 
-        viewer.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+                    const request =
+                        store.getAll();
+
+                    request.onsuccess =
+                        function() {
+
+                            resolve(
+                                request.result ||
+                                []
+                            );
+
+                        };
+
+                    request.onerror =
+                        function() {
+
+                            reject(
+                                request.error
+                            );
+
+                        };
+
+                }
+            );
+
+        pdfs
+            .filter(
+                pdf =>
+                    pdf.folderId ===
+                    selectedFolder
+            )
+            .forEach(
+                pdf => {
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+                    card.className =
+                        "card";
+
+                    card.innerHTML = `
+
+                        <h3>
+                            📄
+                            ${escapeHTML(
+                                pdf.name
+                            )}
+                        </h3>
+
+                        <div
+                            class="buttons">
+
+                            <button
+                                class="open"
+                                onclick="
+                                    openPDF(${pdf.id})
+                                ">
+
+                                👁️ Open
+
+                            </button>
+
+                            <button
+                                class="delete"
+                                onclick="
+                                    deletePDF(${pdf.id})
+                                ">
+
+                                🗑️ Delete
+
+                            </button>
+
+                        </div>
+
+                    `;
+
+                    container.appendChild(
+                        card
+                    );
+
+                }
+            );
 
     } catch (error) {
-        console.error("PDF open error:", error);
-        alert("Unable to open this PDF.");
+
+        console.error(
+            "PDF display error:",
+            error
+        );
+
+        container.innerHTML = `
+
+            <div class="card">
+
+                <p>
+                    Unable to load PDFs.
+                    Please refresh the page
+                    and try again.
+                </p>
+
+            </div>
+
+        `;
+
     }
+
 }
+
+
+/* ===============================
+   OPEN PDF
+================================ */
+
+async function openPDF(id) {
+
+    try {
+
+        const db =
+            await openPDFDatabase();
+
+        const pdf =
+            await new Promise(
+                (
+                    resolve,
+                    reject
+                ) => {
+
+                    const transaction =
+                        db.transaction(
+                            [PDF_STORE],
+                            "readonly"
+                        );
+
+                    const store =
+                        transaction.objectStore(
+                            PDF_STORE
+                        );
+
+                    const request =
+                        store.get(id);
+
+                    request.onsuccess =
+                        function() {
+
+                            resolve(
+                                request.result
+                            );
+
+                        };
+
+                    request.onerror =
+                        function() {
+
+                            reject(
+                                request.error
+                            );
+
+                        };
+
+                }
+            );
+
+        if (
+            !pdf ||
+            !pdf.file
+        ) {
+
+            alert(
+                "PDF not found."
+            );
+
+            return;
+
+        }
+
+        const url =
+            URL.createObjectURL(
+                pdf.file
+            );
+
+        const viewer =
+            document.getElementById(
+                "pdfViewer"
+            );
+
+        const viewerContainer =
+            document.getElementById(
+                "pdfViewerContainer"
+            );
+
+        viewer.src = url;
+
+        viewer.style.display =
+            "block";
+
+        viewerContainer.style.display =
+            "block";
+
+        viewerContainer.scrollIntoView(
+            {
+                behavior: "smooth"
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "PDF open error:",
+            error
+        );
+
+        alert(
+            "Unable to open this PDF."
+        );
+
+    }
+
+}
+
+
+/* ===============================
+   CLOSE PDF VIEWER
+================================ */
 
 function closePDFViewer() {
+
     const viewer =
-        document.getElementById("pdfViewer");
+        document.getElementById(
+            "pdfViewer"
+        );
 
     const viewerContainer =
-        document.getElementById("pdfViewerContainer");
+        document.getElementById(
+            "pdfViewerContainer"
+        );
 
     viewer.src = "";
-    viewer.style.display = "none";
-    viewerContainer.style.display = "none";
+
+    viewer.style.display =
+        "none";
+
+    viewerContainer.style.display =
+        "none";
+
 }
 
-async function deletePDF(path) {
-    if (!isAdmin()) {
-        alert("Only the Admin can delete PDFs.");
+
+/* ===============================
+   DELETE PDF
+================================ */
+
+async function deletePDF(id) {
+
+    if (
+        !confirm(
+            "Delete this PDF?"
+        )
+    ) {
+
         return;
+
     }
 
-    if (!confirm("Delete this PDF?")) {
-        return;
+    try {
+
+        const db =
+            await openPDFDatabase();
+
+        await new Promise(
+            (
+                resolve,
+                reject
+            ) => {
+
+                const transaction =
+                    db.transaction(
+                        [PDF_STORE],
+                        "readwrite"
+                    );
+
+                const store =
+                    transaction.objectStore(
+                        PDF_STORE
+                    );
+
+                const request =
+                    store.delete(id);
+
+                request.onsuccess =
+                    function() {
+
+                        resolve();
+
+                    };
+
+                request.onerror =
+                    function() {
+
+                        reject(
+                            request.error
+                        );
+
+                    };
+
+                transaction.onerror =
+                    function() {
+
+                        reject(
+                            transaction.error
+                        );
+
+                    };
+
+            }
+        );
+
+        await displayPDFs();
+
+        closePDFViewer();
+
+    } catch (error) {
+
+        console.error(
+            "PDF delete error:",
+            error
+        );
+
+        alert(
+            "Unable to delete this PDF."
+        );
+
     }
 
-    const { error } =
-        await supabaseClient
-            .storage
-            .from("pdfs")
-            .remove([path]);
-
-    if (error) {
-        console.error("PDF delete error:", error);
-        alert("Unable to delete PDF: " + error.message);
-        return;
-    }
-
-    closePDFViewer();
-    await displayPDFs();
 }
 
 
-/* =========================================================
-   CONTENT
-   ========================================================= */
-
-async function displayContent() {
-    await displayNotes();
-    await displayPDFs();
-}
-
-
-
-/* =========================================================
-   PREMIUM PORTAL FEATURES
-   ========================================================= */
-
-function showPortalTools() {
-    const dash=document.getElementById("glassDashboard");
-    const tools=document.getElementById("glassTools");
-    if (dash) dash.style.display = "grid";
-    if (tools) tools.style.display = "flex";
-    updateDashboardStats();
-}
-
-async function updateDashboardStats(){
-    if (!currentUser || !isActiveUser()) return;
-    const f=document.getElementById("statFolders");
-    const n=document.getElementById("statNotes");
-    const p=document.getElementById("statPDFs");
-    const fav=document.getElementById("statFavorites");
-    if(f) f.textContent=folders.length;
-    if(n) { const {count}=await supabaseClient.from("notes").select("id",{count:"exact",head:true}); n.textContent=count??notes.length; }
-    if(fav) fav.textContent=readStudentList("favorites").length;
-    if(p){
-      const {data}=await supabaseClient.storage.from("pdfs").list(String(selectedFolder),{limit:1000});
-      let total=(data||[]).filter(x=>x.name&&x.name.toLowerCase().endsWith(".pdf")).length;
-      if(selectedFolder===null){total=0;for(const folder of folders){const {data:files}=await supabaseClient.storage.from("pdfs").list(String(folder.id),{limit:1000});total+=(files||[]).filter(x=>x.name&&x.name.toLowerCase().endsWith(".pdf")).length;}}
-      p.textContent=total;
-    }
-}
-
-function focusSearch(){
-  const s=document.getElementById("search");
-  if(s){s.focus();s.scrollIntoView({behavior:"smooth",block:"center"});}
-}
-function goHome(){
-  selectedFolder=null;
-  document.getElementById("currentFolder").textContent="📁 Select a folder";
-  document.getElementById("notesContainer").innerHTML="";
-  document.getElementById("pdfContainer").innerHTML="";
-  displayFolders();
-  updateDashboardStats();
-}
-function refreshPortal(){
-  // Reload the complete website when the Refresh button is clicked.
-  window.location.reload();
-}
-function toggleDarkGlass(){
-  document.body.classList.toggle("glass-dark");
-  localStorage.setItem("msn_glass_dark",document.body.classList.contains("glass-dark")?"1":"0");
-}
-function loadGlassPreference(){
-  if(localStorage.getItem("msn_glass_dark")==="1") document.body.classList.add("glass-dark");
-}
-function portalToast(msg){
-  let t=document.getElementById("portalToast");
-  if(!t){t=document.createElement("div");t.id="portalToast";t.className="portal-toast";document.body.appendChild(t)}
-  t.textContent=msg; t.style.display="block";
-  clearTimeout(window.__msnToast); window.__msnToast=setTimeout(()=>t.style.display="none",2200);
-}
-
-async function downloadPDF(path,name){
-  const {data,error}=await supabaseClient.storage.from("pdfs").createSignedUrl(path,300,{download:name||true});
-  if(error){portalToast("Download failed: "+error.message);return;}
-  const a=document.createElement("a");
-  a.href=data.signedUrl;a.download=name||"document.pdf";a.target="_blank";
-  document.body.appendChild(a);a.click();a.remove();
-  portalToast("Download started");
-}
-
-async function renamePDF(path,oldName){
-  if(!isAdmin()) return;
-  const proposed=prompt("Rename PDF:",oldName);
-  if(!proposed) return;
-  let newName=safeFileName(proposed);
-  if(!newName.toLowerCase().endsWith(".pdf")) newName+=".pdf";
-  if(newName===oldName) return;
-  const newPath=String(selectedFolder)+"/"+newName;
-  const {error}=await supabaseClient.storage.from("pdfs").move(path,newPath);
-  if(error){portalToast("Rename failed: "+error.message);return;}
-  await displayPDFs(); portalToast("PDF renamed");
-}
-
-async function renameFolder(id,oldName){
-  if(!isAdmin()) return;
-  const proposed=prompt("Rename folder:",oldName);
-  if(!proposed || proposed.trim()===oldName) return;
-  const {error}=await supabaseClient.from("folders").update({name:proposed.trim()}).eq("id",id);
-  if(error){portalToast("Folder rename failed: "+error.message);return;}
-  await loadFolders(); portalToast("Folder renamed");
-}
-
-/* Admin user filters are client-side, so no extra database table is required. */
-let __adminFilter="all";
-let __adminCache=[];
-function filterAdminUsers(mode){__adminFilter=mode;renderAdminFilter();}
-function renderAdminFilter(){
-  const search=(document.getElementById("adminSearch")?.value||"").toLowerCase();
-  const rows=document.querySelectorAll("#userList .admin-user-row");
-  rows.forEach(row=>{
-    const txt=row.textContent.toLowerCase();
-    const mode=__adminFilter==="all" || txt.includes(__adminFilter==="pending"?"pending approval":__adminFilter==="active"?"active":"access removed");
-    row.style.display=mode && (!search||txt.includes(search))?"":"none";
-  });
-}
-
-/* =========================================================
-   END PREMIUM PORTAL FEATURES
-   ========================================================= */
-
-/* =========================================================
+/* ===============================
    START
-   ========================================================= */
+================================ */
 
-let adminRefreshTimer = null;
+displayFolders();
 
-
-function setupRouteUI() {
-    if (!isAdminRoute()) return;
-    const title = document.getElementById("authTitle");
-    const message = document.getElementById("authMessage");
-    if (title) title.textContent = "👑 Admin Login";
-    if (message) message.textContent =
-        "Admin access only. Use your administrator account.";
-}
-setupRouteUI();
-
-document.addEventListener("DOMContentLoaded", async function() {
-    loadGlassPreference();
-    setTimeout(showPortalTools, 700);
-    await updateOwnerInterface();
-
-    if (adminRefreshTimer) clearInterval(adminRefreshTimer);
-
-    adminRefreshTimer = setInterval(async () => {
-        if (isAdmin()) {
-            await loadAdminUsers();
-        }
-    }, 15000);
-});
-
-</script>
-
-
-<script id="final-layout-script">
-document.addEventListener('DOMContentLoaded',function(){
-  const bar=document.getElementById('accountBar');
-  const tools=document.getElementById('glassTools');
-  if(bar && tools){
-    const actionWrap=bar.querySelector(':scope > div');
-    if(actionWrap && !actionWrap.contains(tools)) actionWrap.appendChild(tools);
-  }
-});
-</script>
-
-
-<script>
-/* Four added student tools. Data is stored in this browser, per signed-in user. */
-function studentStoreKey(name){return 'msn_'+name+'_'+(currentUser?.id||'guest')}
-function studentRead(name){try{return JSON.parse(localStorage.getItem(studentStoreKey(name))||'[]')}catch(e){return []}}
-function studentWrite(name,data){localStorage.setItem(studentStoreKey(name),JSON.stringify(data))}
-function globalStudySearchNow(q){
- const out=document.getElementById('globalSearchResults'); if(!out)return;
- const term=(q||'').trim().toLowerCase(); if(!term){out.innerHTML='<p>Type to search the currently loaded study content.</p>';return;}
- const matches=[...document.querySelectorAll('#notesContainer *,#pdfContainer *,#folderList *')]
-  .filter(el=>el.children.length===0 && el.textContent.toLowerCase().includes(term))
-  .slice(0,20);
- out.innerHTML=matches.length?matches.map(el=>'<div class="glass-stat">'+escapeStudyText(el.textContent.trim())+'</div>').join(''):'<p>No matching loaded content found.</p>';
-}
-function escapeStudyText(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function saveStudyAnnotation(){const box=document.getElementById('studyAnnotation'),v=box.value.trim();if(!v)return;const a=studentRead('annotations');a.unshift({text:v,at:new Date().toLocaleString()});studentWrite('annotations',a);box.value='';renderStudyExtras();portalToast('Annotation saved on this browser');}
-function addStudyTask(){const title=document.getElementById('plannerTask').value.trim(),date=document.getElementById('plannerDate').value;if(!title||!date){portalToast('Enter a task and date');return;}const a=studentRead('planner');a.push({title,date,done:false});studentWrite('planner',a);document.getElementById('plannerTask').value='';renderStudyExtras();}
-function toggleStudyTask(i){const a=studentRead('planner');a[i].done=!a[i].done;studentWrite('planner',a);renderStudyExtras()}
-function markImportant(title){const a=studentRead('important');if(!a.some(x=>x===title))a.unshift(title);studentWrite('important',a);renderStudyExtras();portalToast('Added to Important Documents')}
-function renderStudyExtras(){
- const put=(id,html)=>{const e=document.getElementById(id);if(e)e.innerHTML=html};
- put('importantItems',studentRead('important').map(x=>'<div class="glass-stat">📌 '+escapeStudyText(x)+'</div>').join('')||'<p>No important documents saved yet.</p>');
- put('annotationList',studentRead('annotations').map(x=>'<div class="glass-stat">'+escapeStudyText(x.text)+'<small> '+escapeStudyText(x.at)+'</small></div>').join('')||'<p>No annotations yet.</p>');
- put('studyPlannerList',studentRead('planner').map((x,i)=>'<div class="glass-stat"><label><input type="checkbox" '+(x.done?'checked':'')+' onchange="toggleStudyTask('+i+')"> '+escapeStudyText(x.title)+'</label><small> — '+escapeStudyText(x.date)+'</small></div>').join('')||'<p>No study tasks yet.</p>');
-}
-document.addEventListener('DOMContentLoaded',renderStudyExtras);
-</script>
-
-
-<style id="remaining-study-features">
-.exam-mode-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
-.exam-mode-controls select,.exam-mode-controls input{padding:9px;border:1px solid #cbd5e1;border-radius:9px;background:rgba(255,255,255,.85)}
-#examCountdown{font-size:24px;padding:8px 14px;border-radius:12px;background:rgba(255,255,255,.65);font-variant-numeric:tabular-nums}
-#mobileStudyNav{display:none}
-@media(max-width:700px){#mobileStudyNav{position:fixed;z-index:8000;bottom:10px;left:10px;right:10px;display:none;justify-content:space-around;gap:4px;padding:8px;border:1px solid rgba(255,255,255,.7);border-radius:18px;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);box-shadow:0 10px 30px rgba(15,23,42,.18)}#mobileStudyNav button{border:0;background:transparent;padding:5px 9px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:17px}#mobileStudyNav small{font-size:10px}body:has(#authGate[style*="display: none"]) #mobileStudyNav{display:flex}body{padding-bottom:65px}}
-body.glass-dark #mobileStudyNav{background:rgba(15,23,42,.86);color:white;border-color:rgba(255,255,255,.2)}
-</style>
-<script id="remaining-study-features-script">
-let examTimerHandle=null, examSecondsLeft=1500;
-function paintExamTimer(){const el=document.getElementById('examCountdown');if(el)el.textContent=String(Math.floor(examSecondsLeft/60)).padStart(2,'0')+':'+String(examSecondsLeft%60).padStart(2,'0')}
-function startExamMode(){stopExamMode(false);const mins=Math.max(1,Math.min(600,Number(document.getElementById('examMinutes')?.value)||25));examSecondsLeft=mins*60;paintExamTimer();const status=document.getElementById('examStatus');if(status)status.textContent='Focus session running. Keep this tab open.';examTimerHandle=setInterval(()=>{examSecondsLeft--;paintExamTimer();if(examSecondsLeft<=0){stopExamMode(false);if(status)status.textContent='Session complete! Take a short break.';portalToast('Focus session completed!');}},1000)}
-function stopExamMode(showMessage=true){if(examTimerHandle){clearInterval(examTimerHandle);examTimerHandle=null}const status=document.getElementById('examStatus');if(showMessage&&status)status.textContent='Focus session stopped.'}
-function saveDailyGoal(){const v=Math.max(5,Math.min(600,Number(document.getElementById('dailyGoalMinutes')?.value)||60));localStorage.setItem('msn_daily_goal_'+(currentUser?.id||'guest'),String(v));renderDailyGoal();portalToast('Daily goal saved on this browser')}
-function renderDailyGoal(){const el=document.getElementById('dailyGoalStatus');if(!el)return;const v=localStorage.getItem('msn_daily_goal_'+(currentUser?.id||'guest'))||'60';const input=document.getElementById('dailyGoalMinutes');if(input)input.value=v;el.textContent='Your daily target: '+v+' minutes. This version stores the goal locally; it does not track actual study time yet.'}
-document.addEventListener('DOMContentLoaded',renderDailyGoal);
-</script>
-
-
-
-<script id="all-animations-complete-script">
-(function(){
-  function addClassOnce(el, cls){ if(el) el.classList.add(cls); }
-
-  function createBubbleLayer(){
-    if(document.querySelector('.complete-water-bubbles')) return;
-    const layer=document.createElement('div');
-    layer.className='complete-water-bubbles';
-    layer.setAttribute('aria-hidden','true');
-    for(let i=0;i<9;i++) layer.appendChild(document.createElement('span'));
-    document.body.appendChild(layer);
-  }
-
-  function animateVisibleSection(){
-    const welcome=document.getElementById('studentWelcome');
-    if(welcome){
-      welcome.classList.remove('section-animate');
-      void welcome.offsetWidth;
-      welcome.classList.add('section-animate');
-    }
-  }
-
-  function setupAnimations(){
-    createBubbleLayer();
-
-    addClassOnce(document.querySelector('header .logo'),'icon-pulse');
-    addClassOnce(document.getElementById('studentWelcome'),'smooth-page');
-
-    document.querySelectorAll('.folder').forEach(el=>el.classList.add('smooth-page'));
-    document.querySelectorAll('.favorite-btn').forEach(el=>el.classList.add('section-animate'));
-    document.querySelectorAll('[class*="progress"], [id*="Progress"], [id*="progress"]').forEach(el=>el.classList.add('animated-progress'));
-    document.querySelectorAll('.student-shortcuts button').forEach(el=>el.classList.add('section-animate'));
-
-    const originalShow=window.showStudentSection;
-    if(typeof originalShow==='function' && !originalShow.__completeAnimationWrapped){
-      function wrappedShow(section){
-        const result=originalShow.apply(this,arguments);
-        setTimeout(animateVisibleSection,30);
-        return result;
-      }
-      wrappedShow.__completeAnimationWrapped=true;
-      window.showStudentSection=wrappedShow;
-    }
-
-    if(typeof window.portalToast==='function' && !window.portalToast.__completeAnimationWrapped){
-      const originalToast=window.portalToast;
-      function wrappedToast(msg){
-        const result=originalToast.apply(this,arguments);
-        const toast=document.getElementById('portalToast');
-        if(toast){
-          toast.classList.remove('animated-toast');
-          void toast.offsetWidth;
-          toast.classList.add('animated-toast');
-        }
-        return result;
-      }
-      wrappedToast.__completeAnimationWrapped=true;
-      window.portalToast=wrappedToast;
-    }
-
-    animateVisibleSection();
-  }
-
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setupAnimations);
-  else setupAnimations();
-})();
 </script>
 
 </body>
 
 </html>
-
-<style id="header-navigation-visibility-fix">
-/* Keep the site identity readable above the glass effect. */
-header .logo{color:#10244f!important;opacity:1!important;visibility:visible!important;position:relative;z-index:3;text-shadow:0 1px 0 rgba(255,255,255,.35)}
-header .tagline{color:#263b60!important;opacity:1!important;visibility:visible!important;position:relative;z-index:3}
-header .site-back-button{color:#fff!important;background:#173b70!important;border:2px solid #fff!important;opacity:1!important;visibility:visible!important;}
-header .site-back-button[style*="inline-flex"]{display:inline-flex!important}
-@media(max-width:700px){header{min-height:84px!important;gap:10px!important}header .logo{display:block!important;flex:1 1 190px!important;line-height:1.3!important}header .tagline{display:block!important;flex:1 1 100%!important;margin-left:2px!important}.site-back-button{order:0!important}}
-</style>
-<script id="header-navigation-visibility-fix-script">
-(function(){
- const originalShow=window.showStudentSection;
- if(typeof originalShow==='function'){
-   window.showStudentSection=function(section){
-     originalShow(section);
-     const back=document.getElementById('sectionBackButton');
-     if(back){back.style.setProperty('display',section==='home'?'none':'inline-flex','important');back.textContent='← Back';}
-     const logo=document.querySelector('header .logo'),tag=document.querySelector('header .tagline');
-     if(logo){logo.style.setProperty('color','#10244f','important');logo.style.setProperty('visibility','visible','important');}
-     if(tag){tag.style.setProperty('color','#263b60','important');tag.style.setProperty('visibility','visible','important');}
-   };
- }
-})();
-</script>
