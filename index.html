@@ -706,7 +706,26 @@ button:hover{transform:translateY(-1px);box-shadow:0 9px 24px rgba(15,23,42,.13)
   <input id="plannerDate" type="date" style="padding:10px;">
   <button onclick="addStudyTask()">Add task</button>
   <div id="studyPlannerList" class="items"></div>
+  <h3>🎯 Exam Mode</h3>
+  <p>Start a focused study session with a countdown timer.</p>
+  <div class="exam-mode-controls">
+    <select id="examMinutes" aria-label="Session length"><option value="25">25 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select>
+    <button type="button" onclick="startExamMode()">▶ Start focus session</button>
+    <button type="button" onclick="stopExamMode()">■ Stop</button>
+    <strong id="examCountdown" aria-live="polite">25:00</strong>
+  </div>
+  <div id="examStatus" class="items">Ready when you are.</div>
+  <h3>📊 Study Goals</h3>
+  <p>Set a daily target and mark your study progress.</p>
+  <div class="exam-mode-controls"><input id="dailyGoalMinutes" type="number" min="5" max="600" value="60" style="width:110px" aria-label="Daily study goal in minutes"><span>minutes per day</span><button type="button" onclick="saveDailyGoal()">Save goal</button></div>
+  <div id="dailyGoalStatus" class="items"></div>
 </section>
+<div id="mobileStudyNav" aria-label="Study navigation">
+  <button type="button" onclick="goHome()">🏠<small>Home</small></button>
+  <button type="button" onclick="document.getElementById('studentWelcome').scrollIntoView({behavior:'smooth'})">📚<small>Study</small></button>
+  <button type="button" onclick="focusSearch()">🔎<small>Search</small></button>
+  <button type="button" onclick="toggleDarkGlass()">🌙<small>Glass</small></button>
+</div>
 <div id="glassTools" class="glass-tools" style="display:none;">
   <button onclick="goHome()">🏠 Dashboard</button>
   <button onclick="refreshPortal()">🔄 Refresh</button>
@@ -2427,6 +2446,25 @@ function renderStudyExtras(){
  put('studyPlannerList',studentRead('planner').map((x,i)=>'<div class="glass-stat"><label><input type="checkbox" '+(x.done?'checked':'')+' onchange="toggleStudyTask('+i+')"> '+escapeStudyText(x.title)+'</label><small> — '+escapeStudyText(x.date)+'</small></div>').join('')||'<p>No study tasks yet.</p>');
 }
 document.addEventListener('DOMContentLoaded',renderStudyExtras);
+</script>
+
+
+<style id="remaining-study-features">
+.exam-mode-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+.exam-mode-controls select,.exam-mode-controls input{padding:9px;border:1px solid #cbd5e1;border-radius:9px;background:rgba(255,255,255,.85)}
+#examCountdown{font-size:24px;padding:8px 14px;border-radius:12px;background:rgba(255,255,255,.65);font-variant-numeric:tabular-nums}
+#mobileStudyNav{display:none}
+@media(max-width:700px){#mobileStudyNav{position:fixed;z-index:8000;bottom:10px;left:10px;right:10px;display:none;justify-content:space-around;gap:4px;padding:8px;border:1px solid rgba(255,255,255,.7);border-radius:18px;background:rgba(255,255,255,.82);backdrop-filter:blur(18px);box-shadow:0 10px 30px rgba(15,23,42,.18)}#mobileStudyNav button{border:0;background:transparent;padding:5px 9px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:17px}#mobileStudyNav small{font-size:10px}body:has(#authGate[style*="display: none"]) #mobileStudyNav{display:flex}body{padding-bottom:65px}}
+body.glass-dark #mobileStudyNav{background:rgba(15,23,42,.86);color:white;border-color:rgba(255,255,255,.2)}
+</style>
+<script id="remaining-study-features-script">
+let examTimerHandle=null, examSecondsLeft=1500;
+function paintExamTimer(){const el=document.getElementById('examCountdown');if(el)el.textContent=String(Math.floor(examSecondsLeft/60)).padStart(2,'0')+':'+String(examSecondsLeft%60).padStart(2,'0')}
+function startExamMode(){stopExamMode(false);const mins=Math.max(1,Math.min(600,Number(document.getElementById('examMinutes')?.value)||25));examSecondsLeft=mins*60;paintExamTimer();const status=document.getElementById('examStatus');if(status)status.textContent='Focus session running. Keep this tab open.';examTimerHandle=setInterval(()=>{examSecondsLeft--;paintExamTimer();if(examSecondsLeft<=0){stopExamMode(false);if(status)status.textContent='Session complete! Take a short break.';portalToast('Focus session completed!');}},1000)}
+function stopExamMode(showMessage=true){if(examTimerHandle){clearInterval(examTimerHandle);examTimerHandle=null}const status=document.getElementById('examStatus');if(showMessage&&status)status.textContent='Focus session stopped.'}
+function saveDailyGoal(){const v=Math.max(5,Math.min(600,Number(document.getElementById('dailyGoalMinutes')?.value)||60));localStorage.setItem('msn_daily_goal_'+(currentUser?.id||'guest'),String(v));renderDailyGoal();portalToast('Daily goal saved on this browser')}
+function renderDailyGoal(){const el=document.getElementById('dailyGoalStatus');if(!el)return;const v=localStorage.getItem('msn_daily_goal_'+(currentUser?.id||'guest'))||'60';const input=document.getElementById('dailyGoalMinutes');if(input)input.value=v;el.textContent='Your daily target: '+v+' minutes. This version stores the goal locally; it does not track actual study time yet.'}
+document.addEventListener('DOMContentLoaded',renderDailyGoal);
 </script>
 
 </body>
