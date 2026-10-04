@@ -569,6 +569,12 @@ button.open{background:#4169a8!important;color:#fff!important;}
 #studyPlannerList .card{border-left:4px solid #3f8f88!important;}
 @media(max-width:700px){.student-welcome{padding:15px}.student-welcome h3{font-size:17px}}
 </style>
+<style id="visible-header-back-fix">
+header .logo{color:#172554!important;font-weight:800!important;opacity:1!important;visibility:visible!important;text-shadow:none!important}
+header .tagline{color:#334155!important;opacity:1!important;visibility:visible!important}
+.site-back-button{flex:0 0 auto!important;display:none;align-items:center;justify-content:center;padding:9px 13px!important;margin-right:12px!important;border:1px solid #315b91!important;border-radius:10px!important;background:#315b91!important;color:#fff!important;font-weight:700!important;cursor:pointer;white-space:nowrap;position:relative;z-index:2}
+@media(max-width:700px){header{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:8px!important}.site-back-button{margin-right:2px!important}.logo{font-size:20px!important}}
+</style>
 
 </head>
 
@@ -580,6 +586,7 @@ button.open{background:#4169a8!important;color:#fff!important;}
 
 <header>
 
+    <button id="sectionBackButton" class="site-back-button" onclick="showStudentSection('home')" style="display:none" aria-label="Back to Home">← Back</button>
     <div class="logo">
         📚 MyStudyNotesSite.com
     </div>
@@ -701,7 +708,6 @@ button.open{background:#4169a8!important;color:#fff!important;}
   <h2 id="welcomeHeading">Good day 👋</h2>
   <p>Ready to continue studying?</p>
   <div class="student-shortcuts">
-    <button id="sectionBackButton" onclick="showStudentSection('home')" style="display:none;background:#475569;color:white;">← Back to Home</button>
     <button onclick="showStudentSection('home')">🏠 Home</button>
     <button onclick="showStudentSection('favorites')">⭐ Favorites</button>
     <button onclick="showStudentSection('recent')">🕘 Recently Opened</button>
