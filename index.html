@@ -519,25 +519,24 @@ button:hover{transform:translateY(-1px);box-shadow:0 9px 24px rgba(15,23,42,.13)
 .container{position:relative!important;display:flex!important;align-items:stretch!important;gap:18px!important;padding:0 18px 24px!important}
 .sidebar{order:1!important;flex:0 0 285px!important;min-width:285px!important;align-self:flex-start!important;position:sticky!important;top:88px!important;max-height:calc(100vh - 110px)!important;overflow:auto!important;margin:12px 0 0!important}
 .main{order:2!important;min-width:0!important;flex:1 1 auto!important;padding-top:18px!important}
-#accountBar{position:fixed!important;right:18px!important;top:82px!important;z-index:5000!important;width:205px!important;margin:0!important;padding:12px!important;display:none;flex-direction:column!important;align-items:stretch!important;gap:9px!important;background:rgba(255,255,255,.62)!important;border:1px solid rgba(255,255,255,.7)!important;box-shadow:0 16px 45px rgba(15,23,42,.15)!important;backdrop-filter:blur(20px) saturate(145%)!important;-webkit-backdrop-filter:blur(20px) saturate(145%)!important;border-radius:18px!important}
+#accountBar{position:relative!important;z-index:20!important;width:auto!important;margin:10px 12px 14px!important;padding:12px 16px!important;display:none;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;flex-wrap:wrap!important;background:rgba(255,255,255,.72)!important;border:1px solid rgba(255,255,255,.7)!important;box-shadow:0 10px 28px rgba(15,23,42,.10)!important;backdrop-filter:blur(20px) saturate(145%)!important;-webkit-backdrop-filter:blur(20px) saturate(145%)!important;border-radius:16px!important}
 #accountInfo{font-size:12px!important;line-height:1.35!important;word-break:break-word!important;padding:4px 5px!important}
-#accountBar>div{display:flex!important;flex-direction:column!important;gap:7px!important;width:100%!important}
+#accountBar>div{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:7px!important;align-items:center!important}
 #adminPortalButton,#accountBar button[onclick="ownerLogout()"]{width:100%!important;box-sizing:border-box!important;min-height:38px!important;padding:8px 10px!important;font-size:13px!important}
 #adminPortalButton{background:linear-gradient(135deg,#7c3aed,#5b21b6)!important}
 #accountBar button[onclick="ownerLogout()"]{background:rgba(100,116,139,.92)!important}
-#glassTools{order:10!important;display:flex!important;flex-direction:column!important;gap:5px!important;margin:2px 0 0!important;padding:7px!important;border-top:1px solid rgba(148,163,184,.25)!important}
-#glassTools button{width:100%!important;padding:7px 8px!important;font-size:11px!important;min-height:30px!important;background:rgba(255,255,255,.58)!important;box-shadow:none!important;transform:none!important}
+#glassTools{order:10!important;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:7px!important;margin:0!important;padding:0!important;border:0!important}
+#glassTools button{width:auto!important;padding:8px 12px!important;font-size:13px!important;min-height:36px!important;background:rgba(255,255,255,.78)!important;box-shadow:none!important;transform:none!important}
 #glassTools button:hover{transform:translateY(-1px)!important}
 #glassDashboard{margin-left:0!important;margin-right:0!important}
 @media(max-width:1100px){
-  #accountBar{right:12px!important;width:185px!important}
   .sidebar{flex-basis:245px!important;min-width:245px!important}
 }
 @media(max-width:800px){
   .container{flex-direction:column!important;padding:0 10px 20px!important}
   .sidebar{position:relative!important;top:auto!important;width:100%!important;min-width:0!important;flex-basis:auto!important;max-height:none!important;order:1!important}
   .main{order:2!important}
-  #accountBar{position:relative!important;top:auto!important;right:auto!important;width:auto!important;margin:10px!important;display:none;flex-direction:column!important}
+  #accountBar{position:relative!important;width:auto!important;margin:10px!important;display:none;flex-direction:column!important;align-items:stretch!important}
   #accountBar>div{flex-direction:row!important;flex-wrap:wrap!important}
   #adminPortalButton,#accountBar button[onclick="ownerLogout()"]{width:auto!important;flex:1 1 140px!important}
   #glassTools{flex-direction:row!important;flex-wrap:wrap!important}
@@ -705,6 +704,12 @@ header .tagline{color:#334155!important;opacity:1!important;visibility:visible!i
             Logout
         </button>
     </div>
+    <div id="glassTools" class="glass-tools" style="display:none;">
+  <button onclick="goHome()">🏠 Dashboard</button>
+  <button onclick="refreshPortal()">🔄 Refresh</button>
+  <button onclick="toggleDarkGlass()">🌙 Glass Mode</button>
+  <button onclick="focusSearch()">🔎 Search</button>
+</div>
 </div>
 
 <section id="studentWelcome" class="student-welcome" style="display:none;">
@@ -753,17 +758,6 @@ header .tagline{color:#334155!important;opacity:1!important;visibility:visible!i
   <button type="button" onclick="focusSearch()">🔎<small>Search</small></button>
   <button type="button" onclick="toggleDarkGlass()">🌙<small>Glass</small></button>
 </div>
-<div id="glassTools" class="glass-tools" style="display:none;">
-  <button onclick="goHome()">🏠 Dashboard</button>
-  <button onclick="refreshPortal()">🔄 Refresh</button>
-  <button onclick="toggleDarkGlass()">🌙 Glass Mode</button>
-  <button onclick="focusSearch()">🔎 Search</button>
-</div>
-
-
-    
-
-    
 <div id="adminPortal" class="admin-portal-backdrop">
     <div class="admin-portal">
         <div class="admin-portal-header">
