@@ -21,6 +21,43 @@
         body {
             background: #4d7eae;
             color: #1e293b;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* WATER BUBBLE ANIMATION */
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-repeat: no-repeat;
+        }
+
+        body::before {
+            background-image:
+                radial-gradient(circle at 12% 95%, rgba(255,255,255,.28) 0 7px, transparent 8px),
+                radial-gradient(circle at 34% 100%, rgba(125,211,252,.22) 0 5px, transparent 6px),
+                radial-gradient(circle at 58% 92%, rgba(255,255,255,.24) 0 9px, transparent 10px),
+                radial-gradient(circle at 82% 98%, rgba(56,189,248,.20) 0 6px, transparent 7px);
+            animation: bubblesUp 13s linear infinite;
+        }
+
+        body::after {
+            background-image:
+                radial-gradient(circle at 20% 100%, rgba(255,255,255,.20) 0 4px, transparent 5px),
+                radial-gradient(circle at 48% 96%, rgba(125,211,252,.20) 0 6px, transparent 7px),
+                radial-gradient(circle at 72% 100%, rgba(255,255,255,.22) 0 8px, transparent 9px),
+                radial-gradient(circle at 92% 94%, rgba(56,189,248,.18) 0 5px, transparent 6px);
+            animation: bubblesUp 17s linear 2s infinite;
+        }
+
+        @keyframes bubblesUp {
+            0% { transform: translateY(30px); opacity: .15; }
+            45% { opacity: .8; }
+            100% { transform: translateY(-110vh); opacity: 0; }
         }
 
         /* HEADER */
@@ -50,6 +87,8 @@
         .container {
             display: flex;
             min-height: calc(100vh - 70px);
+            position: relative;
+            z-index: 1;
         }
 
         /* SIDEBAR */
@@ -257,20 +296,40 @@
 
             display: flex;
 
-            gap: 8px;
+            gap: 10px;
 
             margin-top: 15px;
+
+            flex-wrap: wrap;
+
+            width: 100%;
+
+            overflow: visible;
         }
 
         .buttons button {
 
-            padding: 8px 12px;
+            padding: 11px 14px;
 
             border: none;
 
-            border-radius: 6px;
+            border-radius: 7px;
 
             cursor: pointer;
+
+            min-width: 92px;
+
+            min-height: 46px;
+
+            white-space: nowrap;
+
+            overflow: visible;
+
+            text-overflow: clip;
+
+            flex: 0 1 auto;
+
+            font-size: 15px;
         }
 
         .open {
@@ -644,21 +703,27 @@ button:hover::after{left:130%}
         width: 100%;
         overflow: visible;
     }
+    #pdfContainer .card {
+        padding: 22px;
+        min-height: 180px;
+    }
     #pdfContainer .buttons {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 10px;
         width: 100%;
         overflow: visible;
     }
     #pdfContainer .buttons button {
-        flex: 1 1 105px;
-        min-width: 95px;
-        max-width: 100%;
-        padding: 10px 12px;
+        flex: 0 1 auto;
+        min-width: 96px;
+        min-height: 48px;
+        max-width: none;
+        padding: 11px 15px;
         white-space: nowrap;
         overflow: visible;
         text-overflow: clip;
+        font-size: 15px;
     }
 }
 </style>
