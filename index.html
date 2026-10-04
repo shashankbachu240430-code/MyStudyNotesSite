@@ -545,6 +545,13 @@ button:hover{transform:translateY(-1px);box-shadow:0 9px 24px rgba(15,23,42,.13)
 }
 </style>
 
+
+<style id="student-dashboard-style">
+.student-welcome{margin:18px 0;padding:20px;border-radius:18px;background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.7);box-shadow:0 12px 35px rgba(15,23,42,.10)}
+.student-welcome h2{margin-bottom:6px}.student-welcome h3{margin:20px 0 10px}.student-shortcuts{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.student-shortcuts button{padding:9px 13px;border:0;background:#e0e7ff;cursor:pointer}
+.favorite-btn{padding:8px 11px;border:0;background:#fef3c7;cursor:pointer}.favorite-btn.is-fav{background:#fde68a}
+</style>
+
 </head>
 
 
@@ -672,6 +679,19 @@ button:hover{transform:translateY(-1px);box-shadow:0 9px 24px rgba(15,23,42,.13)
   <div class="glass-stat">📄 PDFs<b id="statPDFs">0</b></div>
   <div class="glass-stat">⭐ Favorites<b id="statFavorites">0</b></div>
 </div>
+<section id="studentWelcome" class="student-welcome" style="display:none;">
+  <h2 id="welcomeHeading">Good day 👋</h2>
+  <p>Ready to continue studying?</p>
+  <div class="student-shortcuts">
+    <button onclick="showStudentSection('home')">🏠 Home</button>
+    <button onclick="showStudentSection('favorites')">⭐ Favorites</button>
+    <button onclick="showStudentSection('recent')">🕘 Recently Opened</button>
+  </div>
+  <h3>Continue Studying</h3>
+  <div id="recentItems" class="items"><p>Open a PDF or note to see it here.</p></div>
+  <h3>⭐ Your Favorites</h3>
+  <div id="favoriteItems" class="items"><p>No favorites yet. Tap ☆ on a PDF or note.</p></div>
+</section>
 <div id="glassTools" class="glass-tools" style="display:none;">
   <button onclick="goHome()">🏠 Dashboard</button>
   <button onclick="refreshPortal()">🔄 Refresh</button>
@@ -1248,6 +1268,8 @@ async function showApplication() {
     }
 
     document.getElementById("authGate").style.display = "none";
+    const welcome=document.getElementById("studentWelcome"); if(welcome){welcome.style.display="block";document.getElementById("welcomeHeading").textContent="Good day, "+(currentUser.email?.split('@')[0]||"Student")+" 👋";}
+    renderStudentExtras();
 
     const accountBar =
         document.getElementById("accountBar");
@@ -1811,6 +1833,9 @@ async function displayNotes() {
         card.appendChild(title);
         card.appendChild(content);
         card.appendChild(date);
+        const favButton=document.createElement("button"); favButton.className="favorite-btn"+(isFavorite("note",note.id)?" is-fav":""); favButton.textContent=isFavorite("note",note.id)?"⭐ Favorited":"☆ Add to Favorites";
+        favButton.onclick=()=>toggleFavorite("note",note.id,note.title,note.folder_id); card.appendChild(favButton);
+        const recentButton=document.createElement("button"); recentButton.textContent="▶ Open"; recentButton.onclick=()=>{rememberRecent("note",note.id,note.title,note.folder_id);portalToast("Added to recently opened");}; card.appendChild(recentButton);
 
         if (isAdmin()) {
             const buttons =
@@ -1870,6 +1895,45 @@ async function deleteNote(noteId) {
     await displayNotes();
 }
 
+
+/* =========================================================
+   STUDENT DASHBOARD / FAVORITES / RECENT HISTORY
+   Saved per signed-in account in this browser.
+   ========================================================= */
+function studentKey(kind){return 'msn_'+kind+'_'+(currentUser?.id||'guest');}
+function readStudentList(kind){try{return JSON.parse(localStorage.getItem(studentKey(kind))||'[]')}catch(_){return []}}
+function writeStudentList(kind,items){localStorage.setItem(studentKey(kind),JSON.stringify(items));}
+function isFavorite(type,id){return readStudentList('favorites').some(x=>x.type===type&&x.id===String(id));}
+function toggleFavorite(type,id,title,folderId){
+  const items=readStudentList('favorites'); const key=String(id);
+  const i=items.findIndex(x=>x.type===type&&x.id===key);
+  if(i>=0) items.splice(i,1); else items.unshift({type,id:key,title,folderId:String(folderId||'')});
+  writeStudentList('favorites',items); renderStudentExtras();
+  if(selectedFolder!==null) displayContent();
+}
+function rememberRecent(type,id,title,folderId){
+  const items=readStudentList('recent').filter(x=>!(x.type===type&&x.id===String(id)));
+  items.unshift({type,id:String(id),title,folderId:String(folderId||''),openedAt:Date.now()});
+  writeStudentList('recent',items.slice(0,20)); renderStudentExtras();
+}
+function showStudentSection(section){
+  const home=document.getElementById('studentWelcome');
+  if(section==='home'){home.style.display='block';document.getElementById('currentFolder').scrollIntoView({behavior:'smooth'});}
+  else {home.style.display='block';const target=document.getElementById(section==='favorites'?'favoriteItems':'recentItems');target.scrollIntoView({behavior:'smooth',block:'center'});}
+}
+function renderStudentExtras(){
+ const recent=readStudentList('recent').slice(0,3), fav=readStudentList('favorites');
+ const makeCard=(item)=>{const card=document.createElement('div');card.className='card';const h=document.createElement('h3');h.textContent=(item.type==='pdf'?'📄 ':'📝 ')+item.title;const p=document.createElement('p');p.textContent=item.openedAt?'Last opened '+new Date(item.openedAt).toLocaleString():('Folder: '+(folders.find(f=>String(f.id)===item.folderId)?.name||'Study materials'));const b=document.createElement('button');b.className='open';b.textContent='▶ Open';b.onclick=()=>openStudentItem(item);card.append(h,p,b);return card;};
+ const r=document.getElementById('recentItems'),f=document.getElementById('favoriteItems'); if(!r||!f)return;
+ r.replaceChildren();f.replaceChildren(); if(!recent.length)r.textContent='Open a PDF or note to see it here.';else recent.forEach(x=>r.appendChild(makeCard(x)));
+ if(!fav.length)f.textContent='No favorites yet. Tap ☆ on a PDF or note.';else fav.forEach(x=>f.appendChild(makeCard(x)));
+ const stat=document.getElementById('statFavorites');if(stat)stat.textContent=fav.length;
+}
+async function openStudentItem(item){
+ const folder=folders.find(x=>String(x.id)===item.folderId); if(!folder){portalToast('This folder is no longer available.');return;}
+ selectedFolder=folder.id;document.getElementById('currentFolder').textContent='📁 '+folder.name;await displayFolders();await displayContent();
+ if(item.type==='pdf') await openPDF(item.id); else {const n=notes.find(x=>String(x.id)===item.id);if(n){const el=[...document.querySelectorAll('#notesContainer .card')].find(c=>c.querySelector('h3')?.textContent.includes(n.title));el?.scrollIntoView({behavior:'smooth',block:'center'});}}
+}
 
 /* =========================================================
    PDFS
@@ -2032,10 +2096,13 @@ async function displayPDFs() {
         openButton.className = "open";
         openButton.textContent = "👁️ Open";
         openButton.onclick = function() {
+            rememberRecent("pdf",path,pdf.name,selectedFolder);
             openPDF(path);
         };
 
         buttons.appendChild(openButton);
+        const favButton=document.createElement("button"); favButton.className="favorite-btn"+(isFavorite("pdf",path)?" is-fav":""); favButton.textContent=isFavorite("pdf",path)?"⭐":"☆ Favorite";
+        favButton.onclick=()=>toggleFavorite("pdf",path,pdf.name,selectedFolder); buttons.appendChild(favButton);
 
         const downloadButton = document.createElement("button");
         downloadButton.textContent = "⬇️ Download";
@@ -2183,12 +2250,14 @@ async function updateDashboardStats(){
     const p=document.getElementById("statPDFs");
     const fav=document.getElementById("statFavorites");
     if(f) f.textContent=folders.length;
-    if(n) n.textContent=notes.length;
-    if(fav) fav.textContent=JSON.parse(localStorage.getItem("msn_favorites")||"[]").length;
-    if(p && selectedFolder!==null){
+    if(n) { const {count}=await supabaseClient.from("notes").select("id",{count:"exact",head:true}); n.textContent=count??notes.length; }
+    if(fav) fav.textContent=readStudentList("favorites").length;
+    if(p){
       const {data}=await supabaseClient.storage.from("pdfs").list(String(selectedFolder),{limit:1000});
-      p.textContent=(data||[]).filter(x=>x.name&&x.name.toLowerCase().endsWith(".pdf")).length;
-    } else if(p) p.textContent="—";
+      let total=(data||[]).filter(x=>x.name&&x.name.toLowerCase().endsWith(".pdf")).length;
+      if(selectedFolder===null){total=0;for(const folder of folders){const {data:files}=await supabaseClient.storage.from("pdfs").list(String(folder.id),{limit:1000});total+=(files||[]).filter(x=>x.name&&x.name.toLowerCase().endsWith(".pdf")).length;}}
+      p.textContent=total;
+    }
 }
 
 function focusSearch(){
