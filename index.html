@@ -514,33 +514,33 @@ button:hover{transform:translateY(-1px);box-shadow:0 9px 24px rgba(15,23,42,.13)
 <style>.portal-toast{position:fixed;right:20px;bottom:20px;z-index:99999;padding:13px 17px;border-radius:14px;background:rgba(15,23,42,.88);color:#fff;backdrop-filter:blur(14px);display:none}</style>
 <style id="final-layout-arrangement">
 /* FINAL USER PORTAL LAYOUT
-   Folders stay on the left. Admin + Logout stay on the right.
+   Folders stay at the extreme left. Main content stays on the right.
    Small feature buttons sit directly below Admin Portal. */
-.container{position:relative!important;display:flex!important;align-items:stretch!important;gap:18px!important;padding:0 18px 24px!important}
-.sidebar{order:1!important;flex:0 0 285px!important;min-width:285px!important;align-self:flex-start!important;position:sticky!important;top:88px!important;max-height:calc(100vh - 110px)!important;overflow:auto!important;margin:12px 0 0!important}
-.main{order:2!important;min-width:0!important;flex:1 1 auto!important;padding-top:18px!important}
-#accountBar{position:relative!important;z-index:20!important;width:auto!important;margin:10px 12px 14px!important;padding:12px 16px!important;display:none;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;flex-wrap:wrap!important;background:rgba(255,255,255,.72)!important;border:1px solid rgba(255,255,255,.7)!important;box-shadow:0 10px 28px rgba(15,23,42,.10)!important;backdrop-filter:blur(20px) saturate(145%)!important;-webkit-backdrop-filter:blur(20px) saturate(145%)!important;border-radius:16px!important}
-#accountInfo{font-size:12px!important;line-height:1.35!important;word-break:break-word!important;padding:4px 5px!important}
-#accountBar>div{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:7px!important;align-items:center!important}
-#adminPortalButton,#accountBar button[onclick="ownerLogout()"]{width:100%!important;box-sizing:border-box!important;min-height:38px!important;padding:8px 10px!important;font-size:13px!important}
+.container{position:relative!important;display:flex!important;align-items:stretch!important;gap:12px!important;padding:0 0 24px 0!important}
+.sidebar{order:0!important;flex:0 0 285px!important;min-width:285px!important;align-self:flex-start!important;position:sticky!important;top:88px!important;max-height:calc(100vh - 110px)!important;overflow:auto!important;margin:12px 0 0 0!important}
+.main{order:1!important;min-width:0!important;flex:1 1 auto!important;padding-top:18px!important}
+#accountBar{position:relative!important;z-index:20!important;width:auto!important;margin:6px 12px 10px!important;padding:8px 10px!important;display:none;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;flex-wrap:wrap!important;background:rgba(255,255,255,.72)!important;border:1px solid rgba(255,255,255,.7)!important;box-shadow:0 10px 28px rgba(15,23,42,.10)!important;backdrop-filter:blur(20px) saturate(145%)!important;-webkit-backdrop-filter:blur(20px) saturate(145%)!important;border-radius:16px!important}
+#accountInfo{font-size:11px!important;line-height:1.2!important;word-break:break-word!important;padding:2px 4px!important;flex:0 1 auto!important;max-width:180px!important}
+#accountBar>div{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:5px!important;align-items:center!important}
+#adminPortalButton,#accountBar button[onclick="ownerLogout()"]{width:auto!important;box-sizing:border-box!important;min-height:30px!important;padding:6px 9px!important;font-size:12px!important}
 #adminPortalButton{background:linear-gradient(135deg,#7c3aed,#5b21b6)!important}
 #accountBar button[onclick="ownerLogout()"]{background:rgba(100,116,139,.92)!important}
 #glassTools{order:10!important;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;gap:7px!important;margin:0!important;padding:0!important;border:0!important}
-#glassTools button{width:auto!important;padding:8px 12px!important;font-size:13px!important;min-height:36px!important;background:rgba(255,255,255,.78)!important;box-shadow:none!important;transform:none!important}
+#glassTools button{width:auto!important;padding:6px 9px!important;font-size:11px!important;min-height:30px!important;background:rgba(255,255,255,.78)!important;box-shadow:none!important;transform:none!important}
 #glassTools button:hover{transform:translateY(-1px)!important}
 #glassDashboard{margin-left:0!important;margin-right:0!important}
 @media(max-width:1100px){
   .sidebar{flex-basis:245px!important;min-width:245px!important}
 }
 @media(max-width:800px){
-  .container{flex-direction:column!important;padding:0 10px 20px!important}
-  .sidebar{position:relative!important;top:auto!important;width:100%!important;min-width:0!important;flex-basis:auto!important;max-height:none!important;order:1!important}
-  .main{order:2!important}
-  #accountBar{position:relative!important;width:auto!important;margin:10px!important;display:none;flex-direction:column!important;align-items:stretch!important}
+  .container{flex-direction:row!important;gap:8px!important;padding:0 8px 20px!important}
+  .sidebar{position:relative!important;top:auto!important;width:38%!important;min-width:0!important;flex:0 0 38%!important;max-height:none!important;order:0!important;padding:12px 12px 12px 0!important;margin-left:0!important}
+  .main{order:1!important;flex:1 1 62%!important;padding:12px!important}
+  #accountBar{position:relative!important;width:auto!important;margin:6px 10px!important;padding:7px!important;display:none;flex-direction:row!important;align-items:center!important;gap:6px!important}
   #accountBar>div{flex-direction:row!important;flex-wrap:wrap!important}
-  #adminPortalButton,#accountBar button[onclick="ownerLogout()"]{width:auto!important;flex:1 1 140px!important}
+  #adminPortalButton,#accountBar button[onclick="ownerLogout()"]{width:auto!important;flex:0 1 auto!important;min-height:29px!important;padding:5px 7px!important;font-size:11px!important}
   #glassTools{flex-direction:row!important;flex-wrap:wrap!important}
-  #glassTools button{flex:1 1 90px!important}
+  #glassTools button{flex:0 1 auto!important;padding:5px 7px!important;font-size:10px!important;min-height:28px!important}
 }
 </style>
 
@@ -575,6 +575,67 @@ header .tagline{color:#334155!important;opacity:1!important;visibility:visible!i
 @media(max-width:700px){header{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:8px!important}.site-back-button{margin-right:2px!important}.logo{font-size:20px!important}}
 </style>
 
+
+<style id="compact-horizontal-admin-toolbar">
+/* One compact horizontal toolbar directly below the site title. */
+#accountBar{display:none;flex-flow:row nowrap!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;width:calc(100% - 24px)!important;min-height:0!important;height:auto!important;box-sizing:border-box!important;overflow-x:auto!important;overflow-y:hidden!important;white-space:nowrap!important;}
+#accountInfo{flex:0 0 auto!important;max-width:none!important;white-space:nowrap!important;word-break:normal!important;font-size:12px!important;}
+#accountBar>div{flex:0 0 auto!important;display:flex!important;flex-flow:row nowrap!important;align-items:center!important;gap:6px!important;}
+#glassTools{flex:0 0 auto!important;display:flex!important;flex-flow:row nowrap!important;align-items:center!important;gap:6px!important;}
+#accountBar button,#glassTools button{flex:0 0 auto!important;width:auto!important;white-space:nowrap!important;}
+@media(max-width:800px){#accountBar{flex-flow:row nowrap!important;gap:6px!important;margin:6px 10px!important;padding:6px!important;}#accountInfo{font-size:10px!important;}#accountBar button,#glassTools button{font-size:10px!important;padding:5px 7px!important;min-height:28px!important;}}
+</style>
+
+<style id="single-row-account-toolbar">
+#accountBar{
+  width:calc(100% - 30px)!important; box-sizing:border-box!important;
+  margin:8px 15px 12px!important; padding:8px 12px!important;
+  display:none; flex-direction:row!important; flex-wrap:nowrap!important;
+  align-items:center!important; justify-content:flex-start!important; gap:10px!important;
+  overflow-x:auto!important; overflow-y:hidden!important; white-space:nowrap!important;
+}
+#accountInfo{flex:0 0 auto!important; max-width:none!important; white-space:nowrap!important; word-break:normal!important; font-size:12px!important;}
+#accountBar>div{display:flex!important; flex:0 0 auto!important; flex-direction:row!important; flex-wrap:nowrap!important; align-items:center!important; gap:7px!important;}
+#glassTools{display:flex!important; flex:0 0 auto!important; flex-direction:row!important; flex-wrap:nowrap!important; align-items:center!important; gap:7px!important; margin:0!important;}
+#accountBar button,#glassTools button{flex:0 0 auto!important; width:auto!important; min-height:32px!important; padding:6px 10px!important; font-size:12px!important; white-space:nowrap!important;}
+@media(max-width:700px){#accountBar{width:calc(100% - 20px)!important;margin:6px 10px 10px!important;padding:7px!important;gap:7px!important;}#accountInfo{font-size:11px!important;}#accountBar button,#glassTools button{font-size:11px!important;min-height:30px!important;padding:5px 8px!important;}}
+</style>
+
+<style id="enhanced-glass-animations">
+/* Soft glass finish and lightweight motion; existing layout and functionality preserved. */
+:root{--glass-line:rgba(255,255,255,.72);--glass-shadow:0 16px 42px rgba(36,55,82,.12)}
+body{background-image:radial-gradient(ellipse at 12% 8%,rgba(255,255,255,.9),transparent 34%),radial-gradient(ellipse at 88% 18%,rgba(190,218,245,.48),transparent 32%),linear-gradient(135deg,#edf3f8,#f8f5ef 55%,#e9f0f6)!important;background-attachment:fixed!important}
+header,.sidebar,.main,.student-welcome,.card,.folder,.editor,.admin-portal,#accountBar,.glass-dashboard,.glass-tool-panel{border:1px solid var(--glass-line)!important;box-shadow:var(--glass-shadow)!important;backdrop-filter:blur(22px) saturate(155%)!important;-webkit-backdrop-filter:blur(22px) saturate(155%)!important}
+.sidebar,.student-welcome,.card,.folder,.glass-stat{transition:transform .28s ease,box-shadow .28s ease,background .28s ease}
+.sidebar:hover,.student-welcome:hover,.card:hover,.folder:hover,.glass-stat:hover{box-shadow:0 20px 48px rgba(36,55,82,.16)!important}
+button,.student-shortcuts button,.favorite-btn{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease,background .2s ease!important}
+button:hover,.student-shortcuts button:hover,.favorite-btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(36,55,82,.14)!important;filter:saturate(1.08)}
+button:active,.student-shortcuts button:active{transform:translateY(0) scale(.98)}
+header{animation:glassDrop .65s cubic-bezier(.2,.75,.25,1) both}
+.sidebar{animation:glassSlideIn .7s .08s both}
+.main{animation:glassFadeUp .7s .14s both}
+.student-welcome h2,.student-welcome h3{letter-spacing:.1px}
+@keyframes glassDrop{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glassSlideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes glassFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+
+<style id="bubble-water-motion">
+/* Subtle floating bubbles, liquid shimmer and glass ripple accents. */
+body{background-size:160% 160%;animation:waterDrift 24s ease-in-out infinite alternate}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.42;background-image:radial-gradient(circle at 8% 92%,rgba(255,255,255,.62) 0 3px,transparent 4px),radial-gradient(circle at 22% 78%,rgba(132,205,235,.28) 0 5px,transparent 6px),radial-gradient(circle at 72% 95%,rgba(255,255,255,.58) 0 4px,transparent 5px),radial-gradient(circle at 88% 72%,rgba(132,205,235,.25) 0 6px,transparent 7px),radial-gradient(circle at 48% 88%,rgba(255,255,255,.45) 0 2px,transparent 3px);background-size:100% 100%;animation:bubbleRise 18s linear infinite}
+header,.sidebar,.main,.student-welcome,.card,.folder,.editor,.admin-portal,#accountBar,.glass-dashboard,.glass-tool-panel{background-image:linear-gradient(125deg,rgba(255,255,255,.48),rgba(255,255,255,.10) 42%,rgba(180,220,245,.12) 60%,rgba(255,255,255,.36))!important;background-size:220% 220%;animation:liquidGlass 14s ease-in-out infinite alternate}
+.folder:hover,.card:hover,.sidebar:hover{animation:waterFloat 3s ease-in-out infinite alternate}
+button{position:relative;overflow:hidden}
+button::after{content:"";position:absolute;top:-120%;left:-45%;width:35%;height:340%;transform:rotate(25deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);transition:left .65s ease;pointer-events:none}
+button:hover::after{left:130%}
+@keyframes waterDrift{0%{background-position:0% 0%}100%{background-position:100% 100%}}
+@keyframes bubbleRise{0%{transform:translateY(18px);background-position:0 0}100%{transform:translateY(-24px);background-position:0 -120px}}
+@keyframes liquidGlass{0%{background-position:0% 40%}100%{background-position:100% 60%}}
+@keyframes waterFloat{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){body,body::before,header,.sidebar,.main,.student-welcome,.card,.folder,.editor,.admin-portal,#accountBar,.glass-dashboard,.glass-tool-panel{animation:none!important}button::after{display:none}}
+</style>
 </head>
 
 
@@ -595,6 +656,43 @@ header .tagline{color:#334155!important;opacity:1!important;visibility:visible!i
     </div>
 
 </header>
+
+
+<div id="accountBar" style="
+    background:white;
+    margin:20px 20px 0;
+    padding:12px 16px;
+    border-radius:10px;
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+">
+    <span id="accountInfo"></span>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button
+            id="adminPortalButton"
+            class="admin-portal-button"
+            onclick="openAdminPortal()"
+            style="display:none;"
+        >
+            👑 Admin Portal
+        </button>
+        <button
+            onclick="ownerLogout()"
+            style="padding:9px 16px;background:#64748b;color:white;border:0;border-radius:6px;cursor:pointer;"
+        >
+            Logout
+        </button>
+    </div>
+    <div id="glassTools" class="glass-tools" style="display:none;">
+  <button onclick="goHome()">🏠 Dashboard</button>
+  <button onclick="refreshPortal()">🔄 Refresh</button>
+  <button onclick="toggleDarkGlass()">🌙 Glass Mode</button>
+  <button onclick="focusSearch()">🔎 Search</button>
+</div>
+</div>
 
 
 <div class="container">
@@ -676,82 +774,8 @@ header .tagline{color:#334155!important;opacity:1!important;visibility:visible!i
     </div>
 </div>
 
-<div id="accountBar" style="
-    background:white;
-    margin:20px 20px 0;
-    padding:12px 16px;
-    border-radius:10px;
-    display:none;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    flex-wrap:wrap;
-">
-    <span id="accountInfo"></span>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button
-            id="adminPortalButton"
-            class="admin-portal-button"
-            onclick="openAdminPortal()"
-            style="display:none;"
-        >
-            👑 Admin Portal
-        </button>
-        <button
-            onclick="ownerLogout()"
-            style="padding:9px 16px;background:#64748b;color:white;border:0;border-radius:6px;cursor:pointer;"
-        >
-            Logout
-        </button>
-    </div>
-    <div id="glassTools" class="glass-tools" style="display:none;">
-  <button onclick="goHome()">🏠 Dashboard</button>
-  <button onclick="refreshPortal()">🔄 Refresh</button>
-  <button onclick="toggleDarkGlass()">🌙 Glass Mode</button>
-  <button onclick="focusSearch()">🔎 Search</button>
-</div>
-</div>
 
-<section id="studentWelcome" class="student-welcome" style="display:none;">
-  <h2 id="welcomeHeading">Good day 👋</h2>
-  <p>Ready to continue studying?</p>
-  <div class="student-shortcuts">
-    <button onclick="showStudentSection('home')">🏠 Home</button>
-    <button onclick="showStudentSection('favorites')">⭐ Favorites</button>
-    <button onclick="showStudentSection('recent')">🕘 Recently Opened</button>
-    <button onclick="showStudentSection('planner')">🗓️ Study Planner</button>
-    <button onclick="showStudentSection('exam')">🎯 Exam Mode</button>
-  </div>
-  <h3>Continue Studying</h3>
-  <div id="recentItems" class="items"><p>Open a PDF or note to see it here.</p></div>
-  <h3>⭐ Your Favorites</h3>
-  <div id="favoriteItems" class="items"><p>No favorites yet. Tap ☆ on a PDF or note.</p></div>
-  <h3>📌 Important Documents</h3>
-  <p>Mark useful notes or PDFs as important while viewing them.</p>
-  <div id="importantItems" class="items"></div>
-  <h3>🗒️ Personal Annotations</h3>
-  <textarea id="studyAnnotation" rows="3" placeholder="Write your private study note..." style="width:100%;padding:10px;border-radius:10px;"></textarea>
-  <button onclick="saveStudyAnnotation()">Save annotation</button>
-  <div id="annotationList" class="items"></div>
-  <h3>🗓️ Study Planner</h3>
-  <input id="plannerTask" placeholder="What will you study?" style="padding:10px;max-width:100%;">
-  <input id="plannerDate" type="date" style="padding:10px;">
-  <button onclick="addStudyTask()">Add task</button>
-  <div id="studyPlannerList" class="items"></div>
-  <h3>🎯 Exam Mode</h3>
-  <p>Start a focused study session with a countdown timer.</p>
-  <div class="exam-mode-controls">
-    <select id="examMinutes" aria-label="Session length"><option value="25">25 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select>
-    <button type="button" onclick="startExamMode()">▶ Start focus session</button>
-    <button type="button" onclick="stopExamMode()">■ Stop</button>
-    <strong id="examCountdown" aria-live="polite">25:00</strong>
-  </div>
-  <div id="examStatus" class="items">Ready when you are.</div>
-  <h3>📊 Study Goals</h3>
-  <p>Set a daily target and mark your study progress.</p>
-  <div class="exam-mode-controls"><input id="dailyGoalMinutes" type="number" min="5" max="600" value="60" style="width:110px" aria-label="Daily study goal in minutes"><span>minutes per day</span><button type="button" onclick="saveDailyGoal()">Save goal</button></div>
-  <div id="dailyGoalStatus" class="items"></div>
-</section>
+
 <div id="mobileStudyNav" aria-label="Study navigation">
   <button type="button" onclick="goHome()">🏠<small>Home</small></button>
   <button type="button" onclick="document.getElementById('studentWelcome').scrollIntoView({behavior:'smooth'})">📚<small>Study</small></button>
@@ -965,7 +989,40 @@ header .tagline{color:#334155!important;opacity:1!important;visibility:visible!i
 
 </div>
 
-
+<section id="studentWelcome" class="student-welcome" style="display:none;">
+  <h2 id="welcomeHeading">Good day 👋</h2>
+  <p>Ready to continue studying?</p>
+  <div class="student-shortcuts">
+    <button onclick="showStudentSection('home')">🏠 Home</button>
+    <button onclick="showStudentSection('favorites')">⭐ Favorites</button>
+    <button onclick="showStudentSection('recent')">🕘 Recently Opened</button>
+    <button onclick="showStudentSection('planner')">🗓️ Study Planner</button>
+    <button onclick="showStudentSection('exam')">🎯 Exam Mode</button>
+  </div>
+  <h3>⭐ Your Favorites</h3>
+  <div id="favoriteItems" class="items"><p>No favorites yet. Tap ☆ on a PDF or note.</p></div>
+  <h3>📌 Important Documents</h3>
+  <p>Mark useful notes or PDFs as important while viewing them.</p>
+  <div id="importantItems" class="items"></div>
+  <h3>🗓️ Study Planner</h3>
+  <input id="plannerTask" placeholder="What will you study?" style="padding:10px;max-width:100%;">
+  <input id="plannerDate" type="date" style="padding:10px;">
+  <button onclick="addStudyTask()">Add task</button>
+  <div id="studyPlannerList" class="items"></div>
+  <h3>🎯 Exam Mode</h3>
+  <p>Start a focused study session with a countdown timer.</p>
+  <div class="exam-mode-controls">
+    <select id="examMinutes" aria-label="Session length"><option value="25">25 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select>
+    <button type="button" onclick="startExamMode()">▶ Start focus session</button>
+    <button type="button" onclick="stopExamMode()">■ Stop</button>
+    <strong id="examCountdown" aria-live="polite">25:00</strong>
+  </div>
+  <div id="examStatus" class="items">Ready when you are.</div>
+  <h3>📊 Study Goals</h3>
+  <p>Set a daily target and mark your study progress.</p>
+  <div class="exam-mode-controls"><input id="dailyGoalMinutes" type="number" min="5" max="600" value="60" style="width:110px" aria-label="Daily study goal in minutes"><span>minutes per day</span><button type="button" onclick="saveDailyGoal()">Save goal</button></div>
+  <div id="dailyGoalStatus" class="items"></div>
+</section>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -2003,7 +2060,7 @@ function showStudentSection(section){
   const groups={};
   headings.forEach(h=>{const t=h.textContent.toLowerCase();let key=t.includes('favorite')?'favorites':t.includes('continue')?'recent':t.includes('planner')?'planner':t.includes('exam mode')?'exam':t.includes('important')?'important':t.includes('annotation')?'annotations':t.includes('study goals')?'goals':'other';groups[key]=groups[key]||[];let n=h;while(n&&n!==home&&!((n!==h)&&n.tagName==='H3')){groups[key].push(n);n=n.nextElementSibling;}});
   const all=[...home.children]; all.forEach(el=>{if(el.classList.contains('student-shortcuts')||el.id==='welcomeHeading'||el.tagName==='P')el.style.display=(section==='home'?'':'none');});
-  Object.entries(groups).forEach(([key,nodes])=>nodes.forEach(el=>el.style.display=(section==='home'||key===section)?'':'none'));
+  Object.entries(groups).forEach(([key,nodes])=>nodes.forEach(el=>el.style.display=(key==='favorites' ? section==='favorites' : (section==='home'||key===section))?'':'none'));
   if(section==='home'){home.scrollIntoView({behavior:'smooth'});return;}
   const first=groups[section]?.[0]; if(first)first.scrollIntoView({behavior:'smooth',block:'start'});
 }
@@ -2358,11 +2415,9 @@ function goHome(){
   displayFolders();
   updateDashboardStats();
 }
-async function refreshPortal(){
-  await loadFolders();
-  if(selectedFolder!==null) await displayContent();
-  updateDashboardStats();
-  portalToast("Portal refreshed");
+function refreshPortal(){
+  // Reload the complete website when the Refresh button is clicked.
+  window.location.reload();
 }
 function toggleDarkGlass(){
   document.body.classList.toggle("glass-dark");
