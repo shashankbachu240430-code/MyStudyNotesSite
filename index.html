@@ -2501,3 +2501,27 @@ document.addEventListener('DOMContentLoaded',renderDailyGoal);
 </body>
 
 </html>
+
+<style id="header-navigation-visibility-fix">
+/* Keep the site identity readable above the glass effect. */
+header .logo{color:#10244f!important;opacity:1!important;visibility:visible!important;position:relative;z-index:3;text-shadow:0 1px 0 rgba(255,255,255,.35)}
+header .tagline{color:#263b60!important;opacity:1!important;visibility:visible!important;position:relative;z-index:3}
+header .site-back-button{color:#fff!important;background:#173b70!important;border:2px solid #fff!important;opacity:1!important;visibility:visible!important;}
+header .site-back-button[style*="inline-flex"]{display:inline-flex!important}
+@media(max-width:700px){header{min-height:84px!important;gap:10px!important}header .logo{display:block!important;flex:1 1 190px!important;line-height:1.3!important}header .tagline{display:block!important;flex:1 1 100%!important;margin-left:2px!important}.site-back-button{order:0!important}}
+</style>
+<script id="header-navigation-visibility-fix-script">
+(function(){
+ const originalShow=window.showStudentSection;
+ if(typeof originalShow==='function'){
+   window.showStudentSection=function(section){
+     originalShow(section);
+     const back=document.getElementById('sectionBackButton');
+     if(back){back.style.setProperty('display',section==='home'?'none':'inline-flex','important');back.textContent='← Back to Home';}
+     const logo=document.querySelector('header .logo'),tag=document.querySelector('header .tagline');
+     if(logo){logo.style.setProperty('color','#10244f','important');logo.style.setProperty('visibility','visible','important');}
+     if(tag){tag.style.setProperty('color','#263b60','important');tag.style.setProperty('visibility','visible','important');}
+   };
+ }
+})();
+</script>
