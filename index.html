@@ -704,6 +704,8 @@ button.open{background:#4169a8!important;color:#fff!important;}
     <button onclick="showStudentSection('home')">🏠 Home</button>
     <button onclick="showStudentSection('favorites')">⭐ Favorites</button>
     <button onclick="showStudentSection('recent')">🕘 Recently Opened</button>
+    <button onclick="showStudentSection('planner')">🗓️ Study Planner</button>
+    <button onclick="showStudentSection('exam')">🎯 Exam Mode</button>
   </div>
   <h3>Continue Studying</h3>
   <div id="recentItems" class="items"><p>Open a PDF or note to see it here.</p></div>
@@ -1966,9 +1968,15 @@ function rememberRecent(type,id,title,folderId){
   writeStudentList('recent',items.slice(0,20)); renderStudentExtras();
 }
 function showStudentSection(section){
-  const home=document.getElementById('studentWelcome');
-  if(section==='home'){home.style.display='block';document.getElementById('currentFolder').scrollIntoView({behavior:'smooth'});}
-  else {home.style.display='block';const target=document.getElementById(section==='favorites'?'favoriteItems':'recentItems');target.scrollIntoView({behavior:'smooth',block:'center'});}
+  const home=document.getElementById('studentWelcome'); if(!home)return;
+  home.style.display='block';
+  const headings=[...home.querySelectorAll('h3')];
+  const groups={};
+  headings.forEach(h=>{const t=h.textContent.toLowerCase();let key=t.includes('favorite')?'favorites':t.includes('continue')?'recent':t.includes('planner')?'planner':t.includes('exam mode')?'exam':t.includes('important')?'important':t.includes('annotation')?'annotations':t.includes('study goals')?'goals':'other';groups[key]=groups[key]||[];let n=h;while(n&&n!==home&&!((n!==h)&&n.tagName==='H3')){groups[key].push(n);n=n.nextElementSibling;}});
+  const all=[...home.children]; all.forEach(el=>{if(el.classList.contains('student-shortcuts')||el.id==='welcomeHeading'||el.tagName==='P')el.style.display=(section==='home'?'':'none');});
+  Object.entries(groups).forEach(([key,nodes])=>nodes.forEach(el=>el.style.display=(section==='home'||key===section)?'':'none'));
+  if(section==='home'){home.scrollIntoView({behavior:'smooth'});return;}
+  const first=groups[section]?.[0]; if(first)first.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function renderStudentExtras(){
  const recent=readStudentList('recent').slice(0,3), fav=readStudentList('favorites');
