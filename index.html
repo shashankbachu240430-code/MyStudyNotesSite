@@ -2685,7 +2685,7 @@ header .site-back-button[style*="inline-flex"]{display:inline-flex!important}
    window.showStudentSection=function(section){
      originalShow(section);
      const back=document.getElementById('sectionBackButton');
-     if(back){back.style.setProperty('display',section==='home'?'none':'inline-flex','important');back.textContent='← Back to Home';}
+     if(back){back.style.setProperty('display',section==='home'?'none':'inline-flex','important');back.textContent='← Back';}
      const logo=document.querySelector('header .logo'),tag=document.querySelector('header .tagline');
      if(logo){logo.style.setProperty('color','#10244f','important');logo.style.setProperty('visibility','visible','important');}
      if(tag){tag.style.setProperty('color','#263b60','important');tag.style.setProperty('visibility','visible','important');}
