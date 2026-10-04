@@ -728,6 +728,46 @@ button:hover::after{left:130%}
 }
 </style>
 
+
+
+<style id="all-animations-complete">
+/* Complete animation package: opening, bubbles, cards, icons, sections, toast, progress. */
+@keyframes completeSectionIn{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes completeToastIn{from{opacity:0;transform:translateY(14px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes completeIconPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+@keyframes completeIconBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes completeBubbleRise{0%{transform:translateY(35px) translateX(0) scale(.75);opacity:0}15%{opacity:.7}50%{transform:translateY(-45vh) translateX(18px) scale(1)}100%{transform:translateY(-110vh) translateX(-14px) scale(1.12);opacity:0}}
+@keyframes completeProgressShine{from{background-position:0 0}to{background-position:200% 0}}
+
+.complete-water-bubbles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.complete-water-bubbles span{position:absolute;bottom:-30px;width:12px;height:12px;border:1px solid rgba(255,255,255,.65);border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.75),rgba(125,211,252,.12) 55%,transparent 70%);filter:blur(.1px);animation:completeBubbleRise linear infinite}
+.complete-water-bubbles span:nth-child(1){left:7%;width:10px;height:10px;animation-duration:11s;animation-delay:-3s}
+.complete-water-bubbles span:nth-child(2){left:16%;width:18px;height:18px;animation-duration:15s;animation-delay:-8s}
+.complete-water-bubbles span:nth-child(3){left:28%;width:8px;height:8px;animation-duration:10s;animation-delay:-5s}
+.complete-water-bubbles span:nth-child(4){left:39%;width:15px;height:15px;animation-duration:13s;animation-delay:-10s}
+.complete-water-bubbles span:nth-child(5){left:52%;width:22px;height:22px;animation-duration:17s;animation-delay:-2s}
+.complete-water-bubbles span:nth-child(6){left:63%;width:9px;height:9px;animation-duration:12s;animation-delay:-7s}
+.complete-water-bubbles span:nth-child(7){left:74%;width:16px;height:16px;animation-duration:14s;animation-delay:-4s}
+.complete-water-bubbles span:nth-child(8){left:86%;width:11px;height:11px;animation-duration:10.5s;animation-delay:-9s}
+.complete-water-bubbles span:nth-child(9){left:94%;width:19px;height:19px;animation-duration:16s;animation-delay:-6s}
+
+.section-animate{animation:completeSectionIn .5s cubic-bezier(.2,.75,.25,1) both!important}
+.icon-pulse{display:inline-block;animation:completeIconPulse 1.8s ease-in-out infinite!important}
+.icon-bounce{display:inline-block;animation:completeIconBounce 1.7s ease-in-out infinite!important}
+.animated-toast{animation:completeToastIn .35s ease-out both!important}
+.animated-progress{background:linear-gradient(90deg,rgba(96,165,250,.9),rgba(129,140,248,.9),rgba(96,165,250,.9))!important;background-size:200% 100%!important;animation:completeProgressShine 2.5s linear infinite!important}
+
+.card,.glass-stat,.student-welcome,.sidebar,.main{transition:transform .25s ease,box-shadow .25s ease,filter .25s ease!important}
+.card:hover,.glass-stat:hover{transform:translateY(-5px)!important;filter:saturate(1.04)!important}
+.folder:hover{transform:translateX(4px) translateY(-1px)!important}
+.favorite-btn:hover{transform:translateY(-2px) scale(1.02)!important}
+.student-shortcuts button:hover{transform:translateY(-3px) scale(1.01)!important}
+
+#portalToast{animation:completeToastIn .35s ease-out both!important}
+
+@media(prefers-reduced-motion:reduce){.complete-water-bubbles{display:none!important}.icon-pulse,.icon-bounce,.animated-progress,#portalToast,.section-animate{animation:none!important}.card:hover,.glass-stat:hover,.folder:hover,.favorite-btn:hover,.student-shortcuts button:hover{transform:none!important}}
+</style>
+
 </head>
 
 
@@ -1091,17 +1131,17 @@ button:hover::after{left:130%}
     <button onclick="showStudentSection('planner')">🗓️ Study Planner</button>
     <button onclick="showStudentSection('exam')">🎯 Exam Mode</button>
   </div>
-  <h3>⭐ Your Favorites <button type="button" class="section-back-inline" onclick="showStudentSection('home')">← Back</button></h3>
+  <h3>⭐ Your Favorites</h3>
   <div id="favoriteItems" class="items"><p>No favorites yet. Tap ☆ on a PDF or note.</p></div>
-  <h3>📌 Important Documents <button type="button" class="section-back-inline" onclick="showStudentSection('home')">← Back</button></h3>
+  <h3>📌 Important Documents</h3>
   <p>Mark useful notes or PDFs as important while viewing them.</p>
   <div id="importantItems" class="items"></div>
-  <h3>🗓️ Study Planner <button type="button" class="section-back-inline" onclick="showStudentSection('home')">← Back</button></h3>
+  <h3>🗓️ Study Planner</h3>
   <input id="plannerTask" placeholder="What will you study?" style="padding:10px;max-width:100%;">
   <input id="plannerDate" type="date" style="padding:10px;">
   <button onclick="addStudyTask()">Add task</button>
   <div id="studyPlannerList" class="items"></div>
-  <h3>🎯 Exam Mode <button type="button" class="section-back-inline" onclick="showStudentSection('home')">← Back</button></h3>
+  <h3>🎯 Exam Mode</h3>
   <p>Start a focused study session with a countdown timer.</p>
   <div class="exam-mode-controls">
     <select id="examMinutes" aria-label="Session length"><option value="25">25 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select>
@@ -1110,7 +1150,7 @@ button:hover::after{left:130%}
     <strong id="examCountdown" aria-live="polite">25:00</strong>
   </div>
   <div id="examStatus" class="items">Ready when you are.</div>
-  <h3>📊 Study Goals <button type="button" class="section-back-inline" onclick="showStudentSection('home')">← Back</button></h3>
+  <h3>📊 Study Goals</h3>
   <p>Set a daily target and mark your study progress.</p>
   <div class="exam-mode-controls"><input id="dailyGoalMinutes" type="number" min="5" max="600" value="60" style="width:110px" aria-label="Daily study goal in minutes"><span>minutes per day</span><button type="button" onclick="saveDailyGoal()">Save goal</button></div>
   <div id="dailyGoalStatus" class="items"></div>
@@ -2666,13 +2706,75 @@ function renderDailyGoal(){const el=document.getElementById('dailyGoalStatus');i
 document.addEventListener('DOMContentLoaded',renderDailyGoal);
 </script>
 
-<style id="student-section-back-style">
-.student-section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.student-welcome h3{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.section-back-inline{flex:0 0 auto!important;display:inline-flex!important;align-items:center;justify-content:center;padding:8px 14px!important;border:0!important;border-radius:10px!important;background:#173b70!important;color:#fff!important;font-size:14px!important;font-weight:600!important;cursor:pointer!important;white-space:nowrap!important;box-shadow:0 3px 10px rgba(15,23,42,.15)!important}
-.section-back-inline:hover{opacity:.9!important;transform:translateY(-1px)}
-@media(max-width:700px){.student-welcome h3{font-size:21px!important;gap:8px!important}.section-back-inline{padding:7px 11px!important;font-size:13px!important}}
-</style>
+
+
+<script id="all-animations-complete-script">
+(function(){
+  function addClassOnce(el, cls){ if(el) el.classList.add(cls); }
+
+  function createBubbleLayer(){
+    if(document.querySelector('.complete-water-bubbles')) return;
+    const layer=document.createElement('div');
+    layer.className='complete-water-bubbles';
+    layer.setAttribute('aria-hidden','true');
+    for(let i=0;i<9;i++) layer.appendChild(document.createElement('span'));
+    document.body.appendChild(layer);
+  }
+
+  function animateVisibleSection(){
+    const welcome=document.getElementById('studentWelcome');
+    if(welcome){
+      welcome.classList.remove('section-animate');
+      void welcome.offsetWidth;
+      welcome.classList.add('section-animate');
+    }
+  }
+
+  function setupAnimations(){
+    createBubbleLayer();
+
+    addClassOnce(document.querySelector('header .logo'),'icon-pulse');
+    addClassOnce(document.getElementById('studentWelcome'),'smooth-page');
+
+    document.querySelectorAll('.folder').forEach(el=>el.classList.add('smooth-page'));
+    document.querySelectorAll('.favorite-btn').forEach(el=>el.classList.add('section-animate'));
+    document.querySelectorAll('[class*="progress"], [id*="Progress"], [id*="progress"]').forEach(el=>el.classList.add('animated-progress'));
+    document.querySelectorAll('.student-shortcuts button').forEach(el=>el.classList.add('section-animate'));
+
+    const originalShow=window.showStudentSection;
+    if(typeof originalShow==='function' && !originalShow.__completeAnimationWrapped){
+      function wrappedShow(section){
+        const result=originalShow.apply(this,arguments);
+        setTimeout(animateVisibleSection,30);
+        return result;
+      }
+      wrappedShow.__completeAnimationWrapped=true;
+      window.showStudentSection=wrappedShow;
+    }
+
+    if(typeof window.portalToast==='function' && !window.portalToast.__completeAnimationWrapped){
+      const originalToast=window.portalToast;
+      function wrappedToast(msg){
+        const result=originalToast.apply(this,arguments);
+        const toast=document.getElementById('portalToast');
+        if(toast){
+          toast.classList.remove('animated-toast');
+          void toast.offsetWidth;
+          toast.classList.add('animated-toast');
+        }
+        return result;
+      }
+      wrappedToast.__completeAnimationWrapped=true;
+      window.portalToast=wrappedToast;
+    }
+
+    animateVisibleSection();
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setupAnimations);
+  else setupAnimations();
+})();
+</script>
 
 </body>
 
