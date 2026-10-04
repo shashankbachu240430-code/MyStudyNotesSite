@@ -477,186 +477,9 @@ body.admin-route .admin-portal-header {
 </style>
 
 
-<style>
-/* =========================================================
-   USER PORTAL — GLASSMORPHISM UI
-   Keeps all existing functionality; changes presentation only.
-   ========================================================= */
-
-:root {
-    --glass-bg: rgba(255,255,255,.68);
-    --glass-bg-strong: rgba(255,255,255,.82);
-    --glass-border: rgba(255,255,255,.55);
-    --glass-shadow: 0 18px 55px rgba(15,23,42,.14);
-    --glass-shadow-soft: 0 10px 30px rgba(15,23,42,.10);
-}
-
-body {
-    background:
-        radial-gradient(circle at 8% 10%, rgba(96,165,250,.30), transparent 30%),
-        radial-gradient(circle at 92% 18%, rgba(167,139,250,.25), transparent 28%),
-        radial-gradient(circle at 50% 100%, rgba(56,189,248,.18), transparent 35%),
-        linear-gradient(135deg, #dbeafe 0%, #eef2ff 48%, #e0f2fe 100%) !important;
-    background-attachment: fixed !important;
-}
-
-/* Login / signup card */
-#authGate > div,
-.auth-card,
-.login-card {
-    background: rgba(255,255,255,.72) !important;
-    border: 1px solid var(--glass-border) !important;
-    box-shadow: 0 25px 70px rgba(15,23,42,.18) !important;
-    backdrop-filter: blur(24px) saturate(145%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(145%) !important;
-    border-radius: 24px !important;
-}
-
-/* Main account header */
-#accountBar {
-    background: rgba(255,255,255,.58) !important;
-    border: 1px solid var(--glass-border) !important;
-    box-shadow: var(--glass-shadow-soft) !important;
-    backdrop-filter: blur(18px) saturate(140%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
-    border-radius: 18px !important;
-}
-
-/* Main content panels */
-#foldersPanel,
-#notesPanel,
-#contentPanel,
-.folder-panel,
-.notes-panel,
-.content-panel,
-section,
-.card {
-    background: rgba(255,255,255,.62) !important;
-    border: 1px solid rgba(255,255,255,.58) !important;
-    box-shadow: var(--glass-shadow-soft) !important;
-    backdrop-filter: blur(18px) saturate(135%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(135%) !important;
-    border-radius: 18px !important;
-}
-
-/* Folder and note cards */
-.folder-card,
-.note-card,
-.pdf-card,
-.file-card,
-.note-item,
-.folder-item {
-    background: rgba(255,255,255,.60) !important;
-    border: 1px solid rgba(255,255,255,.62) !important;
-    box-shadow: 0 8px 25px rgba(15,23,42,.08) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    border-radius: 15px !important;
-    transition: transform .18s ease, box-shadow .18s ease, background .18s ease !important;
-}
-
-.folder-card:hover,
-.note-card:hover,
-.pdf-card:hover,
-.file-card:hover,
-.note-item:hover,
-.folder-item:hover {
-    transform: translateY(-2px);
-    background: rgba(255,255,255,.76) !important;
-    box-shadow: 0 14px 34px rgba(15,23,42,.13) !important;
-}
-
-/* Buttons */
-button {
-    border-radius: 11px !important;
-    transition: transform .16s ease, box-shadow .16s ease, filter .16s ease !important;
-}
-
-button:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.03);
-    box-shadow: 0 8px 22px rgba(15,23,42,.12);
-}
-
-button:active {
-    transform: translateY(0);
-}
-
-/* Inputs */
-input,
-textarea,
-select {
-    background: rgba(255,255,255,.68) !important;
-    border: 1px solid rgba(148,163,184,.40) !important;
-    border-radius: 11px !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-    outline: none !important;
-    border-color: rgba(59,130,246,.60) !important;
-    box-shadow: 0 0 0 4px rgba(59,130,246,.12) !important;
-}
-
-/* Modals */
-.modal,
-.modal-content,
-.dialog,
-#pdfViewerContainer {
-    background: rgba(255,255,255,.76) !important;
-    border: 1px solid rgba(255,255,255,.62) !important;
-    box-shadow: 0 25px 80px rgba(15,23,42,.22) !important;
-    backdrop-filter: blur(22px) saturate(140%) !important;
-    -webkit-backdrop-filter: blur(22px) saturate(140%) !important;
-    border-radius: 20px !important;
-}
-
-/* PDF viewer remains readable */
-#pdfViewerContainer {
-    overflow: hidden;
-}
-
-/* Mobile glass layout */
-@media (max-width: 700px) {
-    body {
-        background:
-            radial-gradient(circle at 15% 5%, rgba(96,165,250,.30), transparent 35%),
-            radial-gradient(circle at 90% 30%, rgba(167,139,250,.24), transparent 35%),
-            linear-gradient(145deg, #e0f2fe, #eef2ff) !important;
-    }
-
-    #accountBar,
-    #foldersPanel,
-    #notesPanel,
-    #contentPanel,
-    section,
-    .card {
-        border-radius: 15px !important;
-    }
-
-    .folder-card,
-    .note-card,
-    .pdf-card,
-    .file-card {
-        border-radius: 13px !important;
-    }
-}
-
-/* Respect reduced-motion settings */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        transition: none !important;
-        animation: none !important;
-        scroll-behavior: auto !important;
-    }
-}
+<style id="approval-ui">
+.access-request-badge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-weight:700;font-size:12px;margin-left:8px}.status-pending{background:#fef3c7;color:#92400e}.status-active{background:#dcfce7;color:#166534}.status-removed{background:#fee2e2;color:#991b1b}.status-rejected{background:#f1f5f9;color:#475569}.request-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.approve-btn{background:#16a34a;color:#fff}.reject-btn{background:#64748b;color:#fff}.remove-btn{background:#dc2626;color:#fff}.restore-btn{background:#2563eb;color:#fff}
 </style>
-
 </head>
 
 
@@ -1056,70 +879,56 @@ function escapeHtml(value) {
 
 async function loadAdminUsers() {
     if (!isAdmin()) return;
-
     const container = document.getElementById("userList");
     if (!container) return;
-
     container.textContent = "Loading users...";
-
-    const { data, error } = await supabaseClient
+    const { data: users, error } = await supabaseClient
         .from("profiles")
         .select("id,email,active,must_change_password,created_at,last_login_at,login_count")
-        .order("created_at", { ascending: true });
-
-    if (error) {
-        container.innerHTML =
-            "<p style='color:#dc2626'>Unable to load users: " +
-            escapeHtml(error.message) + "</p>";
-        return;
-    }
-
-    if (!data || !data.length) {
-        container.innerHTML = "<p>No users have registered yet.</p>";
-        return;
-    }
-
+        .order("created_at", { ascending: false });
+    if (error) { container.innerHTML = "<p style='color:#dc2626'>Unable to load users: "+escapeHtml(error.message)+"</p>"; return; }
+    const { data: requests } = await supabaseClient
+        .from("access_requests")
+        .select("id,user_id,status,requested_at,reviewed_at")
+        .order("requested_at", { ascending: false });
+    const requestMap = new Map((requests || []).map(r => [r.user_id, r]));
+    if (!users || !users.length) { container.innerHTML = "<p>No users have registered yet.</p>"; return; }
     container.innerHTML = "";
-
-    data.forEach(user => {
-        const row = document.createElement("div");
-        row.className = "admin-user-row";
-
+    users.forEach(user => {
+        const row = document.createElement("div"); row.className = "admin-user-row";
+        const req = requestMap.get(user.id);
+        let status = user.id === ADMIN_USER_ID ? "admin" : (user.active === false ? (req?.status || "removed") : "active");
+        const statusLabel = status === "pending" ? "🟡 Pending Approval" : status === "active" ? "🟢 Active" : status === "rejected" ? "⚪ Rejected" : status === "admin" ? "👑 Admin" : "🔴 Access Removed";
+        const badgeClass = status === "pending" ? "status-pending" : status === "active" ? "status-active" : status === "rejected" ? "status-rejected" : "status-removed";
         const info = document.createElement("div");
-        info.innerHTML =
-            "<strong>" + escapeHtml(user.email || "(no email)") + "</strong>" +
-            "<div style='font-size:13px;color:#64748b;margin-top:4px'>" +
-            "Created: " + formatDate(user.created_at) +
-            " &nbsp;•&nbsp; Last login: " + formatDate(user.last_login_at) +
-            " &nbsp;•&nbsp; Logins: " + Number(user.login_count || 0) +
-            " &nbsp;•&nbsp; Status: " +
-            (user.active === false ? "Blocked" : "Active") +
-            "</div>";
-
-        const action = document.createElement("div");
-
-        if (user.id === ADMIN_USER_ID) {
-            action.innerHTML =
-                "<span style='color:#15803d;font-weight:600'>👑 Admin</span>";
+        info.innerHTML = "<strong>"+escapeHtml(user.email || "(no email)")+"</strong>" +
+          "<span class='access-request-badge "+badgeClass+"'>"+statusLabel+"</span>" +
+          "<div style='font-size:13px;color:#64748b;margin-top:6px'>Created: "+formatDate(user.created_at)+" &nbsp;•&nbsp; Last login: "+formatDate(user.last_login_at)+" &nbsp;•&nbsp; Logins: "+Number(user.login_count||0)+
+          (req?.requested_at ? " &nbsp;•&nbsp; Request: "+formatDate(req.requested_at) : "") + "</div>";
+        const action = document.createElement("div"); action.className="request-actions";
+        if (user.id === ADMIN_USER_ID) { action.innerHTML = "<span style='font-weight:700'>Owner account</span>"; }
+        else if (status === "pending") {
+            const approve=document.createElement("button"); approve.className="approve-btn"; approve.textContent="✅ Approve"; approve.onclick=()=>reviewAccessRequest(user.id,"approved",req?.id);
+            const reject=document.createElement("button"); reject.className="reject-btn"; reject.textContent="❌ Reject"; reject.onclick=()=>reviewAccessRequest(user.id,"rejected",req?.id); action.append(approve,reject);
+        } else if (status === "active") {
+            const remove=document.createElement("button"); remove.className="remove-btn"; remove.textContent="🚫 Remove Access"; remove.onclick=()=>changeUserAccess(user.id,user.email,false); action.appendChild(remove);
         } else {
-            const button = document.createElement("button");
-            button.textContent =
-                user.active === false ? "Restore Access" : "Remove Access";
-
-            button.style.cssText =
-                "padding:8px 12px;border:0;border-radius:6px;cursor:pointer;color:white;background:" +
-                (user.active === false ? "#16a34a" : "#dc2626");
-
-            button.onclick = () =>
-                changeUserAccess(user.id, user.email, user.active === false);
-
-            action.appendChild(button);
+            const restore=document.createElement("button"); restore.className="restore-btn"; restore.textContent="🔄 Restore Access"; restore.onclick=()=>changeUserAccess(user.id,user.email,true); action.appendChild(restore);
         }
-
-        row.appendChild(info);
-        row.appendChild(action);
-        container.appendChild(row);
+        row.append(info,action); container.appendChild(row);
     });
+}
+
+async function reviewAccessRequest(userId, status, requestId) {
+    if (!isAdmin()) return;
+    const makeActive = status === "approved";
+    const { error: pErr } = await supabaseClient.from("profiles").update({ active: makeActive, access_removed_at: makeActive ? null : new Date().toISOString() }).eq("id", userId);
+    if (pErr) { alert("Could not update user: "+pErr.message); return; }
+    if (requestId) {
+        const { error: rErr } = await supabaseClient.from("access_requests").update({status, reviewed_at:new Date().toISOString(), reviewed_by:currentUser.id}).eq("id",requestId);
+        if (rErr) { alert("User was updated, but request status could not be saved: "+rErr.message); }
+    }
+    await loadAdminUsers();
 }
 
 async function changeUserAccess(userId, email, makeActive) {
@@ -1196,78 +1005,25 @@ async function handleAuthPrimary() {
 
 async function createAccount() {
     if (isAdminRoute()) return;
-
-    const email =
-        document.getElementById("authEmail").value.trim();
-    const password =
-        document.getElementById("authPassword").value;
-    const confirmPassword =
-        document.getElementById("authConfirmPassword").value;
-
-    if (!email || !password || !confirmPassword) {
-        setAuthMessage(
-            "Please enter email, password, and confirm password.",
-            true
-        );
-        return;
-    }
-
-    if (password.length < 6) {
-        setAuthMessage(
-            "Password must contain at least 6 characters.",
-            true
-        );
-        return;
-    }
-
-    if (password !== confirmPassword) {
-        setAuthMessage(
-            "Passwords do not match.",
-            true
-        );
-        return;
-    }
-
+    const email=document.getElementById("authEmail").value.trim();
+    const password=document.getElementById("authPassword").value;
+    const confirmPassword=document.getElementById("authConfirmPassword").value;
+    if(!email||!password||!confirmPassword){setAuthMessage("Please enter email, password, and confirm password.",true);return;}
+    if(password.length<6){setAuthMessage("Password must contain at least 6 characters.",true);return;}
+    if(password!==confirmPassword){setAuthMessage("Passwords do not match.",true);return;}
     setAuthMessage("Creating your account...");
-
-    const { data, error } =
-        await supabaseClient.auth.signUp({
-            email,
-            password
-        });
-
-    if (error) {
-        console.error("Sign-up error:", error);
-        setAuthMessage(
-            "Account creation failed: " + error.message,
-            true
-        );
-        return;
-    }
-
-    if (!data.session) {
-        setAuthMessage(
-            "Account created. Check your email to confirm your account, then log in."
-        );
-        return;
-    }
-
-    currentUser = data.user;
-
-    // The Supabase database trigger creates the viewer profile automatically
-    // with active=true. We only read it here; viewers cannot self-activate.
-    await loadCurrentProfile();
-
-    if (!isActiveUser()) {
-        await supabaseClient.auth.signOut();
-        setAuthMessage(
-            "Your account is not active. Please contact the Admin.",
-            true
-        );
-        return;
-    }
-
-    await showApplication();
+    const {data,error}=await supabaseClient.auth.signUp({email,password});
+    if(error){console.error("Sign-up error:",error);setAuthMessage("Account creation failed: "+error.message,true);return;}
+    const user=data.user;
+    if(!user){setAuthMessage("Account was not created. Please try again.",true);return;}
+    // Always start a new user as pending, never active.
+    await supabaseClient.from("profiles").upsert({id:user.id,email:user.email,active:false,must_change_password:false,login_count:0},{onConflict:"id"});
+    const {error:reqError}=await supabaseClient.from("access_requests").upsert({user_id:user.id,status:"pending",requested_at:new Date().toISOString()},{onConflict:"user_id"});
+    if(reqError){console.error("Request error:",reqError);setAuthMessage("Account created, but the Admin request could not be created: "+reqError.message,true);return;}
+    if(data.session) await supabaseClient.auth.signOut();
+    currentUser=null; currentProfile=null;
+    setAuthMessage("✅ Account created. Your access request has been sent to the Admin. Please wait for approval before logging in.");
+    document.getElementById("authPassword").value=""; document.getElementById("authConfirmPassword").value="";
 }
 
 async function ownerLogin() {
@@ -1303,11 +1059,12 @@ async function ownerLogin() {
     }
 
     if (currentProfile.active === false) {
+        const { data: req } = await supabaseClient.from("access_requests").select("status").eq("user_id", currentUser.id).maybeSingle();
         await supabaseClient.auth.signOut();
-        setAuthMessage(
-            "Your access has been removed by the Admin. Please contact the Admin.",
-            true
-        );
+        currentUser=null; currentProfile=null;
+        if (req?.status === "pending") setAuthMessage("🕐 Your access request is waiting for Admin approval.", true);
+        else if (req?.status === "rejected") setAuthMessage("❌ Your access request was rejected by the Admin.", true);
+        else setAuthMessage("🚫 Your access has been removed by the Admin.", true);
         return;
     }
 
@@ -1317,13 +1074,6 @@ async function ownerLogin() {
         currentUser = null;
         currentProfile = null;
         setAuthMessage("This account is not an Admin account.", true);
-        return;
-    }
-
-    /* If the Admin logs in from the normal shared link, send the Admin
-       to the dedicated Admin route instead of exposing Admin controls there. */
-    if (!isAdminRoute() && isAdmin()) {
-        window.location.href = "/MyStudyNotesSite/admin";
         return;
     }
 
@@ -1378,7 +1128,7 @@ async function loadCurrentProfile() {
                 .insert([{
                     id: currentUser.id,
                     email: currentUser.email,
-                    active: true,
+                    active: currentUser.id === ADMIN_USER_ID,
                     must_change_password: false,
                     login_count: 0
                 }])
