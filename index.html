@@ -701,6 +701,7 @@ button.open{background:#4169a8!important;color:#fff!important;}
   <h2 id="welcomeHeading">Good day 👋</h2>
   <p>Ready to continue studying?</p>
   <div class="student-shortcuts">
+    <button id="sectionBackButton" onclick="showStudentSection('home')" style="display:none;background:#475569;color:white;">← Back to Home</button>
     <button onclick="showStudentSection('home')">🏠 Home</button>
     <button onclick="showStudentSection('favorites')">⭐ Favorites</button>
     <button onclick="showStudentSection('recent')">🕘 Recently Opened</button>
@@ -1970,6 +1971,7 @@ function rememberRecent(type,id,title,folderId){
 function showStudentSection(section){
   const home=document.getElementById('studentWelcome'); if(!home)return;
   home.style.display='block';
+  const back=document.getElementById('sectionBackButton'); if(back)back.style.display=(section==='home'?'none':'inline-flex');
   const headings=[...home.querySelectorAll('h3')];
   const groups={};
   headings.forEach(h=>{const t=h.textContent.toLowerCase();let key=t.includes('favorite')?'favorites':t.includes('continue')?'recent':t.includes('planner')?'planner':t.includes('exam mode')?'exam':t.includes('important')?'important':t.includes('annotation')?'annotations':t.includes('study goals')?'goals':'other';groups[key]=groups[key]||[];let n=h;while(n&&n!==home&&!((n!==h)&&n.tagName==='H3')){groups[key].push(n);n=n.nextElementSibling;}});
