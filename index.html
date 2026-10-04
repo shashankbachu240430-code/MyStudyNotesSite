@@ -60,6 +60,36 @@
             100% { transform: translateY(-110vh); opacity: 0; }
         }
 
+        /* WEBSITE OPENING ANIMATION */
+        @keyframes websiteOpenFade {
+            from { opacity: 0; transform: scale(1.03); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes websiteOpenCard {
+            0% { opacity: 0; transform: translateY(28px) scale(.96); }
+            70% { opacity: 1; transform: translateY(-3px) scale(1.01); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes websiteOpenLogo {
+            0% { opacity: 0; transform: translateY(-14px) scale(.82); }
+            70% { opacity: 1; transform: translateY(2px) scale(1.06); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        #authGate {
+            animation: websiteOpenFade .8s ease-out both;
+        }
+
+        #authGate > div {
+            animation: websiteOpenCard 1s cubic-bezier(.2,.75,.25,1) .12s both;
+        }
+
+        #authGate h2 {
+            animation: websiteOpenLogo .9s ease-out .28s both;
+        }
+
         /* SLOW UP/DOWN ICON ANIMATION */
         @keyframes slowIconBounce {
             0%, 100% { transform: translateY(0); }
