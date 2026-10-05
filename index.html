@@ -584,6 +584,35 @@ body.admin-route .admin-portal-header {
 .access-request-badge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-weight:700;font-size:12px;margin-left:8px}.status-pending{background:#fef3c7;color:#92400e}.status-active{background:#dcfce7;color:#166534}.status-removed{background:#fee2e2;color:#991b1b}.status-rejected{background:#f1f5f9;color:#475569}.request-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.approve-btn{background:#16a34a;color:#fff}.reject-btn{background:#64748b;color:#fff}.remove-btn{background:#dc2626;color:#fff}.restore-btn{background:#2563eb;color:#fff}
 </style>
 
+<style id="smooth-performance-fix">
+/* SMOOTH SCROLL + LIGHTER INTERACTIONS */
+html{scroll-behavior:smooth}
+body{background-attachment:scroll!important}
+body::before,body::after{animation-duration:22s;will-change:transform;contain:paint}
+header,.sidebar,.main,.card,.folder,.editor,.student-welcome,.admin-portal,.admin-user-row{backdrop-filter:blur(10px) saturate(125%)!important;-webkit-backdrop-filter:blur(10px) saturate(125%)!important}
+button{transition:transform .12s ease,opacity .12s ease!important;will-change:transform}
+button:hover{transform:translateY(-1px)!important;box-shadow:none!important;filter:none!important}
+button:active{transform:translateY(0) scale(.99)!important}
+.card,.folder{transition:transform .12s ease,opacity .12s ease!important}
+.card:hover{transform:translateY(-2px)!important;box-shadow:none!important}
+.folder:hover{transform:translateX(2px)!important;box-shadow:none!important}
+.items>.card{contain:layout paint style}
+.main{scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.admin-portal-body{scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.icon-bounce{animation-duration:3.2s!important}
+.icon-pulse{animation-duration:2.8s!important}
+@media(max-width:800px){
+  header,.sidebar,.main,.card,.folder,.editor,.student-welcome,.admin-portal,.admin-user-row{
+    backdrop-filter:blur(7px) saturate(115%)!important;
+    -webkit-backdrop-filter:blur(7px) saturate(115%)!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+
 <style id="premium-glass-features">
 :root{
  --gx:rgba(255,255,255,.60);--gx2:rgba(255,255,255,.80);
@@ -772,10 +801,112 @@ button:hover::after{left:130%}
 }
 </style>
 
+<style id="final-smooth-glass-loading">
+/* FINAL SMOOTH GLASS + LOADING */
+html{scroll-behavior:smooth}
+body{background-attachment:scroll!important}
+body::before,body::after{animation-duration:24s!important;will-change:transform,opacity!important}
+header,.sidebar,.main,.card,.folder,.editor,.student-welcome,.admin-portal,#accountBar,.glass-dashboard,.glass-tool-panel,.admin-user-row{
+    backdrop-filter:blur(12px) saturate(135%)!important;
+    -webkit-backdrop-filter:blur(12px) saturate(135%)!important;
+}
+button,.folder,.card{will-change:transform}
+
+@keyframes selectionSlideIn{
+    from{opacity:0;transform:translate3d(34px,0,0)}
+    to{opacity:1;transform:translate3d(0,0,0)}
+}
+
+.main.selection-slide-in{
+    animation:selectionSlideIn .36s cubic-bezier(.2,.75,.25,1) both!important;
+}
+
+.folder.active{
+    transform:translate3d(7px,0,0) scale(1.012)!important;
+    box-shadow:0 8px 20px rgba(37,99,235,.14)!important;
+}
+
+@keyframes glassLoaderIn{
+    from{opacity:0;transform:scale(.96) translateY(8px)}
+    to{opacity:1;transform:scale(1) translateY(0)}
+}
+
+@keyframes glassLoaderSpin{
+    to{transform:rotate(360deg)}
+}
+
+.global-glass-loader{
+    position:fixed;
+    inset:0;
+    z-index:100000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:rgba(191,219,254,.18);
+    backdrop-filter:blur(8px) saturate(130%);
+    -webkit-backdrop-filter:blur(8px) saturate(130%);
+}
+
+.global-glass-loader.show{
+    display:flex;
+    animation:glassLoaderIn .22s ease-out both;
+}
+
+.global-glass-loader-card{
+    width:min(360px,100%);
+    padding:24px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.76);
+    border-radius:22px;
+    background:rgba(255,255,255,.70);
+    box-shadow:0 22px 60px rgba(15,23,42,.16);
+    backdrop-filter:blur(24px) saturate(150%);
+    -webkit-backdrop-filter:blur(24px) saturate(150%);
+}
+
+.global-glass-loader-spinner{
+    width:56px;
+    height:56px;
+    margin:0 auto 14px;
+    border-radius:50%;
+    border:4px solid rgba(65,105,168,.16);
+    border-top-color:#4169a8;
+    border-right-color:#7c3aed;
+    animation:glassLoaderSpin .78s linear infinite;
+}
+
+.global-glass-loader-title{
+    color:#315b91;
+    font-size:18px;
+    font-weight:800;
+}
+
+.global-glass-loader-text{
+    margin-top:7px;
+    color:#475569;
+    font-size:13px;
+}
+
+@media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .main.selection-slide-in,.global-glass-loader.show{animation:none!important}
+    body::before,body::after{animation:none!important}
+}
+</style>
+
 </head>
 
 
 <body>
+
+<div id="globalGlassLoader" class="global-glass-loader" aria-hidden="true">
+    <div class="global-glass-loader-card">
+        <div class="global-glass-loader-spinner"></div>
+        <div id="globalGlassLoaderTitle" class="global-glass-loader-title">Loading</div>
+        <div id="globalGlassLoaderText" class="global-glass-loader-text">Please wait...</div>
+    </div>
+</div>
 
 
 <!-- HEADER -->
@@ -1189,6 +1320,31 @@ let notes = [];
 let selectedFolder = null;
 let editingNoteId = null;
 let authMode = "login";
+
+let globalLoaderTimer = null;
+
+function showGlobalLoader(title, message) {
+    const loader = document.getElementById("globalGlassLoader");
+    if (!loader) return;
+
+    document.getElementById("globalGlassLoaderTitle").textContent =
+        title || "Loading";
+
+    document.getElementById("globalGlassLoaderText").textContent =
+        message || "Please wait...";
+
+    clearTimeout(globalLoaderTimer);
+    loader.classList.add("show");
+    loader.setAttribute("aria-hidden", "false");
+}
+
+function hideGlobalLoader() {
+    const loader = document.getElementById("globalGlassLoader");
+    if (!loader) return;
+
+    loader.classList.remove("show");
+    loader.setAttribute("aria-hidden", "true");
+}
 
 
 /* =========================================================
@@ -1899,6 +2055,15 @@ function selectFolder(id) {
     document.getElementById("currentFolder").textContent =
         "📁 " + folder.name;
 
+    const main =
+        document.querySelector(".main");
+
+    if (main) {
+        main.classList.remove("selection-slide-in");
+        void main.offsetWidth;
+        main.classList.add("selection-slide-in");
+    }
+
     displayFolders();
     displayContent();
 }
@@ -2275,6 +2440,11 @@ async function uploadPDF(event) {
         String(selectedFolder) + "/" + cleanName;
 
     try {
+        showGlobalLoader(
+            "Uploading PDF",
+            "Saving your study document..."
+        );
+
         const { error } =
             await supabaseClient
                 .storage
@@ -2306,6 +2476,8 @@ async function uploadPDF(event) {
         console.error("PDF upload error:", error);
         alert("The PDF could not be uploaded.");
         input.value = "";
+    } finally {
+        hideGlobalLoader();
     }
 }
 
@@ -2426,6 +2598,11 @@ async function openPDF(path) {
     }
 
     try {
+        showGlobalLoader(
+            "Opening PDF",
+            "Preparing your document..."
+        );
+
         // Short-lived signed URL. The PDF is requested inline.
         const { data, error } =
             await supabaseClient
@@ -2457,6 +2634,8 @@ async function openPDF(path) {
     } catch (error) {
         console.error("PDF open error:", error);
         alert("Unable to open this PDF.");
+    } finally {
+        hideGlobalLoader();
     }
 }
 
@@ -2482,20 +2661,29 @@ async function deletePDF(path) {
         return;
     }
 
-    const { error } =
-        await supabaseClient
-            .storage
-            .from("pdfs")
-            .remove([path]);
+    showGlobalLoader(
+        "Deleting PDF",
+        "Removing your document..."
+    );
 
-    if (error) {
-        console.error("PDF delete error:", error);
-        alert("Unable to delete PDF: " + error.message);
-        return;
+    try {
+        const { error } =
+            await supabaseClient
+                .storage
+                .from("pdfs")
+                .remove([path]);
+
+        if (error) {
+            console.error("PDF delete error:", error);
+            alert("Unable to delete PDF: " + error.message);
+            return;
+        }
+
+        closePDFViewer();
+        await displayPDFs();
+    } finally {
+        hideGlobalLoader();
     }
-
-    closePDFViewer();
-    await displayPDFs();
 }
 
 
