@@ -2906,6 +2906,73 @@ document.addEventListener('DOMContentLoaded',renderDailyGoal);
 @media(max-width:700px){.student-welcome h3{font-size:21px!important;gap:8px!important}.section-back-inline{padding:7px 11px!important;font-size:13px!important}}
 </style>
 
+<style id="final-admin-stats-fix">
+body.admin-portal-open #adminPortalButton{display:none!important}
+</style>
+
+<script id="final-admin-stats-fix-script">
+(function(){
+    function portal(){
+        return document.querySelector("#adminPortal") ||
+            document.querySelector(".admin-portal-backdrop") ||
+            document.querySelector(".admin-portal");
+    }
+    function visible(el){
+        if(!el) return false;
+        const s=getComputedStyle(el), r=el.getBoundingClientRect();
+        return s.display!=="none" && s.visibility!=="hidden" &&
+            r.width>0 && r.height>0;
+    }
+    function update(){
+        const p=portal();
+        if(!p) return;
+        const open=visible(p);
+        document.body.classList.toggle("admin-portal-open",open);
+        if(!open) return;
+
+        const rows=[...p.querySelectorAll(".admin-user-row")];
+        let pending=0,active=0,removed=0,rejected=0;
+
+        rows.forEach(function(row){
+            if(row.querySelector(".status-pending")) pending++;
+            else if(row.querySelector(".status-active")) active++;
+            else if(row.querySelector(".status-removed")) removed++;
+            else if(row.querySelector(".status-rejected")) rejected++;
+        });
+
+        const values={
+            adminPending:pending,
+            adminActive:active,
+            adminRemoved:removed,
+            adminTotal:pending+active+removed+rejected
+        };
+
+        Object.keys(values).forEach(function(id){
+            const el=p.querySelector("#"+id);
+            if(el) el.textContent=String(values[id]);
+        });
+    }
+
+    function start(){
+        new MutationObserver(update).observe(document.body,{
+            childList:true,
+            subtree:true,
+            attributes:true,
+            attributeFilter:["style","class"]
+        });
+        update();
+        document.addEventListener("click",function(){
+            setTimeout(update,80);
+            setTimeout(update,350);
+        });
+    }
+
+    if(document.readyState==="loading")
+        document.addEventListener("DOMContentLoaded",start);
+    else start();
+})();
+</script>
+
 </body>
 
 </html>
