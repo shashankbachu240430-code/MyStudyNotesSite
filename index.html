@@ -1410,6 +1410,42 @@ async function loadAdminUsers() {
         .order("requested_at", { ascending: false });
     const requestMap = new Map((requests || []).map(r => [r.user_id, r]));
     if (!users || !users.length) { container.innerHTML = "<p>No users have registered yet.</p>"; return; }
+
+    let pendingCount = 0;
+    let activeCount = 0;
+    let removedCount = 0;
+
+    (users || []).forEach(user => {
+        if (user.id === ADMIN_USER_ID) {
+            activeCount++;
+            return;
+        }
+
+        const req = requestMap.get(user.id);
+        const status =
+            user.active === false
+                ? (req?.status || "removed")
+                : "active";
+
+        if (status === "pending") {
+            pendingCount++;
+        } else if (status === "active") {
+            activeCount++;
+        } else if (status === "removed" || status === "rejected") {
+            removedCount++;
+        }
+    });
+
+    const pendingStat = document.getElementById("adminPending");
+    const activeStat = document.getElementById("adminActive");
+    const removedStat = document.getElementById("adminRemoved");
+    const totalStat = document.getElementById("adminTotal");
+
+    if (pendingStat) pendingStat.textContent = String(pendingCount);
+    if (activeStat) activeStat.textContent = String(activeCount);
+    if (removedStat) removedStat.textContent = String(removedCount);
+    if (totalStat) totalStat.textContent = String(users.length);
+
     container.innerHTML = "";
     users.forEach(user => {
         const row = document.createElement("div"); row.className = "admin-user-row";
@@ -2954,16 +2990,9 @@ body.admin-portal-open #adminPortalButton{display:none!important}
     }
 
     function start(){
-        new MutationObserver(update).observe(document.body,{
-            childList:true,
-            subtree:true,
-            attributes:true,
-            attributeFilter:["style","class"]
-        });
         update();
         document.addEventListener("click",function(){
-            setTimeout(update,80);
-            setTimeout(update,350);
+            setTimeout(update,120);
         });
     }
 
